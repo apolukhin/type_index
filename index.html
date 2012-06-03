@@ -2,22 +2,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Chapter&#160;1.&#160;Boost.TypeIndex 1.0</title>
-<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_49_0//doc/src/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_49_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
 <link rel="next" href="boost_typeindex/getting_started.html" title="Getting started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
-<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_49_0//boost.png"></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0//index.html">Home</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0//libs/libraries.htm">Libraries</a></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_49_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
 <td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0//more/index.htm">More</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/more/index.htm">More</a></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0//doc/src/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a></div>
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
@@ -47,26 +47,47 @@
 <p>
       Sometimes getting and storing at runtime information about template type is
       required. For such cases usually used a construction like <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> or C++11 class <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>.
-      And that is the point, where problems strat: * <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
-      and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code> require Run Time Type Info (RTTI)
-      * <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> strips
-      const, volatile and references from type * some compilers have bugs and do
-      not correctly compare <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span></code> across shared libraries * some
-      implementations of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> do not
-      strip const, volatile and references * only a few STLs have <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
-      implementation * no easy way to store type info without stripping const, volatile
-      and references * no nice and portable way to get human readable type name
+      And that is the point, where problems strat:
     </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> and
+          <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code> require Run Time Type Info
+          (RTTI)
+        </li>
+<li class="listitem">
+          <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> strips
+          const, volatile and references from type
+        </li>
+<li class="listitem">
+          some compilers have bugs and do not correctly compare <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span></code>
+          across shared libraries
+        </li>
+<li class="listitem">
+          some implementations of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
+          do not strip const, volatile and references
+        </li>
+<li class="listitem">
+          only a few STLs have <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
+          implementation
+        </li>
+<li class="listitem">
+          no easy way to store type info without stripping const, volatile and references
+        </li>
+<li class="listitem">
+          no nice and portable way to get human readable type name
+        </li>
+</ul></div>
 <p>
       Boost.TypeIndex was designed to work around those issues.
     </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: June 03, 2012 at 10:37:07 GMT</small></p></td>
+<td align="left"><p><small>Last revised: June 03, 2012 at 10:43:14 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0//doc/src/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a></div>
 </body>
 </html>
