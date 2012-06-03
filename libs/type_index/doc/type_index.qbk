@@ -23,6 +23,8 @@ Sometimes getting and storing at runtime information about template type is requ
 
 Boost.TypeIndex was designed to work around those issues.
 
+[warning This library is not accepted to Boost, it is currrently waiting for review. ] 
+
 [endsect]
 
 [section Getting started]
