@@ -12,6 +12,7 @@
 
 [section Motivation]
 Sometimes getting and storing at runtime information about template type is required. For such cases usually used a construction like `&typeid(T)` or C++11 class `std::type_index`. And that is the point, where problems strat:
+
 * `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
 * `typeid(T)` strips const, volatile and references from type
 * some compilers have bugs and do not correctly compare `std::type_info` across shared libraries
