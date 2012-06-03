@@ -1,5 +1,10 @@
 index.html
 boost_typeindex/getting_started.html
 boost_typeindex/examples.html
-boost_typeindex/reference.html
+boost_typeindex_header_reference.html
+boost/template_index.html
+boost/type_index.html
+boost/template_id.html
+boost/template_id_with_cvr.html
+boost/type_id.html
 boost_typeindex/performance.html

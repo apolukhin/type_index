@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template_index</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_49_0/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
+<link rel="up" href="../boost_typeindex_header_reference.html#header.boost.type_index_hpp" title="Header &lt;boost/type_index.hpp&gt;">
+<link rel="prev" href="../boost_typeindex_header_reference.html" title="Boost.TypeIndex Header Reference">
+<link rel="next" href="type_index.html" title="Class type_index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_49_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../boost_typeindex_header_reference.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index_hpp"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="type_index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.template_index"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template_index</span></h2>
+<p>boost::template_index</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../boost_typeindex_header_reference.html#header.boost.type_index_hpp" title="Header &lt;boost/type_index.hpp&gt;">boost/type_index.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="comment">// <a class="link" href="template_index.html#idm34256-bb">public static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a class="link" href="template_index.html#idm33856-bb"><span class="identifier">construct</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a class="link" href="template_index.html#idm30688-bb"><span class="identifier">construct_with_cvr</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="template_index.html#idm27472-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm27072-bb"><span class="identifier">before</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="template_index.html#idm24448-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="template_index.html#idm23200-bb"><span class="identifier">name_demangled</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm21936-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm19552-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm17168-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm14784-bb"><span class="keyword">operator</span><span class="special">&gt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm12400-bb"><span class="keyword">operator</span><span class="special">&lt;=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm10016-bb"><span class="keyword">operator</span><span class="special">&gt;=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="template_index.html#idm7632-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp4978752"></a><h2>Description</h2>
+<p>Copyable type_info that does not require RTTI and could store const, volatile and references if constructed via construct_with_cvr() </p>
+<div class="refsect2">
+<a name="idp4979536"></a><h3>
+<a name="idm34256-bb"></a><code class="computeroutput">template_index</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a name="idm33856-bb"></a><span class="identifier">construct</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Factory method for constructing <code class="computeroutput"><a class="link" href="template_index.html" title="Class template_index">template_index</a></code> instance for type T. Strips const, volatile and &amp; modifiers from T </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a name="idm30688-bb"></a><span class="identifier">construct_with_cvr</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Factory method for constructing <code class="computeroutput"><a class="link" href="template_index.html" title="Class template_index">template_index</a></code> instance for type T. Does not strips const, volatile and &amp; modifiers from T </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp4997776"></a><h3>
+<a name="idm27472-bb"></a><code class="computeroutput">template_index</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm27072-bb"></a><span class="identifier">before</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns true if the type precedes the type of rhs in the collation order. The collation order is just an internal order. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idm24448-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns raw name. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idm23200-bb"></a><span class="identifier">name_demangled</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns user-friendly name. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm21936-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm19552-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm17168-bb"></a><span class="keyword">operator</span><span class="special">&lt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm14784-bb"></a><span class="keyword">operator</span><span class="special">&gt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm12400-bb"></a><span class="keyword">operator</span><span class="special">&lt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm10016-bb"></a><span class="keyword">operator</span><span class="special">&gt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idm7632-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Function for getting hash value. </li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Antony Polukhin<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../boost_typeindex_header_reference.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index_hpp"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="type_index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
