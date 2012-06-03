@@ -102,18 +102,24 @@ namespace detail {
     };
 } // namespace detail
 
+/// @defgroup template_index_methods template_index class and methods
+/// @{
 
-/// Copyable type_info that does not require RTTI
+/// Copyable type_info that does not require RTTI and could store const, 
+/// volatile and references if constructed via construct_with_cvr()
 class template_index {
+private:
     const char* name_;
-
+		
+	/// @cond
     explicit template_index(const char* name)
         : name_(name)
     {}
+    /// @endcond
 
 public:
 
-    /// Factory method for constructing template_index instance for type T
+    /// Factory method for constructing template_index instance for type T.
     /// Strips const, volatile and & modifiers from T
     template <class T>
     static template_index construct(){
@@ -159,76 +165,55 @@ public:
         return std::string(name_, std::strlen(name_) - detail::template_info_skip_size_at_end);
     }
 
+    /// Comparison operator
     bool operator == (const template_index& rhs) const {
         return !std::strcmp(name_, rhs.name());
     }
 
+    /// Comparison operator
     bool operator != (const template_index& rhs) const {
         return !!std::strcmp(name_, rhs.name());
     }
 
+    /// Comparison operator
     bool operator < (const template_index& rhs) const {
         return std::strcmp(name_, rhs.name()) < 0;
     }
 
+    /// Comparison operator
     bool operator > (const template_index& rhs) const {
         return std::strcmp(name_, rhs.name()) > 0;
     }
 
+    /// Comparison operator
     bool operator <= (const template_index& rhs) const {
         return std::strcmp(name_, rhs.name()) <= 0;
     }
 
+    /// Comparison operator
     bool operator >= (const template_index& rhs) const {
         return std::strcmp(name_, rhs.name()) >= 0;
     }
 
+    /// Function for getting hash value
     std::size_t hash_code() const {
         return boost::hash_range(name_, name_ + std::strlen(name_));
     }
 };
 
-#ifndef BOOST_NO_IOSTREAM
-#ifdef BOOST_NO_TEMPLATED_IOSTREAMS
-inline std::ostream& operator<<(std::ostream& ostr, template_index const& ind) {
-    ostr << ind.name_demangled();
-    return ostr;
-}
-#else
-template <class CharT, class TriatT>
-inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, TriatT>& ostr, template_index const& ind) {
-    ostr << ind.name_demangled();
-    return ostr;
-}
-#endif
-#endif 
-
-inline std::size_t hash_value(template_index const& v) {
-    return v.hash_code();
-}
-
-template <> 
-struct hash<template_index> : public std::unary_function<template_index, std::size_t> { 
-    
-    std::size_t operator()(template_index const& v) const { 
-        return boost::hash_value(v); 
-    }
-};
-
-/// Method for constructing template_index instance for type T
-/// Strips const, volatile and & modifiers from T
+/// Method for constructing template_index instance for type T.
+/// Strips const, volatile and & modifiers from T.
 template <class T>
 template_index template_id() {
     return template_index::construct<T>();
 }
 
 /// Factory method for constructing template_index instance for type T.
-/// Does not strips const, volatile and & modifiers from T
+/// Does not strips const, volatile and & modifiers from T.
 template <class T>
 template_index template_id_with_cvr() {
     return template_index::construct_with_cvr<T>();
 }
-
 
 #ifndef BOOST_NO_RTTI
 
@@ -243,9 +228,14 @@ template_index template_id_with_cvr() {
 #  define BOOST_CLASSINFO_COMPARE_BY_NAMES
 # endif
 
-/// Copyable type_info class that requires RTTI
+/// @}
+
+/// @defgroup type_index_methods type_index class and methods
+/// @{
+
+/// Copyable type_info class that requires RTTI.
 class type_index {
-public:
+private:
 
 #ifdef BOOST_NO_STD_TYPEINFO
     typedef type_info   stl_type_index;
@@ -255,14 +245,16 @@ public:
 
     const stl_type_index* pinfo_;
 
+    /// @cond
     explicit type_index(const stl_type_index& inf)
         : pinfo_(&inf)
     {}
+    /// @endcond
 
 public:
 
-    /// Factory method for constructing type_index instance for type T
-    /// Strips const, volatile and & modifiers from T
+    /// Factory method for constructing type_index instance for type T.
+    /// Strips const, volatile and & modifiers from T.
     template <class T>
     static type_index construct() {
         typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
@@ -306,7 +298,7 @@ public:
         #endif
     }
 
-
+    /// Comparison operator
     bool operator == (type_index const& rhs) const {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(pinfo_->name(), rhs.pinfo_->name());
@@ -315,10 +307,12 @@ public:
         #endif
     }
 
+    /// Comparison operator
     bool operator != (type_index const& rhs) const {
         return !(*this == rhs);
     }
 
+    /// Comparison operator
     bool operator < (type_index const& rhs) const {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.pinfo_->name()) < 0;
@@ -327,18 +321,22 @@ public:
         #endif
     }
 
+    /// Comparison operator
     bool operator > (type_index const& rhs) const {
         return (rhs < *this);
     }
 
+    /// Comparison operator
     bool operator <= (type_index const& rhs) const {
         return !(*this > rhs);
     }
 
+    /// Comparison operator    
     bool operator >= (type_index const& rhs) const {
         return !(*this < rhs);
     }
 
+    /// Function for getting hash value
     std::size_t hash_code() const {
         return boost::hash_range(name(), name() + std::strlen(name()));
     }
@@ -348,13 +346,27 @@ public:
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #endif 
 
+/// Function, to get type_index for a type T.
+/// Strips const, volatile and & modifiers from T.
+template <class T>
+type_index type_id() {
+    return type_index::construct<T>();
+}
+
+
+/* *************** type_index free functions ******************* */
+
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS
+
+/// Ostream operator that will output demangled name.
 inline std::ostream& operator<<(std::ostream& ostr, type_index const& ind) {
     ostr << ind.name_demangled();
     return ostr;
 }
 #else
+
+/// Ostream operator that will output demangled name.
 template <class CharT, class TriatT>
 inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, TriatT>& ostr, type_index const& ind) {
     ostr << ind.name_demangled();
@@ -364,39 +376,51 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
 
 #endif 
 
+/// hash_value function overlaod for type_index.
 inline std::size_t hash_value(type_index const& v) {
     return v.hash_code();
 }
 
-template <> 
-struct hash<type_index> : public std::unary_function<type_index, std::size_t> { 
-    
-    std::size_t operator()(type_index const& v) const { 
-        return boost::hash_value(v); 
-    }
-};
-
-/// Function, to get class_index for a type T
-/// Strips const, volatile and & modifiers from T
-template <class T>
-type_index type_id() {
-    return type_index::construct<T>();
-}
 
 #else 
 // BOOST_NO_RTTI is defined
 
-/// Default copyable type_info like class
 typedef template_index type_index;
 
-/// Function, to get class_index for a type T
-/// Strips const, volatile and & modifiers from T
 template <class T>
 type_index type_id() {
     return template_index::construct<T>();
 }
 
 #endif
+
+
+/* *************** template_index free functions ******************* */
+
+#ifndef BOOST_NO_IOSTREAM
+#ifdef BOOST_NO_TEMPLATED_IOSTREAMS
+/// Ostream operator that will output demangled name
+inline std::ostream& operator<<(std::ostream& ostr, template_index const& ind) {
+    ostr << ind.name_demangled();
+    return ostr;
+}
+#else
+/// Ostream operator that will output demangled name
+template <class CharT, class TriatT>
+inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, TriatT>& ostr, template_index const& ind) {
+    ostr << ind.name_demangled();
+    return ostr;
+}
+#endif
+#endif 
+
+/// hash_value function overlaod for template_index
+inline std::size_t hash_value(template_index const& v) {
+    return v.hash_code();
+}
+
+
+/// @}
 
 } // namespace boost
 
