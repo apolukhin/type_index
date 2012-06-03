@@ -1,0 +1,123 @@
+[library Boost.TypeIndex
+    [quickbook 1.5]
+    [version 1.0]
+    [copyright 2012 Antony Polukhin]
+    [category Language Features Emulation]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[section Motivation]
+Sometimes getting and storing at runtime information about template type is required. For such cases usually used a construction like `&typeid(T)` or C++11 class `std::type_index`. And that is the point, where problems strat:
+* `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
+* `typeid(T)` strips const, volatile and references from type
+* some compilers have bugs and do not correctly compare `std::type_info` across shared libraries
+* some implementations of `typeid(T)` do not strip const, volatile and references
+* only a few STLs have `std::type_index` implementation
+* no easy way to store type info without stripping const, volatile and references
+* no nice and portable way to get human readable type name
+
+Boost.TypeIndex was designed to work around those issues.
+
+[endsect]
+
+[section Getting started]
+
+In short:
+Just replace `&typeid(T)`, `typeid(T)` with `boost::type_id<T>()` and `const std::type_info&`, `std::type_index` with `boost::type_index`. That's all, you are now using Boost.TypeIndex. 
+
+To get nice human readable name, use `name_demangled()` member function:
+``
+type_index ti = type_id<T>();
+std::string nice_name = ti.name_demangled();
+...
+std::string nice_name_with_const_volatile_ref = template_id_with_cvr<ParamT&>().name_demangled();
+``
+
+`template_index` and `type_index` have full set of comparison operators, hashing functions and ostream operators. Thay can be used with any container class.
+
+If you need to save `const`, `volatile` and references, use `boost::template_index` instead of `boost::type_index`; `boost::template_id_with_cvr<T>()` instead of `boost::type_id<T>()`.
+
+[endsect]
+
+
+[section Examples]
+All the code in examples will work with and without RTTI support.
+
+Class that allows to register type only once. 
+``
+class types_registry {
+    unordered_set<type_index> types_;
+
+public:
+    template <class T>
+    void add_type() {
+        type_index ti = type_id<T>();
+        std::cout << "Adding type " << ti << " to registry \n";
+        if (!types_.insert(ti).second) 
+            throw std::logic_error("Type " + ti.name_demangled() + " already in registry");
+    }
+
+    template <class T>
+    bool has_type() const {
+        return types_.cend() != types_.find(type_id<T>());
+    }
+};
+
+int main () {
+    types_registry tr;
+    tr.add_type<int>();
+    tr.add_type<float>();
+
+    std::cout << "Has type int: " << tr.has_type<int>() 
+        << "\nHas type std::string: " << tr.has_type<std::string>()
+        << '\n';
+}
+
+``
+
+This will output:
+``
+Adding type int to registry
+Adding type float to registry
+Has type int: 1
+Has type std::string: 0
+``
+
+Another example (this time checking for exact parameter match).
+`my_unary_function` is a class, that stroes function with result type `ResultT` and any input parameter type. In `opertaor()`, it checks for input parameter match and then executes the stored function:
+
+``
+template <class ResultT>
+class my_unary_function {
+    void*           function_ptr_;
+    template_index  exact_param_t_;
+    ...
+
+    template <class ParamT>
+    ResultT operator()(ParamT& v) {
+        BOOST_ASSERT(exact_param_t_ == template_id_with_cvr<ParamT&>());
+        return (static_cast<ResultT(ParamT&)>(function_ptr_))(v);
+    }
+};
+``
+
+[endsect]
+
+[section Reference]
+
+TODO:
+
+[endsect]
+
+
+[section Performance]
+
+`type_index` and `template_index` classes hold a single pointer, so they are easy and fast to copy. Calls to `const char* name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in read-only section of binary file. Comparison operators are optimized as much as possible, and in worst case only execute `std::strcmp`. Calls to `std::string name_demangled()` for `type_index` do usually require dynamic memory allocation and some computations, so they are not recomended for usage in performance critical sections. Calls to `std::string name_demangled()` for `template_index` require only `std::strlen` call and are much faster than `std::string name_demangled()` for `type_index`.
+
+`template_index` uses `BOOST_CURRENT_FUNCTION` macro, which could lead to code bloat. So if you do not need to save `const`, `volatile` and references, use `type_index`.
+
+[endsect]
