@@ -5,14 +5,38 @@
 
 using quickbook ;
 import boostbook : boostbook ;
+import doxygen ;
+
+doxygen autodoc
+   :
+      [ glob ../../../boost/type_index.hpp ]
+   :
+        <doxygen:param>EXTRACT_ALL=NO
+        <doxygen:param>HIDE_UNDOC_MEMBERS=YES
+        <doxygen:param>EXTRACT_PRIVATE=NO
+        <doxygen:param>ENABLE_PREPROCESSING=YES
+        <doxygen:param>EXPAND_ONLY_PREDEF=YES
+        <doxygen:param>MACRO_EXPANSION=YES
+        <doxygen:param>"PREDEFINED=\"insert_const_ref_type= const T&\" \\
+                                   \"BOOST_CONTAINER_DOXYGEN_INVOKED\" \\
+                                   \"BOOST_RV_REF(T)=T &&\" \\
+                                   \"BOOST_RV_REF_BEG=\" \\
+                                   \"BOOST_RV_REF_END=&&\" \\
+                                   \"BOOST_COPY_ASSIGN_REF(T)=const T &\" \\
+                                   \"BOOST_RV_REF_2_TEMPL_ARGS(T,a,b)=T<a, b> &&\" \\
+                                   \"BOOST_RV_REF_3_TEMPL_ARGS(T,a,b,c)=T<a,b,c>T<a,b,c> &&\" \\
+                                   \"BOOST_FWD_REF(a)=a &&\""
+        <xsl:param>"boost.doxygen.reftitle=Boost.TypeIndex Header Reference"
+   ;
 
 xml type_index : type_index.qbk ;
 boostbook standalone
     :
-    type_index
+        type_index
     :
         <xsl:param>boost.root=http://www.boost.org/doc/libs/1_49_0
 #        <xsl:param>boost.root=../../../..
         <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/doc/html
+        <dependency>autodoc
     ;
 

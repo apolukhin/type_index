@@ -110,11 +110,7 @@ class my_unary_function {
 
 [endsect]
 
-[section Reference]
-
-TODO:
-
-[endsect]
+[xinclude autodoc.xml]
 
 
 [section Performance]
