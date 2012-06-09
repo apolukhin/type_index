@@ -45,58 +45,60 @@ namespace boost {
 
 namespace detail {
 #ifdef _MSC_VER
-    // sizeof("const char *__cdecl boost::detail::template_info<") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_begin = 49);   
+    // sizeof("const char *__cdecl boost::detail::ctti<") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 40);
 
     // sizeof(">::name(void)") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_end = 13);     
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 13);
 
 #elif defined __clang__
-    // sizeof("static const char *boost::detail::template_info<") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_begin = 48);
+    // sizeof("static const char *boost::detail::ctti<") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 39);
 
     // == sizeof(">::name()") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_end = 9);
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 9);
 #elif defined __GNUC__
-    // sizeof("static const char* boost::detail::template_info<T>::name() [with T = ") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_begin = 69);  
+    // sizeof("static const char* boost::detail::ctti<T>::name() [with T = ") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 60);
 
     // == sizeof("]") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_end = 1);   
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 1);
 
 #else
     // TODO: Code for other platforms
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_begin = 0);   // skip nothing
-    BOOST_STATIC_CONSTANT(std::size_t, template_info_skip_size_at_end = 0);     // skip nothing
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 0);   // skip nothing
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 0);     // skip nothing
 
 #endif
 
-    
+
     /// Noncopyable type_info that does not require RTTI
+    /// CTTI == Compile Time Type Info
+    /// This name must be as short as posible, to avoid code bloat
     template <class T>
-    struct template_info {
-        typedef T                   template_type;
-        typedef template_info       this_type;
+    struct ctti {
+        typedef T          template_type;
+        typedef ctti       this_type;
 
         /// Retrurns raw name
-        static const char* name() {
-            return BOOST_CURRENT_FUNCTION + detail::template_info_skip_size_at_begin;
+        static const char* name() BOOST_NOEXCEPT {
+            return BOOST_CURRENT_FUNCTION + detail::ctti_skip_size_at_begin;
         }
 
         /// Returns true if the type precedes the type of rhs in the collation order.
         /// The collation order is just an internal order.
         template <class BefT>
-        static bool before() {
-            return std::strcmp(this_type::name(), template_info<BefT>::name_begin()) < 0;
+        static bool before() BOOST_NOEXCEPT {
+            return std::strcmp(this_type::name(), ctti<BefT>::name_begin()) < 0;
         }
 
         /// Returns length of demangled name
-        static std::size_t name_length() {
-            return std::strlen(this_type::name()) - detail::template_info_skip_size_at_end;
+        static std::size_t name_length() BOOST_NOEXCEPT {
+            return std::strlen(this_type::name()) - detail::ctti_skip_size_at_end;
         }
 
         /// Retrurns user-friendly name
-        static std::string name_demangled() {
+        static std::string name_demangled() BOOST_NOEXCEPT {
             return std::string(this_type::name(), this_type::name_length());
         }
     };
@@ -105,14 +107,14 @@ namespace detail {
 /// @defgroup template_index_methods template_index class and methods
 /// @{
 
-/// Copyable type_info that does not require RTTI and could store const, 
+/// Copyable type_info that does not require RTTI and could store const,
 /// volatile and references if constructed via construct_with_cvr()
 class template_index {
 private:
     const char* name_;
-		
+
 	/// @cond
-    explicit template_index(const char* name)
+    explicit template_index(const char* name) BOOST_NOEXCEPT
         : name_(name)
     {}
     /// @endcond
@@ -132,7 +134,7 @@ public:
                     , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
         #endif
 
-        return template_index(detail::template_info<no_cvr_t>::name());
+        return template_index(detail::ctti<no_cvr_t>::name());
     }
 
     /// Factory method for constructing template_index instance for type T.
@@ -145,58 +147,58 @@ public:
                     , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
         #endif
 
-        return template_index(detail::template_info<T>::name());
+        return template_index(detail::ctti<T>::name());
     }
 
 
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
-    bool before(const template_index& rhs) const {
+    bool before(const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name(), rhs.name()) < 0;
     }
 
     /// Retrurns raw name
-    const char* name() const {
+    const char* name() const BOOST_NOEXCEPT {
         return name_;
     }
 
     /// Retrurns user-friendly name
     std::string name_demangled() const {
-        return std::string(name_, std::strlen(name_) - detail::template_info_skip_size_at_end);
+        return std::string(name_, std::strlen(name_) - detail::ctti_skip_size_at_end);
     }
 
     /// Comparison operator
-    bool operator == (const template_index& rhs) const {
+    bool operator == (const template_index& rhs) const BOOST_NOEXCEPT {
         return !std::strcmp(name_, rhs.name());
     }
 
     /// Comparison operator
-    bool operator != (const template_index& rhs) const {
+    bool operator != (const template_index& rhs) const BOOST_NOEXCEPT {
         return !!std::strcmp(name_, rhs.name());
     }
 
     /// Comparison operator
-    bool operator < (const template_index& rhs) const {
+    bool operator < (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) < 0;
     }
 
     /// Comparison operator
-    bool operator > (const template_index& rhs) const {
+    bool operator > (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) > 0;
     }
 
     /// Comparison operator
-    bool operator <= (const template_index& rhs) const {
+    bool operator <= (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) <= 0;
     }
 
     /// Comparison operator
-    bool operator >= (const template_index& rhs) const {
+    bool operator >= (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) >= 0;
     }
 
     /// Function for getting hash value
-    std::size_t hash_code() const {
+    std::size_t hash_code() const BOOST_NOEXCEPT {
         return boost::hash_range(name_, name_ + std::strlen(name_));
     }
 };
@@ -204,14 +206,14 @@ public:
 /// Method for constructing template_index instance for type T.
 /// Strips const, volatile and & modifiers from T.
 template <class T>
-template_index template_id() {
+template_index template_id() BOOST_NOEXCEPT {
     return template_index::construct<T>();
 }
 
 /// Factory method for constructing template_index instance for type T.
 /// Does not strips const, volatile and & modifiers from T.
 template <class T>
-template_index template_id_with_cvr() {
+template_index template_id_with_cvr() BOOST_NOEXCEPT {
     return template_index::construct_with_cvr<T>();
 }
 
@@ -226,6 +228,9 @@ template_index template_id_with_cvr() {
     || (defined(__hpux) && defined(__HP_aCC)) \
     || (defined(linux) && defined(__INTEL_COMPILER) && defined(__ICC))
 #  define BOOST_CLASSINFO_COMPARE_BY_NAMES
+#  define BOOST_CLASSINFO_COMPARISON_NOEXCEPT
+#else
+#  define BOOST_CLASSINFO_COMPARISON_NOEXCEPT BOOST_NOEXCEPT
 # endif
 
 /// @}
@@ -235,18 +240,19 @@ template_index template_id_with_cvr() {
 
 /// Copyable type_info class that requires RTTI.
 class type_index {
-private:
+public:
 
 #ifdef BOOST_NO_STD_TYPEINFO
-    typedef type_info   stl_type_index;
+    typedef type_info   stl_type_info;
 #else
-    typedef std::type_info   stl_type_index;
+    typedef std::type_info   stl_type_info;
 #endif
 
-    const stl_type_index* pinfo_;
+private:
+    const stl_type_info* pinfo_;
 
     /// @cond
-    explicit type_index(const stl_type_index& inf)
+    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
         : pinfo_(&inf)
     {}
     /// @endcond
@@ -259,7 +265,7 @@ public:
     static type_index construct() {
         typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
         typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
-        
+
         #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
             || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
                 BOOST_STATIC_ASSERT_MSG( !boost::is_arithmetic<no_cvr_t>::type::value
@@ -271,7 +277,7 @@ public:
 
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
-    bool before(type_index const& rhs) const {
+    bool before(type_index const& rhs) const BOOST_NOEXCEPT {
         return !!pinfo_->before(*rhs.pinfo_);
     }
 
@@ -293,13 +299,13 @@ public:
             std::string ret(demang);
             free(demang);
             return ret;
-        #else 
+        #else
             return pinfo_->name();
         #endif
     }
 
     /// Comparison operator
-    bool operator == (type_index const& rhs) const {
+    bool operator == (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(pinfo_->name(), rhs.pinfo_->name());
         #else
@@ -308,12 +314,12 @@ public:
     }
 
     /// Comparison operator
-    bool operator != (type_index const& rhs) const {
+    bool operator != (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this == rhs);
     }
 
     /// Comparison operator
-    bool operator < (type_index const& rhs) const {
+    bool operator < (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.pinfo_->name()) < 0;
         #else
@@ -322,17 +328,60 @@ public:
     }
 
     /// Comparison operator
-    bool operator > (type_index const& rhs) const {
+    bool operator > (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return (rhs < *this);
     }
 
     /// Comparison operator
-    bool operator <= (type_index const& rhs) const {
+    bool operator <= (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this > rhs);
     }
 
-    /// Comparison operator    
-    bool operator >= (type_index const& rhs) const {
+    /// Comparison operator
+    bool operator >= (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        return !(*this < rhs);
+    }
+
+
+    /// Comparison operator for native std::type_info
+    bool operator == (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
+            return !std::strcmp(pinfo_->name(), rhs.name());
+        #else
+            return *pinfo_ == rhs;
+        #endif
+    }
+
+    /// Comparison operator for native std::type_info
+    bool operator != (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        return !(*this == rhs);
+    }
+
+    /// Comparison operator for native std::type_info
+    bool operator < (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
+            return std::strcmp(pinfo_->name(), rhs.name()) < 0;
+        #else
+            return pinfo_->before(rhs);
+        #endif
+    }
+
+    /// Comparison operator for native std::type_info
+    bool operator > (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
+            return std::strcmp(pinfo_->name(), rhs.name()) > 0;
+        #else
+            return rhs.before(*pinfo_);
+        #endif
+    }
+
+    /// Comparison operator for native std::type_info
+    bool operator <= (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        return !(*this > rhs);
+    }
+
+    /// Comparison operator for native std::type_info
+    bool operator >= (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this < rhs);
     }
 
@@ -342,9 +391,41 @@ public:
     }
 };
 
+/// Comparison operator for native std::type_info
+inline bool operator == (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        return rhs == lhs; // Operation is comutative
+}
+
+/// Comparison operator for native std::type_info
+inline bool operator != (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+    return rhs != lhs; // Operation is comutative
+}
+
+/// Comparison operator for native std::type_info
+inline bool operator < (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+        return rhs > lhs;
+}
+
+/// Comparison operator for native std::type_info
+inline bool operator > (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+    return rhs < lhs;
+}
+
+/// Comparison operator for native std::type_info
+inline bool operator <= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+    return rhs >= lhs;
+}
+
+/// Comparison operator for native std::type_info
+inline bool operator >= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+    return rhs <= lhs;
+}
+
+#undef BOOST_CLASSINFO_COMPARISON_NOEXCEPT
+
 #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
-#endif 
+#endif
 
 /// Function, to get type_index for a type T.
 /// Strips const, volatile and & modifiers from T.
@@ -374,7 +455,7 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
 }
 #endif
 
-#endif 
+#endif
 
 /// hash_value function overlaod for type_index.
 inline std::size_t hash_value(type_index const& v) {
@@ -382,7 +463,7 @@ inline std::size_t hash_value(type_index const& v) {
 }
 
 
-#else 
+#else
 // BOOST_NO_RTTI is defined
 
 typedef template_index type_index;
@@ -412,10 +493,10 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
     return ostr;
 }
 #endif
-#endif 
+#endif
 
 /// hash_value function overlaod for template_index
-inline std::size_t hash_value(template_index const& v) {
+inline std::size_t hash_value(template_index const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
 
