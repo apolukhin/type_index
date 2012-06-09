@@ -43,19 +43,13 @@
   <span class="keyword">bool</span> <a class="link" href="template_index.html#idm27072-bb"><span class="identifier">before</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="template_index.html#idm24448-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="template_index.html#idm23200-bb"><span class="identifier">name_demangled</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm21936-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm19552-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm17168-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm14784-bb"><span class="keyword">operator</span><span class="special">&gt;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm12400-bb"><span class="keyword">operator</span><span class="special">&lt;=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm10016-bb"><span class="keyword">operator</span><span class="special">&gt;=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="template_index.html#idm7632-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="template_index.html#idm21936-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp4978752"></a><h2>Description</h2>
+<a name="idp61488784"></a><h2>Description</h2>
 <p>Copyable type_info that does not require RTTI and could store const, volatile and references if constructed via construct_with_cvr() </p>
 <div class="refsect2">
-<a name="idp4979536"></a><h3>
+<a name="idp61489568"></a><h3>
 <a name="idm34256-bb"></a><code class="computeroutput">template_index</code> public static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -69,7 +63,7 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp4997776"></a><h3>
+<a name="idp61507920"></a><h3>
 <a name="idm27472-bb"></a><code class="computeroutput">template_index</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -81,19 +75,9 @@
 <li class="listitem">
 <pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idm23200-bb"></a><span class="identifier">name_demangled</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns user-friendly name. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm21936-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm19552-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm17168-bb"></a><span class="keyword">operator</span><span class="special">&lt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm14784-bb"></a><span class="keyword">operator</span><span class="special">&gt;</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm12400-bb"></a><span class="keyword">operator</span><span class="special">&lt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm10016-bb"></a><span class="keyword">operator</span><span class="special">&gt;=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Comparison operator. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idm7632-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Function for getting hash value. </li>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idm21936-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Function for getting hash value </p>
+</li>
 </ol></div>
 </div>
 </div>
