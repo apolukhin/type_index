@@ -68,9 +68,7 @@ namespace detail {
     // TODO: Code for other platforms
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 0);   // skip nothing
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 0);     // skip nothing
-
 #endif
-
 
     /// Noncopyable type_info that does not require RTTI
     /// CTTI == Compile Time Type Info
@@ -167,35 +165,31 @@ public:
         return std::string(name_, std::strlen(name_) - detail::ctti_skip_size_at_end);
     }
 
-    /// Comparison operator
+    /// @cond
     bool operator == (const template_index& rhs) const BOOST_NOEXCEPT {
         return !std::strcmp(name_, rhs.name());
     }
 
-    /// Comparison operator
     bool operator != (const template_index& rhs) const BOOST_NOEXCEPT {
         return !!std::strcmp(name_, rhs.name());
     }
 
-    /// Comparison operator
     bool operator < (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) < 0;
     }
 
-    /// Comparison operator
     bool operator > (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) > 0;
     }
 
-    /// Comparison operator
     bool operator <= (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) <= 0;
     }
 
-    /// Comparison operator
     bool operator >= (const template_index& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) >= 0;
     }
+    /// @endcond
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
@@ -219,6 +213,9 @@ template_index template_id_with_cvr() BOOST_NOEXCEPT {
 
 #ifndef BOOST_NO_RTTI
 
+
+#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
 // for this compiler at least, cross-shared-library type_info
 // comparisons don't work, so use typeid(x).name() instead. It's not
 // yet clear what the best default strategy is.
@@ -232,6 +229,8 @@ template_index template_id_with_cvr() BOOST_NOEXCEPT {
 #else
 #  define BOOST_CLASSINFO_COMPARISON_NOEXCEPT BOOST_NOEXCEPT
 # endif
+
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 /// @}
 
@@ -304,7 +303,7 @@ public:
         #endif
     }
 
-    /// Comparison operator
+#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
     bool operator == (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(pinfo_->name(), rhs.pinfo_->name());
@@ -313,12 +312,10 @@ public:
         #endif
     }
 
-    /// Comparison operator
     bool operator != (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this == rhs);
     }
 
-    /// Comparison operator
     bool operator < (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.pinfo_->name()) < 0;
@@ -327,23 +324,18 @@ public:
         #endif
     }
 
-    /// Comparison operator
     bool operator > (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return (rhs < *this);
     }
 
-    /// Comparison operator
     bool operator <= (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this > rhs);
     }
 
-    /// Comparison operator
     bool operator >= (type_index const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this < rhs);
     }
 
-
-    /// Comparison operator for native std::type_info
     bool operator == (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(pinfo_->name(), rhs.name());
@@ -352,12 +344,10 @@ public:
         #endif
     }
 
-    /// Comparison operator for native std::type_info
     bool operator != (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this == rhs);
     }
 
-    /// Comparison operator for native std::type_info
     bool operator < (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.name()) < 0;
@@ -366,7 +356,6 @@ public:
         #endif
     }
 
-    /// Comparison operator for native std::type_info
     bool operator > (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.name()) > 0;
@@ -375,15 +364,14 @@ public:
         #endif
     }
 
-    /// Comparison operator for native std::type_info
     bool operator <= (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this > rhs);
     }
 
-    /// Comparison operator for native std::type_info
     bool operator >= (stl_type_info const& rhs) const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return !(*this < rhs);
     }
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
     /// Function for getting hash value
     std::size_t hash_code() const {
@@ -391,44 +379,45 @@ public:
     }
 };
 
-/// Comparison operator for native std::type_info
+#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
 inline bool operator == (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return rhs == lhs; // Operation is comutative
 }
 
-/// Comparison operator for native std::type_info
 inline bool operator != (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
     return rhs != lhs; // Operation is comutative
 }
 
-/// Comparison operator for native std::type_info
 inline bool operator < (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
         return rhs > lhs;
 }
 
-/// Comparison operator for native std::type_info
 inline bool operator > (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
     return rhs < lhs;
 }
 
-/// Comparison operator for native std::type_info
 inline bool operator <= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
     return rhs >= lhs;
 }
 
-/// Comparison operator for native std::type_info
 inline bool operator >= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
     return rhs <= lhs;
 }
 
 #undef BOOST_CLASSINFO_COMPARISON_NOEXCEPT
 
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
+
+
 #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #endif
 
-/// Function, to get type_index for a type T.
-/// Strips const, volatile and & modifiers from T.
+/// @endcond
+
+/// Function, to get type_index for a type T. Strips const, volatile and & modifiers from T.
 template <class T>
 type_index type_id() {
     return type_index::construct<T>();
@@ -436,6 +425,8 @@ type_index type_id() {
 
 
 /* *************** type_index free functions ******************* */
+
+/// @cond
 
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS
@@ -462,6 +453,7 @@ inline std::size_t hash_value(type_index const& v) {
     return v.hash_code();
 }
 
+/// @endcond
 
 #else
 // BOOST_NO_RTTI is defined
@@ -477,6 +469,8 @@ type_index type_id() {
 
 
 /* *************** template_index free functions ******************* */
+
+/// @cond
 
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS
@@ -500,6 +494,23 @@ inline std::size_t hash_value(template_index const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
 
+/// @endcond
+
+#ifdef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
+/// Output operators for type_index and template_index
+std::basic_ostream& operator<<(std::basic_ostream, template_index/type_index const & rhs);
+
+/// All possible operators for comparison of std::type_info's and type_index'es.
+inline bool operator(type_index/std::type_info const& lhs, type_index/std::type_info const& rhs);
+
+/// All possible operators for comparison of template_index'es.
+inline bool operator(template_index const& lhs, template_index const& rhs);
+
+/// All possible operators for comparison of type_index'es.
+inline bool operator(type_index const& lhs, type_index const& rhs);
+
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 /// @}
 
