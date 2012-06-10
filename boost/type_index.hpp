@@ -48,18 +48,18 @@ namespace detail {
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 40);
 
-    // sizeof(">::name(void)") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 13);
+    // sizeof(">::n(void)") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 10);
 
 #elif defined __clang__
     // sizeof("static const char *boost::detail::ctti<") - 1
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 39);
 
-    // == sizeof(">::name()") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 9);
+    // == sizeof(">::n()") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 6);
 #elif defined __GNUC__
-    // sizeof("static const char* boost::detail::ctti<T>::name() [with T = ") - 1
-    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 60);
+    // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 57);
 
     // == sizeof("]") - 1
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 1);
@@ -78,32 +78,34 @@ namespace detail {
         typedef T          template_type;
         typedef ctti       this_type;
 
+        /// Retrurns raw name. Must be as short, as possible, to avoid code bloat
+        static const char* n() BOOST_NOEXCEPT {
+            return BOOST_CURRENT_FUNCTION + detail::ctti_skip_size_at_begin;
+        }
+
         /// Retrurns raw name
         static const char* name() BOOST_NOEXCEPT {
-            return BOOST_CURRENT_FUNCTION + detail::ctti_skip_size_at_begin;
+            return this_type::n();
         }
 
         /// Returns true if the type precedes the type of rhs in the collation order.
         /// The collation order is just an internal order.
         template <class BefT>
         static bool before() BOOST_NOEXCEPT {
-            return std::strcmp(this_type::name(), ctti<BefT>::name_begin()) < 0;
+            return std::strcmp(this_type::n(), ctti<BefT>::n()) < 0;
         }
 
         /// Returns length of demangled name
         static std::size_t name_length() BOOST_NOEXCEPT {
-            return std::strlen(this_type::name()) - detail::ctti_skip_size_at_end;
+            return std::strlen(this_type::n()) - detail::ctti_skip_size_at_end;
         }
 
         /// Retrurns user-friendly name
         static std::string name_demangled() BOOST_NOEXCEPT {
-            return std::string(this_type::name(), this_type::name_length());
+            return std::string(this_type::n(), this_type::name_length());
         }
     };
 } // namespace detail
-
-/// @defgroup template_index_methods template_index class and methods
-/// @{
 
 /// Copyable type_info that does not require RTTI and could store const,
 /// volatile and references if constructed via construct_with_cvr()
@@ -118,6 +120,10 @@ private:
     /// @endcond
 
 public:
+    /// Default constructor.
+    template_index() BOOST_NOEXCEPT
+        : name_(detail::ctti<void>::name())
+    {}
 
     /// Factory method for constructing template_index instance for type T.
     /// Strips const, volatile and & modifiers from T
@@ -232,11 +238,6 @@ template_index template_id_with_cvr() BOOST_NOEXCEPT {
 
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
-/// @}
-
-/// @defgroup type_index_methods type_index class and methods
-/// @{
-
 /// Copyable type_info class that requires RTTI.
 class type_index {
 public:
@@ -257,6 +258,10 @@ private:
     /// @endcond
 
 public:
+    /// Default constructor.
+    type_index() 
+        : pinfo_(&typeid(void))
+    {}
 
     /// Factory method for constructing type_index instance for type T.
     /// Strips const, volatile and & modifiers from T.
@@ -352,7 +357,7 @@ public:
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.name()) < 0;
         #else
-            return pinfo_->before(rhs);
+            return !!pinfo_->before(rhs);
         #endif
     }
 
@@ -360,7 +365,7 @@ public:
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(pinfo_->name(), rhs.name()) > 0;
         #else
-            return rhs.before(*pinfo_);
+            return !!rhs.before(*pinfo_);
         #endif
     }
 
@@ -511,8 +516,6 @@ inline bool operator(template_index const& lhs, template_index const& rhs);
 inline bool operator(type_index const& lhs, type_index const& rhs);
 
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
-
-/// @}
 
 } // namespace boost
 
