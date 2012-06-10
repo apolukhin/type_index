@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(names_matches_type_id)
     using namespace boost;
     BOOST_CHECK_EQUAL(type_id<int>().name_demangled(), "int");
     BOOST_CHECK_EQUAL(type_id<double>().name_demangled(), "double");
-    
+
     BOOST_CHECK_EQUAL(type_id<int>().name(),    type_id<int>().name());
     BOOST_CHECK_NE(type_id<int>().name(),       type_id<double>().name());
     BOOST_CHECK_NE(type_id<double>().name(),    type_id<int>().name());
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(names_matches_template_id)
     using namespace boost;
     BOOST_CHECK_EQUAL(template_id<int>().name_demangled(), "int");
     BOOST_CHECK_EQUAL(template_id<double>().name_demangled(), "double");
-    
+
     BOOST_CHECK_EQUAL(template_id<int>().name(),    template_id<int>().name());
     BOOST_CHECK_NE(template_id<int>().name(),       template_id<double>().name());
     BOOST_CHECK_NE(template_id<double>().name(),    template_id<int>().name());
@@ -88,6 +88,56 @@ BOOST_AUTO_TEST_CASE(hash_code_type_id)
     BOOST_CHECK_NE(t_int1, t_double2);
     BOOST_CHECK_LE(t_double1, t_double2);
 }
+
+#ifndef BOOST_NO_RTTI
+
+BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
+{
+    using namespace boost;
+    type_index t_int = type_id<int>();
+
+    BOOST_CHECK(t_int == typeid(int));
+    BOOST_CHECK(typeid(int) == t_int);
+    BOOST_CHECK(t_int <= typeid(int));
+    BOOST_CHECK(typeid(int) <= t_int);
+    BOOST_CHECK(t_int >= typeid(int));
+    BOOST_CHECK(typeid(int) >= t_int);
+
+    type_index t_double = type_id<double>();
+
+    BOOST_CHECK(t_double == typeid(double));
+    BOOST_CHECK(typeid(double) == t_double);
+    BOOST_CHECK(t_double <= typeid(double));
+    BOOST_CHECK(typeid(double) <= t_double);
+    BOOST_CHECK(t_double >= typeid(double));
+    BOOST_CHECK(typeid(double) >= t_double);
+
+    if (t_double < t_int) {
+        BOOST_CHECK(t_double < typeid(int));
+        BOOST_CHECK(typeid(double) < t_int);
+        BOOST_CHECK(typeid(int) > t_double);
+        BOOST_CHECK(t_int > typeid(double));
+
+
+        BOOST_CHECK(t_double <= typeid(int));
+        BOOST_CHECK(typeid(double) <= t_int);
+        BOOST_CHECK(typeid(int) >= t_double);
+        BOOST_CHECK(t_int >= typeid(double));
+    } else {
+        BOOST_CHECK(t_double > typeid(int));
+        BOOST_CHECK(typeid(double) > t_int);
+        BOOST_CHECK(typeid(int) < t_double);
+        BOOST_CHECK(t_int < typeid(double));
+
+
+        BOOST_CHECK(t_double >= typeid(int));
+        BOOST_CHECK(typeid(double) >= t_int);
+        BOOST_CHECK(typeid(int) <= t_double);
+        BOOST_CHECK(t_int <= typeid(double));
+    }
+}
+
+#endif // BOOST_NO_RTTI
 
 BOOST_AUTO_TEST_CASE(hash_code_template_id)
 {
@@ -170,7 +220,7 @@ BOOST_AUTO_TEST_CASE(stream_operator_via_lexical_cast_testing)
 
     std::string s_double1 = lexical_cast<std::string>(type_id<double>());
     BOOST_CHECK_EQUAL(s_double1, "double");
-    
+
     std::string s_double2 = lexical_cast<std::string>(template_id<double>());
     BOOST_CHECK_EQUAL(s_double2, "double");
 }
@@ -222,12 +272,12 @@ BOOST_AUTO_TEST_CASE(template_index_stripping_cvr_test)
 
 namespace my_namespace1 {
     class my_class{};
-} 
+}
 
 
 namespace my_namespace2 {
     class my_class{};
-} 
+}
 
 
 BOOST_AUTO_TEST_CASE(template_index_user_defined_class_test)
@@ -236,24 +286,27 @@ BOOST_AUTO_TEST_CASE(template_index_user_defined_class_test)
 
     BOOST_CHECK_EQUAL(template_id<my_namespace1::my_class>(), template_id<my_namespace1::my_class>());
     BOOST_CHECK_EQUAL(template_id<my_namespace2::my_class>(), template_id<my_namespace2::my_class>());
-    
+
     BOOST_CHECK_NE(template_id<my_namespace1::my_class>(), template_id<my_namespace2::my_class>());
     BOOST_CHECK_NE(
-        template_id<my_namespace1::my_class>().name_demangled().find("my_namespace1::my_class"), 
+        template_id<my_namespace1::my_class>().name_demangled().find("my_namespace1::my_class"),
         std::string::npos);
 
     BOOST_CHECK_EQUAL(type_id<my_namespace1::my_class>(), type_id<my_namespace1::my_class>());
     BOOST_CHECK_EQUAL(type_id<my_namespace2::my_class>(), type_id<my_namespace2::my_class>());
-    
+
+#ifndef BOOST_NO_RTTI
+    BOOST_CHECK(type_id<my_namespace1::my_class>() == typeid(my_namespace1::my_class));
+    BOOST_CHECK(type_id<my_namespace2::my_class>() == typeid(my_namespace2::my_class));
+    BOOST_CHECK(typeid(my_namespace1::my_class) == type_id<my_namespace1::my_class>());
+    BOOST_CHECK(typeid(my_namespace2::my_class) == type_id<my_namespace2::my_class>());
+#endif
+
     BOOST_CHECK_NE(type_id<my_namespace1::my_class>(), type_id<my_namespace2::my_class>());
     BOOST_CHECK_NE(
-        type_id<my_namespace1::my_class>().name_demangled().find("my_namespace1::my_class"), 
+        type_id<my_namespace1::my_class>().name_demangled().find("my_namespace1::my_class"),
         std::string::npos);
 }
-
-
-
-
 
 
 
