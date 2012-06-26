@@ -37,39 +37,64 @@
   <span class="comment">// types</span>
   <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span> <a name="boost.type_index.stl_type_info"></a><span class="identifier">stl_type_info</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="type_index.html#idm19200-bb">public static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a class="link" href="type_index.html#idp195424-bb"><span class="identifier">construct</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="type_index.html#boost.type_indexconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="type_index.html#idm12016-bb"><span class="identifier">type_index</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="type_index.html#idp198592-bb">public member functions</a></span>
-  <span class="keyword">bool</span> <a class="link" href="type_index.html#idp198992-bb"><span class="identifier">before</span></a><span class="special">(</span><a class="link" href="type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index.html#idp201456-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="type_index.html#idp202704-bb"><span class="identifier">name_demangled</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="type_index.html#idp203968-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="type_index.html#idm18656-bb">public member functions</a></span>
+  <span class="keyword">bool</span> <a class="link" href="type_index.html#idm18256-bb"><span class="identifier">before</span></a><span class="special">(</span><a class="link" href="type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index.html#idm15792-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="type_index.html#idm14544-bb"><span class="identifier">name_demangled</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="type_index.html#idm13280-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="type_index.html#idm11472-bb">public static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a class="link" href="type_index.html#idm11072-bb"><span class="identifier">construct</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a class="link" href="type_index.html#idm7856-bb"><span class="identifier">construct_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a class="link" href="type_index.html#idm4000-bb"><span class="identifier">construct_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp61573472"></a><h2>Description</h2>
+<a name="idp61640080"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="idp61573856"></a><h3>
-<a name="idm19200-bb"></a><code class="computeroutput">type_index</code> public static functions</h3>
+<a name="idp61640464"></a><h3>
+<a name="boost.type_indexconstruct-copy-destruct"></a><code class="computeroutput">type_index</code> 
+        public
+       construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a name="idp195424-bb"></a><span class="identifier">construct</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
-<p>Factory method for constructing <code class="computeroutput"><a class="link" href="type_index.html" title="Class type_index">type_index</a></code> instance for type T. Strips const, volatile and &amp; modifiers from T. </p>
+<pre class="literallayout"><a name="idm12016-bb"></a><span class="identifier">type_index</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Default constructor. </p>
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idp61583776"></a><h3>
-<a name="idp198592-bb"></a><code class="computeroutput">type_index</code> public member functions</h3>
+<a name="idp61645792"></a><h3>
+<a name="idm18656-bb"></a><code class="computeroutput">type_index</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp198992-bb"></a><span class="identifier">before</span><span class="special">(</span><a class="link" href="type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idm18256-bb"></a><span class="identifier">before</span><span class="special">(</span><a class="link" href="type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>Returns true if the type precedes the type of rhs in the collation order. The collation order is just an internal order. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp201456-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns raw name. </li>
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idm15792-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns raw name. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idp202704-bb"></a><span class="identifier">name_demangled</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns user-friendly name. </li>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idm14544-bb"></a><span class="identifier">name_demangled</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Retrurns user-friendly name. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idp203968-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Function for getting hash value. </li>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idm13280-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Function for getting hash value. </li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp61671392"></a><h3>
+<a name="idm11472-bb"></a><code class="computeroutput">type_index</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a name="idm11072-bb"></a><span class="identifier">construct</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Factory method for constructing <code class="computeroutput"><a class="link" href="type_index.html" title="Class type_index">type_index</a></code> instance for type T. Strips const, volatile and &amp; modifiers from T. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a name="idm7856-bb"></a><span class="identifier">construct_rtti_only</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span> rtti_val<span class="special">)</span><span class="special">;</span></pre>
+<p>Factory function, that works exactly like C++ typeid(rtti_val) call, but returns <code class="computeroutput"><a class="link" href="type_index.html" title="Class type_index">boost::type_index</a></code>. This method available only with RTTI enabled. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="type_index.html" title="Class type_index">type_index</a> <a name="idm4000-bb"></a><span class="identifier">construct_rtti_only</span><span class="special">(</span><span class="identifier">T</span> <span class="special">*</span> rtti_val<span class="special">)</span><span class="special">;</span></pre>
+<p>Factory function, that works exactly like C++ typeid(rtti_val) call, but returns <code class="computeroutput"><a class="link" href="type_index.html" title="Class type_index">boost::type_index</a></code>. This method available only with RTTI enabled. </p>
+</li>
 </ol></div>
 </div>
 </div>

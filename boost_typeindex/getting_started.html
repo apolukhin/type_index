@@ -31,8 +31,10 @@
       <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> with
       <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code> and
       <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span></code>, <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
-      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>. That's all, you are now using
-      Boost.TypeIndex.
+      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>. For cases when RTTI is really
+      required, replace <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">variable</span><span class="special">)</span></code>
+      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id_rtti_only</span><span class="special">(</span><span class="identifier">variable</span><span class="special">)</span></code>.
+      That's all, you are now using Boost.TypeIndex.
     </p>
 <p>
       To get nice human readable name, use <code class="computeroutput"><span class="identifier">name_demangled</span><span class="special">()</span></code> member function:
