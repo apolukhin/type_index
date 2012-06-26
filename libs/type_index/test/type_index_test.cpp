@@ -309,4 +309,46 @@ BOOST_AUTO_TEST_CASE(template_index_user_defined_class_test)
 }
 
 
+#ifndef BOOST_NO_RTTI
+
+class A { public: virtual ~A(){} };
+class B: public A{};
+class C: public B {};
+
+BOOST_AUTO_TEST_CASE(comparators_type_id_rtti_only)
+{
+    C c1;
+    B b1;
+    A* pc1 = &c1;
+    A& rc1 = c1;
+    A* pb1 = &b1;
+    A& rb1 = b1;
+    BOOST_CHECK(typeid(rc1) == typeid(*pc1));
+    BOOST_CHECK(typeid(rb1) == typeid(*pb1));
+
+    BOOST_CHECK(typeid(rc1) != typeid(*pb1));
+    BOOST_CHECK(typeid(rb1) != typeid(*pc1));
+
+    BOOST_CHECK(typeid(&rc1) == typeid(pb1));
+    BOOST_CHECK(typeid(&rb1) == typeid(pc1));
+
+    BOOST_CHECK_EQUAL(boost::type_id_rtti_only(rc1), boost::type_id_rtti_only(*pc1));
+    BOOST_CHECK_EQUAL(boost::type_id_rtti_only(rb1), boost::type_id_rtti_only(*pb1));
+
+    BOOST_CHECK_NE(boost::type_id_rtti_only(rc1), boost::type_id_rtti_only(*pb1));
+    BOOST_CHECK_NE(boost::type_id_rtti_only(rb1), boost::type_id_rtti_only(*pc1));
+    BOOST_CHECK_EQUAL(boost::type_id_rtti_only(&rc1), boost::type_id_rtti_only(pb1));
+    BOOST_CHECK_EQUAL(boost::type_id_rtti_only(&rb1), boost::type_id_rtti_only(pc1));
+
+    BOOST_CHECK(boost::type_id_rtti_only(rc1) == typeid(*pc1));
+    BOOST_CHECK(boost::type_id_rtti_only(rb1) == typeid(*pb1));
+
+    BOOST_CHECK(boost::type_id_rtti_only(rc1) != typeid(*pb1));
+    BOOST_CHECK(boost::type_id_rtti_only(rb1) != typeid(*pc1));
+    BOOST_CHECK(boost::type_id_rtti_only(&rc1) == typeid(pb1));
+    BOOST_CHECK(boost::type_id_rtti_only(&rb1) == typeid(pc1));
+}
+
+#endif // BOOST_NO_RTTI
+
 

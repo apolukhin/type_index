@@ -23,6 +23,8 @@ Sometimes getting and storing at runtime information about template type is requ
 
 Boost.TypeIndex was designed to work around those issues.
 
+﻿[note `T` means here type. Think of it, as of `T` in `template <class T>` ] 
+
 [warning This library is not accepted to Boost, it is currrently waiting for review. ] 
 
 [endsect]
@@ -30,7 +32,7 @@ Boost.TypeIndex was designed to work around those issues.
 [section Getting started]
 
 In short:
-Just replace `&typeid(T)`, `typeid(T)` with `boost::type_id<T>()` and `const std::type_info&`, `std::type_index` with `boost::type_index`. That's all, you are now using Boost.TypeIndex. 
+Just replace `&typeid(T)`, `typeid(T)` with `boost::type_id<T>()` and `const std::type_info&`, `std::type_index` with `boost::type_index`. For cases when RTTI is really required, replace `typeid(variable)` with `boost::type_id_rtti_only(variable)`.  That's all, you are now using Boost.TypeIndex.
 
 To get nice human readable name, use `name_demangled()` member function:
 ``

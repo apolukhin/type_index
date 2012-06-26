@@ -225,9 +225,9 @@ template_index template_id_with_cvr() BOOST_NOEXCEPT {
 // for this compiler at least, cross-shared-library type_info
 // comparisons don't work, so use typeid(x).name() instead. It's not
 // yet clear what the best default strategy is.
-# if (defined(__GNUC__) && __GNUC__ >= 3) \
+# if (defined(__GNUC__) && __GNUC__ >= 3 && __GNUC_MINOR__ < 5) \
     || defined(_AIX) \
-    || (   defined(__sgi) && defined(__host_mips)) \
+    || (defined(__sgi) && defined(__host_mips)) \
     || (defined(__hpux) && defined(__HP_aCC)) \
     || (defined(linux) && defined(__INTEL_COMPILER) && defined(__ICC))
 #  define BOOST_CLASSINFO_COMPARE_BY_NAMES
@@ -277,6 +277,20 @@ public:
         #endif
 
         return type_index(typeid(no_cvr_t));
+    }
+
+    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+    /// This method available only with RTTI enabled.
+    template <class T>
+    static type_index construct_rtti_only(T& rtti_val) {
+        return type_index(typeid(rtti_val));
+    }
+
+    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+    /// This method available only with RTTI enabled.
+    template <class T>
+    static type_index construct_rtti_only(T* rtti_val) {
+        return type_index(typeid(rtti_val));
     }
 
     /// Returns true if the type precedes the type of rhs in the collation order.
@@ -428,6 +442,19 @@ type_index type_id() {
     return type_index::construct<T>();
 }
 
+/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+/// This method available only with RTTI enabled.
+template <class T>
+type_index type_id_rtti_only(T& rtti_val) {
+    return type_index::construct_rtti_only(rtti_val);
+}
+
+/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+/// This method available only with RTTI enabled.
+template <class T>
+type_index type_id_rtti_only(T* rtti_val) {
+    return type_index::construct_rtti_only(rtti_val);
+}
 
 /* *************** type_index free functions ******************* */
 
