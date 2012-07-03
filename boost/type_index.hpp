@@ -393,8 +393,12 @@ public:
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
     /// Function for getting hash value
-    std::size_t hash_code() const {
+    std::size_t hash_code() const BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
+#if _MSC_VER >= 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
+        return pinfo_->hash_code();
+#else 
         return boost::hash_range(name(), name() + std::strlen(name()));
+#endif 
     }
 };
 
