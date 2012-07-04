@@ -78,12 +78,12 @@ namespace detail {
         typedef T          template_type;
         typedef ctti       this_type;
 
-        /// Retrurns raw name. Must be as short, as possible, to avoid code bloat
+        /// Returns raw name. Must be as short, as possible, to avoid code bloat
         static const char* n() BOOST_NOEXCEPT {
             return BOOST_CURRENT_FUNCTION + detail::ctti_skip_size_at_begin;
         }
 
-        /// Retrurns raw name
+        /// Returns raw name
         static const char* name() BOOST_NOEXCEPT {
             return this_type::n();
         }
@@ -100,7 +100,7 @@ namespace detail {
             return std::strlen(this_type::n()) - detail::ctti_skip_size_at_end;
         }
 
-        /// Retrurns user-friendly name
+        /// Returns user-friendly name
         static std::string name_demangled() BOOST_NOEXCEPT {
             return std::string(this_type::n(), this_type::name_length());
         }
@@ -113,7 +113,7 @@ class template_index {
 private:
     const char* name_;
 
-	/// @cond
+    /// @cond
     explicit template_index(const char* name) BOOST_NOEXCEPT
         : name_(name)
     {}
@@ -161,12 +161,12 @@ public:
         return std::strcmp(name(), rhs.name()) < 0;
     }
 
-    /// Retrurns raw name
+    /// Returns raw name
     const char* name() const BOOST_NOEXCEPT {
         return name_;
     }
 
-    /// Retrurns user-friendly name
+    /// Returns user-friendly name
     std::string name_demangled() const {
         return std::string(name_, std::strlen(name_) - detail::ctti_skip_size_at_end);
     }
@@ -299,7 +299,7 @@ public:
         return !!pinfo_->before(*rhs.pinfo_);
     }
 
-    /// Retrurns raw name
+    /// Returns raw name
     const char* name() const {
     #ifdef _MSC_VER
         return pinfo_->raw_name();
@@ -308,7 +308,7 @@ public:
     #endif
     }
 
-    /// Retrurns user-friendly name
+    /// Returns user-friendly name
     std::string name_demangled() const {
         #if defined(__GNUC__)
             int status = 0 ;
@@ -405,15 +405,15 @@ public:
 #ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 inline bool operator == (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
-        return rhs == lhs; // Operation is comutative
+    return rhs == lhs; // Operation is commutative
 }
 
 inline bool operator != (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
-    return rhs != lhs; // Operation is comutative
+    return rhs != lhs; // Operation is commutative
 }
 
 inline bool operator < (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
-        return rhs > lhs;
+    return rhs > lhs;
 }
 
 inline bool operator > (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_CLASSINFO_COMPARISON_NOEXCEPT {
@@ -484,7 +484,7 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
 
 #endif
 
-/// hash_value function overlaod for type_index.
+/// hash_value function overload for type_index.
 inline std::size_t hash_value(type_index const& v) {
     return v.hash_code();
 }
@@ -525,7 +525,7 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
 #endif
 #endif
 
-/// hash_value function overlaod for template_index
+/// hash_value function overload for template_index
 inline std::size_t hash_value(template_index const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
