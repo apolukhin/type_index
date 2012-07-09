@@ -46,9 +46,9 @@
 <a name="boost_typeindex.motivation"></a><a class="link" href="index.html#boost_typeindex.motivation" title="Motivation">Motivation</a>
 </h2></div></div></div>
 <p>
-      Sometimes getting and storing at runtime information about template type is
-      required. For such cases usually used a construction like <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> or C++11 class <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>.
-      And that is the point, where problems strat:
+      Sometimes getting and storing information about a template type at runtime
+      is required. For such cases a construction like <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> or C++11 class <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
+      is usually used. And that is the point, where problems strat:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -57,26 +57,21 @@
           (RTTI)
         </li>
 <li class="listitem">
-          <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code> strips
-          const, volatile and references from type
+          some implementations of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
+          strip const, volatile and references from type, while others don't
         </li>
 <li class="listitem">
           some compilers have bugs and do not correctly compare <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span></code>
-          across shared libraries
+          objects across shared libraries
         </li>
 <li class="listitem">
-          some implementations of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
-          do not strip const, volatile and references
-        </li>
-<li class="listitem">
-          only a few STLs have <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
-          implementation
+          only a few implementations already provide <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
         </li>
 <li class="listitem">
           no easy way to store type info without stripping const, volatile and references
         </li>
 <li class="listitem">
-          no nice and portable way to get human readable type name
+          no nice and portable way to get human readable type names
         </li>
 </ul></div>
 <p>
@@ -91,8 +86,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        <code class="computeroutput"><span class="identifier">T</span></code> means here type. Think
-        of it, as of <code class="computeroutput"><span class="identifier">T</span></code> in <code class="computeroutput"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span></code>
+        <code class="computeroutput"><span class="identifier">T</span></code> means type here. Think
+        of it as of <code class="computeroutput"><span class="identifier">T</span></code> in <code class="computeroutput"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span></code>
       </p></td></tr>
 </table></div>
 <div class="warning"><table border="0" summary="Warning">
@@ -107,7 +102,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: July 04, 2012 at 19:12:10 GMT</small></p></td>
+<td align="left"><p><small>Last revised: July 09, 2012 at 18:13:07 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

@@ -27,10 +27,10 @@
 <a name="boost_typeindex.examples"></a><a class="link" href="examples.html" title="Examples">Examples</a>
 </h2></div></div></div>
 <p>
-      All the code in examples will work with and without RTTI support.
+      All code in the examples will work with and without RTTI support.
     </p>
 <p>
-      Class that allows to register type only once.
+      Class that allows to register a given type only once.
 </p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">types_registry</span> <span class="special">{</span>
     <span class="identifier">unordered_set</span><span class="special">&lt;</span><span class="identifier">type_index</span><span class="special">&gt;</span> <span class="identifier">types_</span><span class="special">;</span>
@@ -41,7 +41,7 @@
         <span class="identifier">type_index</span> <span class="identifier">ti</span> <span class="special">=</span> <span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;();</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Adding type "</span> <span class="special">&lt;&lt;</span> <span class="identifier">ti</span> <span class="special">&lt;&lt;</span> <span class="string">" to registry \n"</span><span class="special">;</span>
         <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">types_</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">ti</span><span class="special">).</span><span class="identifier">second</span><span class="special">)</span>
-            <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">logic_error</span><span class="special">(</span><span class="string">"Type "</span> <span class="special">+</span> <span class="identifier">ti</span><span class="special">.</span><span class="identifier">name_demangled</span><span class="special">()</span> <span class="special">+</span> <span class="string">" already in registry"</span><span class="special">);</span>
+            <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">logic_error</span><span class="special">(</span><span class="string">"Type "</span> <span class="special">+</span> <span class="identifier">ti</span><span class="special">.</span><span class="identifier">name_demangled</span><span class="special">()</span> <span class="special">+</span> <span class="string">" already registered"</span><span class="special">);</span>
     <span class="special">}</span>
 
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
@@ -58,6 +58,13 @@
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Has type int: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">tr</span><span class="special">.</span><span class="identifier">has_type</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;()</span>
         <span class="special">&lt;&lt;</span> <span class="string">"\nHas type std::string: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">tr</span><span class="special">.</span><span class="identifier">has_type</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;()</span>
         <span class="special">&lt;&lt;</span> <span class="char">'\n'</span><span class="special">;</span>
+
+    <span class="keyword">try</span> <span class="special">{</span>
+        <span class="identifier">tr</span><span class="special">.</span><span class="identifier">add_type</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">&gt;();</span> <span class="comment">// Will throw</span>
+    <span class="special">}</span> <span class="keyword">catch</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">logic_error</span><span class="special">&amp;</span> <span class="identifier">e</span><span class="special">)</span> <span class="special">{</span>
+        <span class="comment">// Will print "Type int already registered"</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="special">}</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -73,9 +80,9 @@
 <p>
     </p>
 <p>
-      Another example (this time checking for exact parameter match). <code class="computeroutput"><span class="identifier">my_unary_function</span></code> is a class, that stroes
-      function with result type <code class="computeroutput"><span class="identifier">ResultT</span></code>
-      and any input parameter type. In <code class="computeroutput"><span class="identifier">opertaor</span><span class="special">()</span></code>, it checks for input parameter match and
+      Another example, this time checking for exact parameter match. <code class="computeroutput"><span class="identifier">my_unary_function</span></code> is a class, that stores
+      a function with result type <code class="computeroutput"><span class="identifier">ResultT</span></code>
+      and any input parameter type. In <code class="computeroutput"><span class="keyword">operator</span><span class="special">()</span></code>, it checks for input parameter match and
       then executes the stored function:
     </p>
 <p>
