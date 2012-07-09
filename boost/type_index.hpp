@@ -44,7 +44,10 @@
 namespace boost {
 
 namespace detail {
-#ifdef _MSC_VER
+#if defined(BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP) && defined(BOOST_TYPE_INDEX_CTTI_END_SKIP)
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP); // skip user specified bytes count
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = BOOST_TYPE_INDEX_CTTI_END_SKIP);     // skip user specified bytes count
+#elif defined _MSC_VER
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 40);
 

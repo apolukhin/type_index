@@ -14,7 +14,7 @@
 Sometimes getting and storing information about a template type at runtime is required. For such cases a construction like `&typeid(T)` or C++11 class `std::type_index` is usually used. And that is the point, where problems strat:
 
 * `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
-* some implementations of `typeid(T)` strips const, volatile and references from type, while others don't
+* some implementations of `typeid(T)` strip const, volatile and references from type, while others don't
 * some compilers have bugs and do not correctly compare `std::type_info` objects across shared libraries
 * only a few implementations already provide `std::type_index`
 * no easy way to store type info without stripping const, volatile and references
@@ -22,7 +22,7 @@ Sometimes getting and storing information about a template type at runtime is re
 
 Boost.TypeIndex was designed to work around those issues.
 
-﻿[note `T` means type here. Think of it as `T` in `template <class T>` ] 
+﻿[note `T` means type here. Think of it as of `T` in `template <class T>` ] 
 
 [warning This library is not accepted to Boost, it is currrently waiting for review. ] 
 
@@ -79,6 +79,13 @@ int main () {
     std::cout << "Has type int: " << tr.has_type<int>() 
         << "\nHas type std::string: " << tr.has_type<std::string>()
         << '\n';
+
+    try {
+        tr.add_type<const int>(); // Will throw
+    } catch (const std::logic_error& e) {
+        // Will print "Type int already registered"
+        std::cout << e.what() << std::endl;
+    }
 }
 
 ``
