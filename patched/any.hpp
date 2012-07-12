@@ -96,7 +96,7 @@ namespace boost
 
         public: // queries
 
-            virtual const type_index & type() const = 0;
+            virtual type_index type() const = 0;
 
             virtual placeholder * clone() const = 0;
 
@@ -114,7 +114,7 @@ namespace boost
 
         public: // queries
 
-            virtual const type_index & type() const
+            virtual type_index type() const
             {
                 return type_id<ValueType>();
             }
