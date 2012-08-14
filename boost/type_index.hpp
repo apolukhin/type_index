@@ -100,7 +100,7 @@ namespace detail {
 
         /// Returns length of demangled name
         static std::size_t name_length() BOOST_NOEXCEPT {
-            return std::strlen(this_type::n()) - detail::ctti_skip_size_at_end;
+            return std::strlen(this_type::n() + detail::ctti_skip_size_at_end);
         }
 
         /// Returns user-friendly name
@@ -171,7 +171,7 @@ public:
 
     /// Returns user-friendly name
     std::string name_demangled() const {
-        return std::string(name_, std::strlen(name_) - detail::ctti_skip_size_at_end);
+        return std::string(name_, std::strlen(name_ + detail::ctti_skip_size_at_end));
     }
 
     /// @cond
@@ -202,7 +202,7 @@ public:
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
-        return boost::hash_range(name_, name_ + std::strlen(name_));
+        return boost::hash_range(name_, name_ + std::strlen(name_ + detail::ctti_skip_size_at_end));
     }
 };
 
