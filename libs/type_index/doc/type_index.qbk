@@ -128,3 +128,19 @@ class my_unary_function {
 `template_index` uses the `BOOST_CURRENT_FUNCTION` macro, which could lead to code bloat. In those cases where preserving `const`, `volatile` and references is not needed prefer using `type_index`.
 
 [endsect]
+
+[section Compiler support]
+
+TypeIndex has been tested on MSVC2010, GCC-4.5, Clang-2.9. If your compiler is not in a list of tested compilers, you shall correctly define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
+
+# define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `0`
+# get the output of `boost::detail::ctti<int>::n()`
+# set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` equal to characters count before last occurrence of `int` in output
+# set `BOOST_TYPE_INDEX_CTTI_END_SKIP`  equal to characters count after last occurrence of `int` in output
+# check that `boost::detail::ctti<int>::name_demangled()` returns "int"
+# (optional, but highly recomended) [@http://www.boost.org/support/bugs.html create ticket] with feature request to add your compiler to supported compilers list. Include `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` numbers.  
+
+Consider the following example:
+With `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` set to `0`, `boost::detail::ctti<int>::n()` returns "const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`
+
+[endsect]
