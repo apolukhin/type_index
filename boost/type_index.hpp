@@ -254,16 +254,15 @@ public:
 private:
     const stl_type_info* pinfo_;
 
-    /// @cond
-    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
-        : pinfo_(&inf)
-    {}
-    /// @endcond
-
 public:
     /// Default constructor.
     type_index() 
         : pinfo_(&typeid(void))
+    {}
+
+    /// Constructs type_index from an instance of std::type_info.
+    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
+        : pinfo_(&inf)
     {}
 
     /// Factory method for constructing type_index instance for type T.
