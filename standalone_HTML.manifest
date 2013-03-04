@@ -6,9 +6,7 @@ boost/template_index.html
 boost/type_index.html
 boost/template_id.html
 boost/template_id_with_cvr.html
-boost/type_id.html
-boost/type_id_rtti_on_idp5273216.html
-boost/type_id_rtti_on_idp5276352.html
-boost/operator_idp5279488.html
+boost/type_id_rtti_on_idp5555120.html
+boost/type_id_rtti_on_idp5558256.html
 boost_typeindex/performance.html
 boost_typeindex/compiler_support.html
