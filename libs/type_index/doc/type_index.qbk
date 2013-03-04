@@ -31,7 +31,7 @@ Boost.TypeIndex was designed to work around those issues.
 [section Getting started]
 
 In short:
-Just replace `typeid(T)`, `&typeid(T)` with `boost::type_id<T>()` and `std::type_index`, `const std::type_info&` with `boost::type_index`. For cases when RTTI is actually required, replace `typeid(variable)` with `boost::type_id_rtti_only(variable)`.  That's all, you are now using Boost.TypeIndex.
+Just replace `typeid(T)`, `&typeid(T)` with `boost::type_id<T>()` and `std::type_index`, `const std::type_info&` with `boost::type_index`. For cases when RTTI is actually required, replace `typeid(variable)` with `boost::type_id_rtti_only(variable)` (or just leave as is).  That's all, you are now using Boost.TypeIndex.
 
 To get nice human readable names, use the `name_demangled()` member function:
 ``
