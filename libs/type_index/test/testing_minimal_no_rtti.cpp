@@ -9,6 +9,10 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/type_index/type_index_minimal.hpp>
 
+#ifndef BOOST_NO_RTTI
+#error "This test must be run with disabled RTTI"
+#endif
+
 namespace my_namespace1 {
     class my_class{};
 }
