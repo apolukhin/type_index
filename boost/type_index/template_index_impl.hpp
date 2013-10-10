@@ -10,14 +10,13 @@
 #define BOOST_TYPE_INDEX_TEMPLATE_INDEX_IMPL_HPP
 
 // MS compatible compilers support #pragma once
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
+#if defined(_MSC_VER)
 # pragma once
 #endif
 
 #include <cstring>
 #include <string>
 #include <boost/config.hpp>
-#include <boost/assert.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/remove_cv.hpp>
