@@ -5,8 +5,6 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/type_index/type_index_impl.hpp>
-
 #include <boost/functional/hash.hpp>
 #include <boost/lexical_cast.hpp>
 

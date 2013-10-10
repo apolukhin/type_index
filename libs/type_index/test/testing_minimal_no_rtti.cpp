@@ -7,7 +7,7 @@
 
 #define BOOST_TEST_MODULE testing_both_test_module
 #include <boost/test/unit_test.hpp>
-#include <boost/type_index.hpp>
+#include <boost/type_index/type_index_minimal.hpp>
 
 namespace my_namespace1 {
     class my_class{};
@@ -19,5 +19,4 @@ namespace my_namespace2 {
 }
 
 #include "type_index_tests.ipp"
-#include "template_index_tests.ipp"
 

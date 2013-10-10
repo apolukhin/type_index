@@ -7,6 +7,7 @@
 
 #define BOOST_TEST_MODULE type_index_test_module
 #include <boost/test/unit_test.hpp>
+#include <boost/type_index/type_index_impl.hpp>
 
 namespace my_namespace1 {
     class my_class{};

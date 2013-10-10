@@ -19,6 +19,8 @@
 #else
 #   include <boost/type_index/template_index_impl.hpp>
 
+namespace boost {
+
 typedef template_index type_index;
 
 template <class T>
@@ -26,9 +28,10 @@ type_index type_id() {
     return template_index::construct<T>();
 }
 
+} // namespace boost
+
 #endif // BOOST_NO_RTTI
 
-} // namespace boost
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
 
