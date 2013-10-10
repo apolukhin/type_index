@@ -14,6 +14,9 @@ project
     ;
 
 test-suite type_index
-  : [ run type_index_test.cpp ]
+  : 
+    [ run type_index_test.cpp ]
+    [ run template_index_test.cpp ]
+    [ run testing_both.cpp ]
   ;
 

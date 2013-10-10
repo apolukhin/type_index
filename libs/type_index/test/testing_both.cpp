@@ -5,7 +5,7 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#define BOOST_TEST_MODULE type_index_test_module
+#define BOOST_TEST_MODULE testing_both_test_module
 #include <boost/test/unit_test.hpp>
 
 namespace my_namespace1 {
@@ -18,3 +18,5 @@ namespace my_namespace2 {
 }
 
 #include "type_index_tests.ipp"
+#include "template_index_tests.ipp"
+
