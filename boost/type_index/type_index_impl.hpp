@@ -131,10 +131,18 @@ public:
     /// Returns user-friendly name
     std::string name_demangled() const {
         #if defined(__GNUC__)
+            std::string ret;
             int status = 0 ;
             char* demang = abi::__cxa_demangle(pinfo_->name(), NULL, 0, &status);
             BOOST_ASSERT(!status);
-            std::string ret(demang);
+            
+            BOOST_TRY {
+                ret = demang; // may throw out of memory exception
+            } BOOST_CATCH (...) {
+                free(demang);
+                BOOST_RETHROW;
+            } BOOST_CATCH_END
+            
             free(demang);
             return ret;
         #else
