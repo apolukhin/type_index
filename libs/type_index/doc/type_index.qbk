@@ -1,7 +1,7 @@
 [library Boost.TypeIndex
     [quickbook 1.5]
     [version 1.0]
-    [copyright 2012 Antony Polukhin]
+    [copyright 2012-2013 Antony Polukhin]
     [category Language Features Emulation]
     [license
         Distributed under the Boost Software License, Version 1.0.
@@ -16,11 +16,11 @@ Sometimes getting and storing information about a template type at runtime is re
 * `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
 * some implementations of `typeid(T)` strip const, volatile and references from type, while others don't
 * some compilers have bugs and do not correctly compare `std::type_info` objects across shared libraries
-* only a few implementations already provide `std::type_index`
+* only a few implementations of Standart Library currently provide `std::type_index`
 * no easy way to store type info without stripping const, volatile and references
 * no nice and portable way to get human readable type names
 
-Boost.TypeIndex was designed to work around those issues.
+Boost.TypeIndex was designed to work around all those issues.
 
 ﻿[note `T` means type here. Think of it as of `T` in `template <class T>` ] 
 

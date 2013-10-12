@@ -10,6 +10,7 @@ import doxygen ;
 doxygen autodoc
    :
       [ glob ../../../boost/type_index.hpp ]
+      [ glob ../../../boost/type_index/* ]
    :
         <doxygen:param>EXTRACT_ALL=NO
         <doxygen:param>HIDE_UNDOC_MEMBERS=YES
@@ -35,7 +36,7 @@ boostbook standalone
     :
         type_index
     :
-        <xsl:param>boost.root=http://www.boost.org/doc/libs/1_49_0
+        <xsl:param>boost.root=http://www.boost.org/doc/libs/1_53_0
 #        <xsl:param>boost.root=../../../..
         <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/doc/html
         <dependency>autodoc

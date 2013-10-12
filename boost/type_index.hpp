@@ -8,8 +8,14 @@
 #ifndef BOOST_TYPE_INDEX_HPP
 #define BOOST_TYPE_INDEX_HPP
 
+/// \file type_index.hpp
+/// \brief Includes all the headers of the Boost.TypeIndex library.
+///
+/// By inclusion of this file classes `type_index` (if RTTI is on) and `template_index` will be available.
+/// Consider including `<boost/type_index/type_index_minimal.hpp>` if you need only a type_index type with and without RTTI.
+
 // MS compatible compilers support #pragma once
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
+#if defined(_MSC_VER)
 # pragma once
 #endif
 

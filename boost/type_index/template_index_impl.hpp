@@ -14,6 +14,12 @@
 # pragma once
 #endif
 
+/// \file template_index_impl.hpp
+/// \brief Contains implementation of template_index class.
+///
+/// Here is defined the template_index class, that is used instead of type_index class in situations when RTTI is disabled.
+/// Consider including `<boost/type_index/type_index_minimal.hpp>` or `<boost/type_index.hpp>` instead of this file.
+
 #include <cstring>
 #include <string>
 #include <boost/config.hpp>

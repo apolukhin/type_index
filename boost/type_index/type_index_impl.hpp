@@ -13,6 +13,13 @@
 # pragma once
 #endif
 
+/// \file type_index_impl.hpp
+/// \brief Contains implementation of type_index class.
+///
+/// Here is defined the type_index class, that is used in situations when RTTI is enabled.
+/// Consider including `<boost/type_index/type_index_minimal.hpp>` or `<boost/type_index.hpp>` instead of this file.
+
+
 #include <cstring>
 #include <string>
 #include <boost/config.hpp>

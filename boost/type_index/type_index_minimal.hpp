@@ -10,9 +10,15 @@
 #define BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
 
 // MS compatible compilers support #pragma once
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
+#if defined(_MSC_VER)
 # pragma once
 #endif
+
+/// \file type_index_minimal.hpp
+/// \brief This is the header that required for ussage of type_index with/without RTTI.
+///
+/// It includes only the minamally required headers and does the `typedef template_index type_index;`
+/// when RTTI is disabled.
 
 #ifndef BOOST_NO_RTTI
 #   include <boost/type_index/type_index_impl.hpp>
