@@ -2,27 +2,27 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Chapter&#160;1.&#160;Boost.TypeIndex 1.0</title>
-<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_49_0/doc/src/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
 <link rel="next" href="boost_typeindex/getting_started.html" title="Getting started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
-<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_49_0/boost.png"></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/index.html">Home</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/libs/libraries.htm">Libraries</a></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_53_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
 <td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/more/index.htm">More</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/more/index.htm">More</a></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a></div>
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
 <a name="boost_typeindex"></a>Chapter&#160;1.&#160;Boost.TypeIndex 1.0</h2></div>
-<div><p class="copyright">Copyright &#169; 2012 Antony Polukhin</p></div>
+<div><p class="copyright">Copyright &#169; 2012, 2013 Antony Polukhin</p></div>
 <div><div class="legalnotice">
 <a name="boost_typeindex.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -37,12 +37,17 @@
 <dt><span class="section"><a href="boost_typeindex/getting_started.html">Getting started</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/examples.html">Examples</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex_header_reference.html">Boost.TypeIndex Header Reference</a></span></dt>
-<dd><dl><dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt></dl></dd>
+<dd><dl>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp">Header &lt;boost/type_index/template_index_impl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_impl_hpp">Header &lt;boost/type_index/type_index_impl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_minimal_hpp">Header &lt;boost/type_index/type_index_minimal.hpp&gt;</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="boost_typeindex/performance.html">Performance</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/compiler_support.html">Compiler support</a></span></dt>
 </dl>
 </div>
-<div class="section boost_typeindex_motivation">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_typeindex.motivation"></a><a class="link" href="index.html#boost_typeindex.motivation" title="Motivation">Motivation</a>
 </h2></div></div></div>
@@ -66,7 +71,7 @@
           objects across shared libraries
         </li>
 <li class="listitem">
-          only a few implementations already provide <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
+          only a few implementations of Standart Library currently provide <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>
         </li>
 <li class="listitem">
           no easy way to store type info without stripping const, volatile and references
@@ -76,14 +81,14 @@
         </li>
 </ul></div>
 <p>
-      Boost.TypeIndex was designed to work around those issues.
+      Boost.TypeIndex was designed to work around all those issues.
     </p>
 <p>
       &#65279;
     </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -93,7 +98,7 @@
 </table></div>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -103,10 +108,10 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: March 04, 2013 at 20:02:24 GMT</small></p></td>
+<td align="left"><p><small>Last revised: October 12, 2013 at 15:58:32 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="boost_typeindex/getting_started.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a></div>
 </body>
 </html>

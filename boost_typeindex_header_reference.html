@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Boost.TypeIndex Header Reference</title>
-<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_49_0/doc/src/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
 <link rel="up" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
@@ -11,54 +11,76 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
-<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_49_0/boost.png"></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/index.html">Home</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/libs/libraries.htm">Libraries</a></td>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/1_53_0/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/libs/libraries.htm">Libraries</a></td>
 <td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
 <td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
-<td align="center"><a href="http://www.boost.org/doc/libs/1_49_0/more/index.htm">More</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_53_0/more/index.htm">More</a></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost_typeindex/examples.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost/template_index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost_typeindex/examples.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost/template_index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
 </div>
-<div class="section boost_typeindex_header_reference">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_typeindex_header_reference"></a>Boost.TypeIndex Header Reference</h2></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt></dl></div>
-<div class="section header_boost_type_index_hpp">
+<div class="toc"><dl>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp">Header &lt;boost/type_index/template_index_impl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_impl_hpp">Header &lt;boost/type_index/type_index_impl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_minimal_hpp">Header &lt;boost/type_index/type_index_minimal.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="header.boost.type_index_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_49_0/boost/type_index.hpp" target="_top">boost/type_index.hpp</a>&gt;</h3></div></div></div>
+<a name="header.boost.type_index_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_53_0/boost/type_index.hpp" target="_top">boost/type_index.hpp</a>&gt;</h3></div></div></div>
+<p>Includes all the headers of the Boost.TypeIndex library. </p>
+<p>By inclusion of this file classes <code class="computeroutput">type_index</code> (if RTTI is on) and <code class="computeroutput">template_index</code> will be available. Consider including <code class="computeroutput">&lt;boost/type_index/type_index_minimal.hpp&gt;</code> if you need only a type_index type with and without RTTI. </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.type_index.template_index_impl_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_53_0/boost/type_index/template_index_impl.hpp" target="_top">boost/type_index/template_index_impl.hpp</a>&gt;</h3></div></div></div>
+<p>Contains implementation of template_index class. </p>
+<p>Here is defined the template_index class, that is used instead of type_index class in situations when RTTI is disabled. Consider including <code class="computeroutput">&lt;boost/type_index/type_index_minimal.hpp&gt;</code> or <code class="computeroutput">&lt;boost/type_index.hpp&gt;</code> instead of this file. </p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">class</span> <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a><span class="special">;</span>
-  <span class="keyword">class</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <a class="link" href="boost/template_id.html" title="Function template template_id"><span class="identifier">template_id</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <a class="link" href="boost/template_id_with_cvr.html" title="Function template template_id_with_cvr"><span class="identifier">template_id_with_cvr</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
+  <span class="comment">// Ostream operator that will output demangled name. </span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> TriatT<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">TriatT</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+    <a name="boost.operator_idm17488"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">TriatT</span> <span class="special">&gt;</span> <span class="special">&amp;</span> ostr<span class="special">,</span> 
+               <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> ind<span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// hash_value function overload for <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a></span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="boost.hash_value"></a><span class="identifier">hash_value</span><span class="special">(</span><a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> v<span class="special">)</span><span class="special">;</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.type_index.type_index_impl_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_53_0/boost/type_index/type_index_impl.hpp" target="_top">boost/type_index/type_index_impl.hpp</a>&gt;</h3></div></div></div>
+<p>Contains implementation of type_index class. </p>
+<p>Here is defined the type_index class, that is used in situations when RTTI is enabled. Consider including <code class="computeroutput">&lt;boost/type_index/type_index_minimal.hpp&gt;</code> or <code class="computeroutput">&lt;boost/type_index.hpp&gt;</code> instead of this file. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">class</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a><span class="special">;</span>
+
   <span class="comment">// Function, to get <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> for a type T. Strips const, volatile and &amp; modifiers from T. </span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <a name="boost.type_id"></a><span class="identifier">type_id</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <a class="link" href="boost/type_id_rtti_on_idp5555120.html" title="Function template type_id_rtti_only"><span class="identifier">type_id_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <a class="link" href="boost/type_id_rtti_on_idp5558256.html" title="Function template type_id_rtti_only"><span class="identifier">type_id_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-
-  <span class="comment">// Output operators for <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> and <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a>. </span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span> <span class="special">&amp;</span> 
-  <a name="boost.operator_idp5561392"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">,</span> <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a><span class="special">/</span><a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span><span class="special">;</span>
-
-  <span class="comment">// All possible operators for comparison of std::type_info's and <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a>'es. </span>
-  <span class="keyword">bool</span> <a name="boost.operator_idp5565408"></a><span class="keyword">operator</span><span class="special">(</span><a class="link" href="boost/type_index.html" title="Class type_index">type_index</a><span class="special">/</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span> <span class="keyword">const</span> <span class="special">&amp;</span> lhs<span class="special">,</span> 
-                <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a><span class="special">/</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span><span class="special">;</span>
-
-  <span class="comment">// All possible operators for comparison of <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a>'es. </span>
-  <span class="keyword">bool</span> <a name="boost.operator_idp5568672"></a><span class="keyword">operator</span><span class="special">(</span><a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> lhs<span class="special">,</span> <a class="link" href="boost/template_index.html" title="Class template_index">template_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span><span class="special">;</span>
-
-  <span class="comment">// All possible operators for comparison of <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a>'es. </span>
-  <span class="keyword">bool</span> <a name="boost.operator_idp5571936"></a><span class="keyword">operator</span><span class="special">(</span><a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> lhs<span class="special">,</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <span class="keyword">const</span> <span class="special">&amp;</span> rhs<span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <a class="link" href="boost/type_id_rtti_on_idp5197920.html" title="Function template type_id_rtti_only"><span class="identifier">type_id_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="boost/type_index.html" title="Class type_index">type_index</a> <a class="link" href="boost/type_id_rtti_on_idp5201056.html" title="Function template type_id_rtti_only"><span class="identifier">type_id_rtti_only</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.type_index.type_index_minimal_hpp"></a>Header &lt;<a href="http://www.boost.org/doc/libs/1_53_0/boost/type_index/type_index_minimal.hpp" target="_top">boost/type_index/type_index_minimal.hpp</a>&gt;</h3></div></div></div>
+<p>This is the header that required for ussage of type_index with/without RTTI. </p>
+<p>It includes only the minamally required headers and does the <code class="computeroutput">typedef template_index type_index;</code> when RTTI is disabled. </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Antony Polukhin<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012, 2013 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -66,7 +88,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="boost_typeindex/examples.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost/template_index.html"><img src="http://www.boost.org/doc/libs/1_49_0/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost_typeindex/examples.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="boost/template_index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
