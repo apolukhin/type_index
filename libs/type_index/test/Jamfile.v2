@@ -21,5 +21,14 @@ test-suite type_index
     [ run testing_both_no_rtti.cpp : : : <rtti>off ]
     [ run testing_minimal.cpp ]
     [ run testing_minimal_no_rtti.cpp : : : <rtti>off ]
+    # Examples that must work even with RTTI disabled
+    [ run ../examples/registry.cpp : : : <rtti>off ]
+    [ run ../examples/exact_types_match.cpp : : : <rtti>off ]
+    [ run ../examples/demangled_names.cpp : : : <rtti>off ]
   ;
-
+  
+# Assuring that examples compile and run. Adding sources from `examples` directory to the `type_index` test suite. 
+for local p in [ glob ../examples/*.cpp ]
+{
+    type_index += [ run $(p) ] ;
+}
