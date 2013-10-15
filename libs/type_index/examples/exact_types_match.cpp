@@ -15,6 +15,7 @@
 
 #include <boost/type_index.hpp>
 #include <iostream>
+#include <stdexcept>
 
 class type_erased_unary_function {
     void*                   function_ptr_;
@@ -23,7 +24,7 @@ class type_erased_unary_function {
 public:
     template <class ParamT>
     type_erased_unary_function(void(*ptr)(ParamT)) 
-        : function_ptr_(ptr) // ptr - is a pointer to function returning `void` and accepting parameter of type `ParamT`
+        : function_ptr_(reinterpret_cast<void*>(ptr)) // ptr - is a pointer to function returning `void` and accepting parameter of type `ParamT`
         , exact_param_t_(boost::template_id_with_cvr<ParamT>())
     {}
 
@@ -33,7 +34,7 @@ public:
             throw std::runtime_error("Incorrect `ParamT`");
         }
 
-        return (static_cast<void(*)(ParamT)>(function_ptr_))(v);
+        return (reinterpret_cast<void(*)(ParamT)>(function_ptr_))(v);
     }
 };
 
