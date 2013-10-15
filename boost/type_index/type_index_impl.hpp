@@ -29,6 +29,7 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/current_function.hpp>
+#include <boost/detail/no_exceptions_support.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 #ifndef BOOST_NO_RTTI
