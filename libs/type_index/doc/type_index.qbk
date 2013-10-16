@@ -11,7 +11,7 @@
 ]
 
 [section Motivation]
-Sometimes getting and storing information about a template type at runtime is required. For such cases a construction like `&typeid(T)` or C++11 class `std::type_index` is usually used. And that is the point, where problems start:
+Sometimes getting and storing information about a type at runtime is required. For such cases a construction like `&typeid(T)` or C++11 class `std::type_index` is usually used. And that is the point, where problems start:
 
 * `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
 * some implementations of `typeid(T)` strip const, volatile and references from type, while others don't
@@ -30,20 +30,28 @@ Boost.TypeIndex was designed to work around all those issues.
 
 [section Getting started]
 
-In short:
-Just replace `typeid(T)`, `&typeid(T)` with `boost::type_id<T>()` and `std::type_index`, `const std::type_info&` with `boost::type_index`. For cases when RTTI is actually required, replace `typeid(variable)` with `boost::type_id_rtti_only(variable)` (or just leave as is).  That's all, you are now using Boost.TypeIndex.
+`boost::type_index` can be used as a drop-in replacement for `std::type_index`, but 
+it usually does not require RTTI. It provides the full set of comparison operators, 
+hashing functions and ostream operators, so it can be used with any container class.
 
-To get nice human readable names, use the `name_demangled()` member function:
+To start using it:
+
+* Replace `std::type_index`, `const std::type_info&`, `const std::type_info*` with `boost::type_index`.
+* If you do not want to save `const`, `volatile`, `&` and `&&`:
+    * Use `boost::type_id<T>()` instead of `typeid(T)`, `&typeid(T)`.
+* If you want to save `const`, `volatile`, `&` and `&&`:
+    * Use `boost::type_id_with_cvr<T>()` instead of `typeid(T)`, `&typeid(T)`.
+* To get nice human readable names, use the `name_demangled()` member function:
 ``
+#include <boost/type_index/type_index_minimal.hpp>
+
 type_index ti = type_id<T>();
-std::string nice_name = ti.name_demangled();
+std::string nice_name 
+    = ti.name_demangled();
 ...
-std::string nice_name_with_const_volatile_ref = template_id_with_cvr<ParamT&>().name_demangled();
+std::string nice_name_with_const_volatile_ref 
+    = type_id_with_cvr<ParamT&>().name_demangled();
 ``
-
-`template_index` and `type_index` provide the full set of comparison operators, hashing functions and ostream operators. Thay can be used with any container class.
-
-If you need to preserve `const`, `volatile` and references, use `boost::template_index` instead of `boost::type_index`; `boost::template_id_with_cvr<T>()` instead of `boost::type_id<T>()`.
 
 [endsect]
 
@@ -64,15 +72,13 @@ If you need to preserve `const`, `volatile` and references, use `boost::template
 
 [endsect]
 
-
 [xinclude autodoc.xml]
-
 
 [section Performance]
 
 `type_index` and `template_index` classes hold a single pointer, so they are easy and fast to copy. Calls to `const char* name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image. Comparison operators are optimized as much as possible, and will at worst execute a single `std::strcmp`. Calls to `std::string name_demangled()` for `type_index` do usually require dynamic memory allocation and some computations, so they are not recomended for usage in performance critical sections. Calls to `std::string name_demangled()` for `template_index` only require a single `std::strlen` call and are considerably faster than `std::string name_demangled()` for `type_index`.
 
-`template_index` uses the `BOOST_CURRENT_FUNCTION` macro, which could lead to code bloat. In those cases where preserving `const`, `volatile` and references is not needed prefer using `type_index`.
+`template_index` uses the `BOOST_CURRENT_FUNCTION` macro which could lead to code bloat, so prefer using `type_index` type.
 
 [endsect]
 
