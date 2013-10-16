@@ -27,38 +27,53 @@
 <a name="boost_typeindex.getting_started"></a><a class="link" href="getting_started.html" title="Getting started">Getting started</a>
 </h2></div></div></div>
 <p>
-      In short: Just replace <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>,
-      <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>
-      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code> and
-      <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>, <code class="computeroutput"><span class="keyword">const</span>
-      <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span></code>
-      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>. For cases when RTTI is actually
-      required, replace <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">variable</span><span class="special">)</span></code>
-      with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id_rtti_only</span><span class="special">(</span><span class="identifier">variable</span><span class="special">)</span></code>
-      (or just leave as is). That's all, you are now using Boost.TypeIndex.
+      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code> can be used as a drop-in replacement
+      for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>, but it usually does not require
+      RTTI. It provides the full set of comparison operators, hashing functions and
+      ostream operators, so it can be used with any container class.
     </p>
 <p>
-      To get nice human readable names, use the <code class="computeroutput"><span class="identifier">name_demangled</span><span class="special">()</span></code> member function:
-</p>
-<pre class="programlisting"><span class="identifier">type_index</span> <span class="identifier">ti</span> <span class="special">=</span> <span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;();</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">nice_name</span> <span class="special">=</span> <span class="identifier">ti</span><span class="special">.</span><span class="identifier">name_demangled</span><span class="special">();</span>
+      To start using it:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          Replace <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">type_index</span></code>, <code class="computeroutput"><span class="keyword">const</span>
+          <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span></code>,
+          <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">*</span></code> with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>.
+        </li>
+<li class="listitem">
+          If you do not want to save <code class="computeroutput"><span class="keyword">const</span></code>,
+          <code class="computeroutput"><span class="keyword">volatile</span></code>, <code class="computeroutput"><span class="special">&amp;</span></code>
+          and <code class="computeroutput"><span class="special">&amp;&amp;</span></code>:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                Use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                instead of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>,
+                <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>.
+              </li></ul></div>
+        </li>
+<li class="listitem">
+          If you want to save <code class="computeroutput"><span class="keyword">const</span></code>,
+          <code class="computeroutput"><span class="keyword">volatile</span></code>, <code class="computeroutput"><span class="special">&amp;</span></code>
+          and <code class="computeroutput"><span class="special">&amp;&amp;</span></code>:
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+                Use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>
+                instead of <code class="computeroutput"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>,
+                <code class="computeroutput"><span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span></code>.
+              </li></ul></div>
+        </li>
+<li class="listitem">
+          To get nice human readable names, use the <code class="computeroutput"><span class="identifier">name_demangled</span><span class="special">()</span></code> member function:
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="identifier">type_index</span> <span class="identifier">ti</span> <span class="special">=</span> <span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;();</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">nice_name</span>
+    <span class="special">=</span> <span class="identifier">ti</span><span class="special">.</span><span class="identifier">name_demangled</span><span class="special">();</span>
 <span class="special">...</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">nice_name_with_const_volatile_ref</span> <span class="special">=</span> <span class="identifier">template_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&amp;&gt;().</span><span class="identifier">name_demangled</span><span class="special">();</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">nice_name_with_const_volatile_ref</span>
+    <span class="special">=</span> <span class="identifier">type_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&amp;&gt;().</span><span class="identifier">name_demangled</span><span class="special">();</span>
 </pre>
-<p>
-    </p>
-<p>
-      <code class="computeroutput"><span class="identifier">template_index</span></code> and <code class="computeroutput"><span class="identifier">type_index</span></code> provide the full set of comparison
-      operators, hashing functions and ostream operators. Thay can be used with any
-      container class.
-    </p>
-<p>
-      If you need to preserve <code class="computeroutput"><span class="keyword">const</span></code>,
-      <code class="computeroutput"><span class="keyword">volatile</span></code> and references, use
-      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span></code> instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>;
-      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code> instead
-      of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>.
-    </p>
+        </li>
+</ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
