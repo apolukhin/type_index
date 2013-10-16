@@ -26,8 +26,12 @@
 #include <boost/assert.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
+#include <boost/type_traits/is_const.hpp>
+#include <boost/type_traits/is_reference.hpp>
+#include <boost/type_traits/is_volatile.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
+#include <boost/mpl/if.hpp>
 #include <boost/current_function.hpp>
 #include <boost/detail/no_exceptions_support.hpp>
 #include <boost/functional/hash_fwd.hpp>
@@ -66,6 +70,10 @@ namespace boost {
 # endif
 
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
+namespace detail {
+    template <class T> class cvr_saver{};
+}
 
 /// Copyable type_info class that requires RTTI.
 class type_index {
@@ -107,6 +115,22 @@ public:
         return type_index(typeid(no_cvr_t));
     }
 
+    /// Factory method for constructing type_index instance for type T.
+    /// Does not strips const, volatile, & and && modifiers from T.
+    /// If T has no const, volatile, & and && modifiers, then returns exactly 
+    /// the same result as in case of calling `construct<T>()`.
+    template <class T>
+    static type_index construct_with_cvr() BOOST_NOEXCEPT {
+        typedef typename boost::mpl::if_c<
+            boost::is_reference<T>::value 
+                || boost::is_const<T>::value 
+                || boost::is_volatile<T>::value,
+            detail::cvr_saver<T>,
+            T
+        >::type type;
+        return construct<type>();
+    }
+
     /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
     /// This method available only with RTTI enabled.
     template <class T>
@@ -140,7 +164,7 @@ public:
     std::string name_demangled() const {
         #if defined(__GNUC__)
             std::string ret;
-            int status = 0 ;
+            int status = 0;
             char* demang = abi::__cxa_demangle(pinfo_->name(), NULL, 0, &status);
             BOOST_ASSERT(!status);
             
@@ -152,10 +176,26 @@ public:
             } BOOST_CATCH_END
             
             free(demang);
-            return ret;
         #else
-            return pinfo_->name();
+            std::string ret = pinfo_->name();
         #endif
+            std::string::size_type pos = ret.find("boost::detail::cvr_saver<");
+            if (pos == std::string::npos) {
+                return ret;
+            }
+
+            pos += sizeof("boost::detail::cvr_saver<");
+            while (ret[pos] == ' ') {
+                ++ pos;
+            }
+            std::string::size_type end = ret.rfind(">");
+            BOOST_ASSERT(end != std::string::npos);
+            -- end;
+            while (ret[end] == ' ') {
+                -- end;
+            }
+            
+            return ret.substr(pos, end - pos);
     }
 
 #ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
@@ -278,6 +318,15 @@ inline bool operator >= (type_index::stl_type_info const& lhs, type_index const&
 template <class T>
 type_index type_id() BOOST_NOEXCEPT {
     return type_index::construct<T>();
+}
+
+/// Function for constructing type_index instance for type T.
+/// Does not strips const, volatile, & and && modifiers from T.
+/// If T has no const, volatile, & and && modifiers, then returns exactly 
+/// the same result as in case of calling `type_id<T>()`.
+template <class T>
+type_index type_id_with_cvr() BOOST_NOEXCEPT {
+    return type_index::construct_with_cvr<T>();
 }
 
 /// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.

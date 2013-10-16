@@ -34,6 +34,11 @@ type_index type_id() {
     return template_index::construct<T>();
 }
 
+template <class T>
+type_index type_id_with_cvr() {
+    return template_index::construct_with_cvr<T>();
+}
+
 } // namespace boost
 
 #endif // BOOST_NO_RTTI

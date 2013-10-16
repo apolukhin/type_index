@@ -109,6 +109,32 @@ BOOST_AUTO_TEST_CASE(template_id_storing_modifiers)
     test_with_modofiers<int&, const volatile int&>();
 }
 
+template <class T>
+static void test_storing_nonstoring_modifiers_templ() {
+    using namespace boost;
+
+    template_index t1 = template_id_with_cvr<T>();
+    template_index t2 = template_id<T>();
+
+    BOOST_CHECK_EQUAL(t2, t1);
+    BOOST_CHECK_EQUAL(t1, t2);
+    BOOST_CHECK(t1 <= t2);
+    BOOST_CHECK(t1 >= t2);
+    BOOST_CHECK(t2 <= t1);
+    BOOST_CHECK(t2 >= t1);
+}
+
+BOOST_AUTO_TEST_CASE(template_id_storing_modifiers_vs_nonstoring)
+{
+    test_storing_nonstoring_modifiers_templ<int>();
+    test_storing_nonstoring_modifiers_templ<my_namespace1::my_class>();
+    test_storing_nonstoring_modifiers_templ<my_namespace2::my_class>();
+
+    boost::template_index t1 = boost::template_id_with_cvr<const int>();
+    boost::template_index t2 = boost::template_id<int>();
+    BOOST_CHECK_NE(t2, t1);
+}
+
 BOOST_AUTO_TEST_CASE(template_index_stream_operator_via_lexical_cast_testing)
 {
     using namespace boost;

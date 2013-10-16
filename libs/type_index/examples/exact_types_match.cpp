@@ -10,7 +10,7 @@
     Example works with and without RTTI.
 
     In this example we'll create a class, that stores pointer to function and remembers the exact type of a parameter that function accepts.
-    When an attempt to call the stored function will be made, type of input parameter will be checked for exact match with initail/erased type of function.
+    When an attempt to call the stored function will be made, type of input parameter will be checked for exact match with initaily erased type of function.
 */
 
 #include <boost/type_index.hpp>

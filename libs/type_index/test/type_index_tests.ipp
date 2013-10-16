@@ -103,6 +103,88 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
 
 #endif // BOOST_NO_RTTI
 
+template <class T1, class T2>
+static void test_with_modofiers_type_id() {
+    using namespace boost;
+
+    type_index t1 = type_id_with_cvr<T1>();
+    type_index t2 = type_id_with_cvr<T2>();
+
+    BOOST_CHECK_NE(t2, t1);
+    BOOST_CHECK(t1 < t2 || t2 < t1);
+    BOOST_CHECK(t1 > t2 || t2 > t1);
+
+    BOOST_CHECK_EQUAL(t1, type_id_with_cvr<T1>());
+    BOOST_CHECK_EQUAL(t2, type_id_with_cvr<T2>());
+
+    BOOST_CHECK_EQUAL(t1.hash_code(), type_id_with_cvr<T1>().hash_code());
+    BOOST_CHECK_EQUAL(t2.hash_code(), type_id_with_cvr<T2>().hash_code());
+
+    BOOST_CHECK_NE(t1.hash_code(), type_id_with_cvr<T2>().hash_code());
+    BOOST_CHECK_NE(t2.hash_code(), type_id_with_cvr<T1>().hash_code());
+}
+
+BOOST_AUTO_TEST_CASE(type_id_storing_modifiers)
+{
+    test_with_modofiers_type_id<int, const int>();
+    test_with_modofiers_type_id<int, const int&>();
+    test_with_modofiers_type_id<int, int&>();
+    test_with_modofiers_type_id<int, volatile int>();
+    test_with_modofiers_type_id<int, volatile int&>();
+    test_with_modofiers_type_id<int, const volatile int>();
+    test_with_modofiers_type_id<int, const volatile int&>();
+
+    test_with_modofiers_type_id<const int, int>();
+    test_with_modofiers_type_id<const int, const int&>();
+    test_with_modofiers_type_id<const int, int&>();
+    test_with_modofiers_type_id<const int, volatile int>();
+    test_with_modofiers_type_id<const int, volatile int&>();
+    test_with_modofiers_type_id<const int, const volatile int>();
+    test_with_modofiers_type_id<const int, const volatile int&>();
+
+    test_with_modofiers_type_id<const int&, int>();
+    test_with_modofiers_type_id<const int&, const int>();
+    test_with_modofiers_type_id<const int&, int&>();
+    test_with_modofiers_type_id<const int&, volatile int>();
+    test_with_modofiers_type_id<const int&, volatile int&>();
+    test_with_modofiers_type_id<const int&, const volatile int>();
+    test_with_modofiers_type_id<const int&, const volatile int&>();
+
+    test_with_modofiers_type_id<int&, const int>();
+    test_with_modofiers_type_id<int&, const int&>();
+    test_with_modofiers_type_id<int&, int>();
+    test_with_modofiers_type_id<int&, volatile int>();
+    test_with_modofiers_type_id<int&, volatile int&>();
+    test_with_modofiers_type_id<int&, const volatile int>();
+    test_with_modofiers_type_id<int&, const volatile int&>();
+}
+
+template <class T>
+static void test_storing_nonstoring_modifiers() {
+    using namespace boost;
+
+    type_index t1 = type_id_with_cvr<T>();
+    type_index t2 = type_id<T>();
+
+    BOOST_CHECK_EQUAL(t2, t1);
+    BOOST_CHECK_EQUAL(t1, t2);
+    BOOST_CHECK(t1 <= t2);
+    BOOST_CHECK(t1 >= t2);
+    BOOST_CHECK(t2 <= t1);
+    BOOST_CHECK(t2 >= t1);
+}
+
+BOOST_AUTO_TEST_CASE(type_id_storing_modifiers_vs_nonstoring)
+{
+    test_storing_nonstoring_modifiers<int>();
+    test_storing_nonstoring_modifiers<my_namespace1::my_class>();
+    test_storing_nonstoring_modifiers<my_namespace2::my_class>();
+
+    boost::type_index t1 = boost::type_id_with_cvr<const int>();
+    boost::type_index t2 = boost::type_id<int>();
+    BOOST_CHECK_NE(t2, t1);
+}
+
 BOOST_AUTO_TEST_CASE(type_index_stream_operator_via_lexical_cast_testing)
 {
     using namespace boost;

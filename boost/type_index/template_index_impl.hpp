@@ -213,6 +213,8 @@ template_index template_id() BOOST_NOEXCEPT {
 
 /// Factory method for constructing template_index instance for type T.
 /// Does not strips const, volatile and & modifiers from T.
+/// If T has no const, volatile, & and && modifiers, then returns exactly 
+/// the same result as in case of calling `template_id<T>()`.
 template <class T>
 template_index template_id_with_cvr() BOOST_NOEXCEPT {
     return template_index::construct_with_cvr<T>();
