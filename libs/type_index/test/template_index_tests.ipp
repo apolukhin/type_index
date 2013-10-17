@@ -135,6 +135,8 @@ static void test_storing_nonstoring_modifiers_templ() {
     BOOST_CHECK(t1 >= t2);
     BOOST_CHECK(t2 <= t1);
     BOOST_CHECK(t2 >= t1);
+
+    BOOST_CHECK_EQUAL(t2.name_demangled(), t1.name_demangled());
 }
 
 BOOST_AUTO_TEST_CASE(template_id_storing_modifiers_vs_nonstoring)
@@ -146,6 +148,7 @@ BOOST_AUTO_TEST_CASE(template_id_storing_modifiers_vs_nonstoring)
     boost::template_index t1 = boost::template_id_with_cvr<const int>();
     boost::template_index t2 = boost::template_id<int>();
     BOOST_CHECK_NE(t2, t1);
+    BOOST_CHECK(t1.name_demangled() == "const int" || t1.name_demangled() == "int const");
 }
 
 BOOST_AUTO_TEST_CASE(template_index_stream_operator_via_lexical_cast_testing)

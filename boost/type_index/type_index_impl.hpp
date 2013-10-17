@@ -184,13 +184,12 @@ public:
                 return ret;
             }
 
-            pos += sizeof("boost::detail::cvr_saver<");
+            pos += sizeof("boost::detail::cvr_saver<") - 1;
             while (ret[pos] == ' ') {
                 ++ pos;
             }
             std::string::size_type end = ret.rfind(">");
             BOOST_ASSERT(end != std::string::npos);
-            -- end;
             while (ret[end] == ' ') {
                 -- end;
             }
