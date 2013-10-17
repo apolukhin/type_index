@@ -214,7 +214,7 @@ public:
 /// Method for constructing template_index instance for type T.
 /// Strips const, volatile and & modifiers from T.
 template <class T>
-template_index template_id() BOOST_NOEXCEPT {
+inline template_index template_id() BOOST_NOEXCEPT {
     return template_index::construct<T>();
 }
 
@@ -223,7 +223,7 @@ template_index template_id() BOOST_NOEXCEPT {
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `template_id<T>()`.
 template <class T>
-template_index template_id_with_cvr() BOOST_NOEXCEPT {
+inline template_index template_id_with_cvr() BOOST_NOEXCEPT {
     return template_index::construct_with_cvr<T>();
 }
 

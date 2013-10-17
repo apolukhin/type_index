@@ -320,7 +320,7 @@ inline bool operator >= (type_index::stl_type_info const& lhs, type_index const&
 
 /// Function, to get type_index for a type T. Strips const, volatile and & modifiers from T.
 template <class T>
-type_index type_id() BOOST_NOEXCEPT {
+inline type_index type_id() BOOST_NOEXCEPT {
     return type_index::construct<T>();
 }
 
@@ -329,7 +329,7 @@ type_index type_id() BOOST_NOEXCEPT {
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `type_id<T>()`.
 template <class T>
-type_index type_id_with_cvr() BOOST_NOEXCEPT {
+inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
     return type_index::construct_with_cvr<T>();
 }
 
@@ -337,7 +337,7 @@ type_index type_id_with_cvr() BOOST_NOEXCEPT {
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
-type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+inline type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     return type_index::construct_rtti_only(rtti_val);
 }
 
@@ -345,7 +345,7 @@ type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>
-type_index type_id_rtti_only(T* rtti_val) {
+inline type_index type_id_rtti_only(T* rtti_val) {
     return type_index::construct_rtti_only(rtti_val);
 }
 

@@ -33,23 +33,23 @@ namespace boost {
 typedef template_index type_index;
 
 template <class T>
-type_index type_id() BOOST_NOEXCEPT {
+inline type_index type_id() BOOST_NOEXCEPT {
     return template_index::construct<T>();
 }
 
 template <class T>
-type_index type_id_with_cvr() BOOST_NOEXCEPT {
+inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
     return template_index::construct_with_cvr<T>();
 }
 
 template <class T>
-type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+inline type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T&) requires RTTI");
     return type_index();
 }
 
 template <class T>
-type_index type_id_rtti_only(T* rtti_val) {
+inline type_index type_id_rtti_only(T* rtti_val) {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T*) requires RTTI");
     return type_index();
 }
