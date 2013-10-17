@@ -6,8 +6,11 @@
 
 
 //[type_index_names_example
-//`The following example shows how short (mangled) and human readable type names could be obtained from a type.
-// Works with and without RTTI.
+/*`
+    The following example shows how short (mangled) and human readable type names could be obtained from a type.
+    Works with and without RTTI.
+*/
+
 
 #include <boost/type_index/type_index_minimal.hpp>
 #include <iostream>
@@ -25,18 +28,23 @@ int main() {
     foo(1);
     // will output something like this:
     //
-    // Short name: .H
-    // Readable name: int
+    // (RTTI on)                            (RTTI off)
+    // Short name: i                        Short name: int]
+    // Readable name: int                   Readable name: int
     
     user_defined_type t;
     foo(t);
     // Will output:
     //
-    // Short name: .?AUuser_defined_type@@
-    // Readable name: struct user_defined_type
+    // (RTTI on)                            (RTTI off)
+    // Short name: 17user_defined_type      user_defined_type]
+    // Readable name: user_defined_type     user_defined_type
 }
 
-// The example 
+/*`
+    Short names are very compiler dependant: some compiler will output `.H`, others `i`.
 
+    Readable names may also differ between compilers: `struct user_defined_type`, `user_defined_type`.
+*/
 
 //] [/type_index_names_example]

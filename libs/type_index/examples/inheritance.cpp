@@ -8,7 +8,8 @@
 /*`
     The following example shows that `boost::type_index` is able to store the real type, successfully getting through
     all the inheritances.
-    Example works with RTTI only.
+    Example works with RTTI only. Without RTTI support it won't compile, producing a compile-time error with message:
+    "boost::type_id_rtti_only(T&) requires RTTI"
 */
 
 #include <boost/type_index/type_index_minimal.hpp>

@@ -16,7 +16,7 @@ Sometimes getting and storing information about a type at runtime is required. F
 * `typeid(T)` and `std::type_index` require Run Time Type Info (RTTI)
 * some implementations of `typeid(T)` strip const, volatile and references from type, while others don't
 * some compilers have bugs and do not correctly compare `std::type_info` objects across shared libraries
-* only a few implementations of Standart Library currently provide `std::type_index`
+* only a few implementations of Standard Library currently provide `std::type_index`
 * no easy way to store type info without stripping const, volatile and references
 * no nice and portable way to get human readable type names
 
@@ -74,17 +74,39 @@ std::string nice_name_with_const_volatile_ref
 
 [xinclude autodoc.xml]
 
-[section Performance]
+[section Space and Performance]
 
-`type_index` and `template_index` classes hold a single pointer, so they are easy and fast to copy. Calls to `const char* name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image. Comparison operators are optimized as much as possible, and will at worst execute a single `std::strcmp`. Calls to `std::string name_demangled()` for `type_index` do usually require dynamic memory allocation and some computations, so they are not recomended for usage in performance critical sections. Calls to `std::string name_demangled()` for `template_index` only require a single `std::strlen` call and are considerably faster than `std::string name_demangled()` for `type_index`.
+* `template_index` uses the `BOOST_CURRENT_FUNCTION` macro which could lead to code bloat, so prefer using `type_index` type.
+* `type_index` and `template_index` classes hold a single pointer, so they are easy and fast to copy. 
+* Calls to `const char* name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image. 
+* Comparison operators are optimized as much as possible, and will at worst execute a single `std::strcmp`. 
+* Calls to `std::string name_demangled()` for `type_index` do usually require dynamic memory allocation and some computations, so they are not recomended for usage in performance critical sections. 
+* Calls to `std::string name_demangled()` for `template_index` only require a single `std::strlen` call and are considerably faster than `std::string name_demangled()` for `type_index`.
 
-`template_index` uses the `BOOST_CURRENT_FUNCTION` macro which could lead to code bloat, so prefer using `type_index` type.
+[endsect]
+
+[section Code bloat]
+
+Without RTTI TypeIndex library will switch from using `boost::type_index` class to `boost::template_index`. `boost::template_index` uses the `BOOST_CURRENT_FUNCTION` for each type that is passed to `type_id()` and `type_id_with_cvr()`
+functions. 
+
+This leads to big strings in binary file:
+```
+static const char* boost::detail::ctti<T>::n() [with T = int]
+static const char* boost::detail::ctti<T>::n() [with T = user_defined_type]
+```
+While using RTTI, you'll get the following (more compact) string in binary file: 
+
+```
+i
+17user_defined_type
+```
 
 [endsect]
 
 [section Compiler support]
 
-TypeIndex has been tested on MSVC2010, GCC-4.5, Clang-2.9. If your compiler is not in a list of tested compilers, you shall correctly define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
+TypeIndex has been tested and sucessfully work on MSVC2010, GCC-4.5, Clang-2.9. If your compiler is not in a list of tested compilers, you shall correctly define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
 
 # define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `0`
 # get the output of `boost::detail::ctti<int>::n()`

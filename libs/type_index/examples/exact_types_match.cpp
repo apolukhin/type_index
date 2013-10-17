@@ -16,6 +16,7 @@
 #include <boost/type_index.hpp>
 #include <iostream>
 #include <stdexcept>
+#include <cassert>
 
 class type_erased_unary_function {
     void*                   function_ptr_;

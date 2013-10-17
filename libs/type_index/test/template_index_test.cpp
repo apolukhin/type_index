@@ -7,6 +7,10 @@
 
 #define BOOST_TEST_MODULE template_index_test_module
 #include <boost/test/unit_test.hpp>
+
+// Byapssing internal assertion for correct header inclusion
+#define BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
+
 #include <boost/type_index/template_index_impl.hpp>
 
 namespace my_namespace1 {

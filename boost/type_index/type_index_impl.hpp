@@ -13,6 +13,11 @@
 # pragma once
 #endif
 
+#ifndef BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
+#error "Header <boost/type_index/type_index_impl.hpp> must not be included directly."
+#error "Include <boost/type_index/type_index_minimal.hpp> or <boost/type_index.hpp> instead."
+#endif
+
 /// \file type_index_impl.hpp
 /// \brief Contains implementation of type_index class.
 ///
@@ -116,7 +121,7 @@ public:
     }
 
     /// Factory method for constructing type_index instance for type T.
-    /// Does not strips const, volatile, & and && modifiers from T.
+    /// Does not strip const, volatile, & and && modifiers from T.
     /// If T has no const, volatile, & and && modifiers, then returns exactly 
     /// the same result as in case of calling `construct<T>()`.
     template <class T>
@@ -320,7 +325,7 @@ type_index type_id() BOOST_NOEXCEPT {
 }
 
 /// Function for constructing type_index instance for type T.
-/// Does not strips const, volatile, & and && modifiers from T.
+/// Does not strip const, volatile, & and && modifiers from T.
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `type_id<T>()`.
 template <class T>
@@ -329,14 +334,16 @@ type_index type_id_with_cvr() BOOST_NOEXCEPT {
 }
 
 /// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-/// This method available only with RTTI enabled.
+/// This method available only with RTTI enabled. Without RTTI support it won't compile, 
+/// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
 type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     return type_index::construct_rtti_only(rtti_val);
 }
 
 /// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-/// This method available only with RTTI enabled.
+/// This method available only with RTTI enabled. Without RTTI support it won't compile, 
+/// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>
 type_index type_id_rtti_only(T* rtti_val) {
     return type_index::construct_rtti_only(rtti_val);
