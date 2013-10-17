@@ -43,13 +43,11 @@
 </h3></div></div></div>
 <p>
         The following example shows how short (mangled) and human readable type names
-        could be obtained from a type.
+        could be obtained from a type. Works with and without RTTI.
       </p>
 <p>
 </p>
-<pre class="programlisting"><span class="comment">// Works with and without RTTI.</span>
-
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
@@ -65,20 +63,28 @@
     <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
     <span class="comment">// will output something like this:</span>
     <span class="comment">//</span>
-    <span class="comment">// Short name: .H</span>
-    <span class="comment">// Readable name: int</span>
+    <span class="comment">// (RTTI on)                            (RTTI off)</span>
+    <span class="comment">// Short name: i                        Short name: int]</span>
+    <span class="comment">// Readable name: int                   Readable name: int</span>
 
     <span class="identifier">user_defined_type</span> <span class="identifier">t</span><span class="special">;</span>
     <span class="identifier">foo</span><span class="special">(</span><span class="identifier">t</span><span class="special">);</span>
     <span class="comment">// Will output:</span>
     <span class="comment">//</span>
-    <span class="comment">// Short name: .?AUuser_defined_type@@</span>
-    <span class="comment">// Readable name: struct user_defined_type</span>
+    <span class="comment">// (RTTI on)                            (RTTI off)</span>
+    <span class="comment">// Short name: 17user_defined_type      user_defined_type]</span>
+    <span class="comment">// Readable name: user_defined_type     user_defined_type</span>
 <span class="special">}</span>
-
-<span class="comment">// The example </span>
 </pre>
 <p>
+      </p>
+<p>
+        Short names are very compiler dependant: some compiler will output <code class="computeroutput"><span class="special">.</span><span class="identifier">H</span></code>, others
+        <code class="computeroutput"><span class="identifier">i</span></code>.
+      </p>
+<p>
+        Readable names may also differ between compilers: <code class="computeroutput"><span class="keyword">struct</span>
+        <span class="identifier">user_defined_type</span></code>, <code class="computeroutput"><span class="identifier">user_defined_type</span></code>.
       </p>
 </div>
 <div class="section">
@@ -126,7 +132,9 @@
 <p>
         The following example shows that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>
         is able to store the real type, successfully getting through all the inheritances.
-        Example works with RTTI only.
+        Example works with RTTI only. Without RTTI support it won't compile, producing
+        a compile-time error with message: "boost::type_id_rtti_only(T&amp;)
+        requires RTTI"
       </p>
 <p>
 </p>
@@ -172,6 +180,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">stdexcept</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
 <span class="keyword">class</span> <span class="identifier">type_erased_unary_function</span> <span class="special">{</span>
     <span class="keyword">void</span><span class="special">*</span>                   <span class="identifier">function_ptr_</span><span class="special">;</span>
