@@ -40,7 +40,7 @@ test-suite type_index
     [ run testing_minimal.cpp $(tlib) ]
     [ run testing_minimal_no_rtti.cpp $(tlib) : : : <rtti>off ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
-    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : $(nortti) : testing_crossmodule_no_rtti ]
+    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
     
     # Mixing RTTI on and off
     [ link-fail testing_crossmodule.cpp $(tlib) test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
