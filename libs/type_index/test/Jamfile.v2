@@ -7,11 +7,29 @@
 import testing ;
 import feature ;
 
+
 # Variable that contains all the stuff required for linking against -lboost_unit_test
 tlib = /boost/test//boost_unit_test_framework/<link>static ;
 
-lib test_lib_rtti : test_lib.cpp : <link>shared ;
-lib test_lib_nortti : test_lib.cpp : <link>shared <rtti>off ;
+# Variable that contains all the stuff required for linking together <rtti>on and <rtti>off
+compat = <define>BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY ;
+
+# Making own `nortti` that is link compatible
+nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <toolset>msvc:<cxxflags>/GR- ;
+
+
+# Making libraries that CANNOT work between rtti-on/rtti-off modules
+obj test_lib_nortti-obj : test_lib.cpp : <link>shared $(nortti) ;
+obj test_lib_rtti-obj : test_lib.cpp : <link>shared ;
+lib test_lib_rtti : test_lib_rtti-obj : <link>shared ;
+lib test_lib_nortti : test_lib_nortti-obj : <link>shared $(nortti) ;
+
+# Making libraries that can work between rtti-on/rtti-off modules
+obj test_lib_nortti_compat-obj : test_lib.cpp : <link>shared $(nortti) $(compat) ;
+obj test_lib_rtti_compat-obj : test_lib.cpp : <link>shared $(nortti) $(compat) ;
+lib test_lib_nortti_compat : test_lib_nortti_compat-obj : <link>shared $(nortti) $(compat) ;
+lib test_lib_rtti_compat : test_lib_rtti_compat-obj : <link>shared $(nortti) $(compat) ;
+
 
 test-suite type_index
   : 
@@ -22,18 +40,13 @@ test-suite type_index
     [ run testing_minimal.cpp $(tlib) ]
     [ run testing_minimal_no_rtti.cpp $(tlib) : : : <rtti>off ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
-    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
-
-    # Bjam has specific rule for not mixing <rtti>on and <rtti>off binaries, so we can not 
-    # just provide `test_lib_nortti` library for `<rtti>on` build. But here are some workarounds:
-    [ link-fail testing_crossmodule.cpp $(tlib) 
-        : <linkflags>$(test_lib_nortti.location)/test_lib_nortti 
-        : link_fail_rtti_nortti 
-    ]
-    [ link-fail testing_crossmodule.cpp $(tlib) 
-        : <rtti>off <linkflags>$(test_lib_rtti.location)/test_lib_rtti 
-        : link_fail_nortti_rtti 
-    ]
+    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : $(nortti) : testing_crossmodule_no_rtti ]
+    
+    # Mixing RTTI on and off
+    [ link-fail testing_crossmodule.cpp $(tlib) test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
+    [ link-fail testing_crossmodule.cpp $(tlib) test_lib_nortti : : link_fail_rtti_nortti ]
+    [ run testing_crossmodule.cpp $(tlib) test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
+    [ run testing_crossmodule.cpp $(tlib) test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
 
     # Examples that must work even with RTTI disabled
     [ run ../examples/registry.cpp : : : <rtti>off : registry_no_rtti ]

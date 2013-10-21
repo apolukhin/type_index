@@ -31,6 +31,9 @@ TEST_LIB_DECL boost::type_index get_user_defined_class();
 TEST_LIB_DECL boost::type_index get_const_integer();
 TEST_LIB_DECL boost::type_index get_const_user_defined_class();
 
+// This is required for checking RTTI on/off linkage
+TEST_LIB_DECL void accept_typeindex(const boost::type_index&);
+
 }
 
 #endif // BOOST_TYPE_INDEX_TESTS_LIB1_HPP

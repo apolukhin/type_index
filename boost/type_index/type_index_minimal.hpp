@@ -22,7 +22,7 @@
 
 #include <boost/config.hpp>
 
-#ifndef BOOST_NO_RTTI
+#if !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
 #   include <boost/type_index/type_index_impl.hpp>
 #else
 #   include <boost/type_index/template_index_impl.hpp>
