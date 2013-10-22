@@ -119,3 +119,21 @@ Consider the following example:
 With `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` set to `0`, `boost::detail::ctti<int>::n()` returns "const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`
 
 [endsect]
+
+[section Mixing sources with RTTI on and RTTI off]
+
+Linking a binary from source files that were compiled with different RTTI flags is not a very good idea and may lead to a lot of surprises. However if there is a very strong need TypeIndex library provides a solution for mixing sources: just define `BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY` macro. This would lead to usage of `boost::template_index` instead of `boost::type_index` class.
+
+[note Do not forget to rebuild *all* the projects with `BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY` macro defined ]
+
+You must know that linking RTTI on and RTTI off binaries may succeed even without defining the `BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY` macro, but that does not mean that you'll get a working binary. Such actions may break the One Definition Rule. Take a look at the table below, that shows how the `boost::type_index get_integer();` function will look like with different RTTI flags:
+
+[table:diffs
+[[RTTI on] [RTTI off]]
+[[`boost::type_index get_integer();`] [`boost::template_index get_integer();`]]
+]
+
+Such differences are usually not detected by linker and lead to errors at runtime.
+
+[endsect]
+

@@ -19,6 +19,9 @@
 ///
 /// It includes only the minamally required headers and does the `typedef template_index type_index;`
 /// when RTTI is disabled.
+///
+///  Define the BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro if you are mixing objects
+///  compiled with different RTTI flags.
 
 #include <boost/config.hpp>
 
