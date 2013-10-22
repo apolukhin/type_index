@@ -8,8 +8,9 @@ boost/template_id_with_cvr.html
 boost/type_index.html
 boost/type_id.html
 boost/type_id_with_cvr.html
-boost/type_id_rtti_on_idp5760464.html
-boost/type_id_rtti_on_idp5763792.html
+boost/type_id_rtti_on_idp5430736.html
+boost/type_id_rtti_on_idp5434192.html
 boost_typeindex/space_and_performance.html
 boost_typeindex/code_bloat.html
 boost_typeindex/compiler_support.html
+boost_typeindex/mixing_sources_with_rtti_on_and_rtti_off.html
