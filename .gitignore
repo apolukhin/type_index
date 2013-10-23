@@ -1,0 +1,10 @@
+# While testing I use this project inside the SVN's boost/trunk folders
+# Follwoing rules ignore all the boost's files, without ignorng the TypeIndex library
+
+*
+!boost/type_index/*
+!boost/type_index.hpp
+!libs/type_index/*
+!patched/
+!.git*
+*~
