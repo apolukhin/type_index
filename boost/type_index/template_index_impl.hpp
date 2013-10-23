@@ -34,7 +34,6 @@
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
-#include <boost/current_function.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 #if !defined(BOOST_NO_IOSTREAM)
@@ -49,9 +48,28 @@
 namespace boost {
 
 namespace detail {
+
+#if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
+    // Do nothing
+#elif defined(__FUNCSIG__)
+#   define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __FUNCSIG__
+#elif defined(__GNUC__) \
+        || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
+        || (defined(__ICC) && (__ICC >= 600)) \
+        || defined(__ghs__) \
+        || defined(__DMC__)
+#   define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+#else
+#   error TypeIndex library could not detect your compiler.
+#   error Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use
+#   error correct compiler macro for getting the whole function name.
+#endif
+
 #if defined(BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP) && defined(BOOST_TYPE_INDEX_CTTI_END_SKIP)
-    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP); // skip user specified bytes count
-    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = BOOST_TYPE_INDEX_CTTI_END_SKIP);     // skip user specified bytes count
+    // skip user specified bytes count
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP);
+    // skip user specified bytes count
+    BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = BOOST_TYPE_INDEX_CTTI_END_SKIP);
 #elif defined _MSC_VER
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = 40);
@@ -88,7 +106,7 @@ namespace detail {
 
         /// Returns raw name. Must be as short, as possible, to avoid code bloat
         static const char* n() BOOST_NOEXCEPT {
-            return BOOST_CURRENT_FUNCTION + detail::ctti_skip_size_at_begin;
+            return BOOST_TYPE_INDEX_FUNCTION_SIGNATURE + detail::ctti_skip_size_at_begin;
         }
 
         /// Returns raw name
