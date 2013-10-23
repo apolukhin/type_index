@@ -19,10 +19,13 @@
 #endif
 
 /// \file type_index_impl.hpp
-/// \brief Contains implementation of type_index class.
+/// \brief Contains implementation of boost::type_index class.
 ///
-/// Here is defined the type_index class, that is used in situations when RTTI is enabled.
-/// Consider including `<boost/type_index/type_index_minimal.hpp>` or `<boost/type_index.hpp>` instead of this file.
+/// boost::type_index class is used in situations when RTTI is enabled.
+/// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_index
+/// is used instead.
+///
+/// Consider including <boost/type_index/type_index_minimal.hpp> or <boost/type_index.hpp> instead of this file.
 
 
 #include <cstring>

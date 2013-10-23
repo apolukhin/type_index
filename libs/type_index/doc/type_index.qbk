@@ -106,8 +106,9 @@ i
 
 [section Compiler support]
 
-TypeIndex has been tested and sucessfully work on MSVC2010, GCC-4.5, Clang-2.9. If your compiler is not in a list of tested compilers, you shall correctly define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
+TypeIndex has been tested and sucessfully work on MSVC2010, GCC-4.5, Clang-2.9. If your compiler is not in a list of tested compilers, you shall correctly define `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`,`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
 
+# define `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` to a a compiler specific macro, that outputs the *whole* function signature, including template parameters
 # define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `0`
 # get the output of `boost::detail::ctti<int>::n()`
 # set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` equal to characters count before last occurrence of `int` in output

@@ -15,13 +15,10 @@
 #endif
 
 /// \file type_index_minimal.hpp
-/// \brief This is the header that required for ussage of type_index with/without RTTI.
+/// \brief This is the header that required for ussage of boost::type_index with/without RTTI.
 ///
-/// It includes only the minamally required headers and does the `typedef template_index type_index;`
+/// It includes only the minamally required headers and does the 'typedef template_index type_index;'
 /// when RTTI is disabled.
-///
-///  Define the BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro if you are mixing objects
-///  compiled with different RTTI flags.
 
 #include <boost/config.hpp>
 
@@ -61,6 +58,13 @@ inline type_index type_id_rtti_only(T* rtti_val) {
 
 #endif // BOOST_NO_RTTI
 
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
+/// \def BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY
+/// Define the BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro if you are mixing objects
+/// compiled with different RTTI flags. This will force the usage of boost::template_index 
+/// class instead of boost::type_index.
+#define BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
 

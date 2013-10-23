@@ -20,12 +20,11 @@
 #endif
 
 /// \file template_index_impl.hpp
-/// \brief Contains implementation of template_index class.
+/// \brief Contains implementation of boost::template_index class.
 ///
-/// Here is defined the `boost::template_index` class, that is used instead of `boost::type_index` 
-/// class in situations when RTTI is disabled.
+/// boost::template_index class is used instead of boost::type_index class in situations when RTTI is disabled.
 ///
-/// Consider including `<boost/type_index/type_index_minimal.hpp>` or `<boost/type_index.hpp>` instead of this file.
+/// Consider including <boost/type_index/type_index_minimal.hpp> or <boost/type_index.hpp> instead of this file.
 
 #include <cstring>
 #include <string>
@@ -48,21 +47,57 @@
 namespace boost {
 
 namespace detail {
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
-#if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
-    // Do nothing
+/// \def BOOST_TYPE_INDEX_FUNCTION_SIGNATURE
+/// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is used by boost::template_index class to
+/// deduce the name of a template parameter. If your compiler is not recognized 
+/// by the TypeIndex library and you wish to work with boost::template_index, you may 
+/// define this macro by yourself.
+///
+/// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE must be defined to a compiler specific macro, 
+/// that outputs the WHOLE function signature, including template parameters.
+///
+/// If your compiler is not recognised and BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is not defined,
+/// then a compile-time error will arise at any attempt to use boost::template_index class.
+#define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE BOOST_CURRENT_FUNCTION
+
+#elif defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
+
+template <class T> 
+inline void lazy_function_signature_assert(){}
+
 #elif defined(__FUNCSIG__)
-#   define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __FUNCSIG__
-#elif defined(__GNUC__) \
+
+template <class T> 
+inline void lazy_function_signature_assert(){}
+#define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __FUNCSIG__
+
+#elif defined(__PRETTY_FUNCTION__) \
+        || defined(__GNUC__) \
         || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
         || (defined(__ICC) && (__ICC >= 600)) \
         || defined(__ghs__) \
         || defined(__DMC__)
-#   define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+
+template <class T> 
+inline void lazy_function_signature_assert(){}
+#define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+
 #else
-#   error TypeIndex library could not detect your compiler.
-#   error Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use
-#   error correct compiler macro for getting the whole function name.
+
+template <class T> 
+inline void lazy_function_signature_assert() {
+    BOOST_STATIC_ASSERT_MSG(
+        sizeof(T) && false,
+        "TypeIndex library could not detect your compiler. "
+        "Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use "
+        "correct compiler macro for getting the whole function name. "
+        "Do not forget to also define BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP and "
+        "BOOST_TYPE_INDEX_CTTI_END_SKIP."
+    );
+}
+
 #endif
 
 #if defined(BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP) && defined(BOOST_TYPE_INDEX_CTTI_END_SKIP)
@@ -106,6 +141,7 @@ namespace detail {
 
         /// Returns raw name. Must be as short, as possible, to avoid code bloat
         static const char* n() BOOST_NOEXCEPT {
+            lazy_function_signature_assert<T>();
             return BOOST_TYPE_INDEX_FUNCTION_SIGNATURE + detail::ctti_skip_size_at_begin;
         }
 
