@@ -11,18 +11,23 @@
 /// \file type_index.hpp
 /// \brief Includes all the headers of the Boost.TypeIndex library.
 ///
-/// By inclusion of this file both classes (boost::type_index if RTTI is on and boost::template_index) will be available.
+/// By inclusion of this file all classes (boost::type_info + boost::type_index if RTTI is on 
+/// and boost::template_index) will be available.
 ///
-/// Consider including <boost/type_index/type_index_minimal.hpp> if you do not whant to include 
-/// boost::template_index class while RTTI is available (this is recommended).
+/// Consider including <boost/type_index/type_index.hpp> if you do not whant to include 
+/// boost::template_index class while RTTI is available.
+///
+/// Consider including <boost/type_index/type_info.hpp> if you do not whant to include 
+/// boost::template_index and boost::type_index classes while RTTI is available.
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
 #endif
 
-#include <boost/type_index/type_index_minimal.hpp>
-#include <boost/type_index/template_index_impl.hpp>
+#include <boost/type_index/type_info.hpp>
+#include <boost/type_index/type_index.hpp>
+#include <boost/type_index/template_info.hpp>
 
 #endif // BOOST_TYPE_INDEX_HPP
 

@@ -18,6 +18,8 @@
 ///
 /// boost::type_index class is used in situations when RTTI is enabled.
 
+#if  !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+
 #include <boost/type_index/type_info.hpp>
 
 #if !defined(BOOST_NO_IOSTREAM)
@@ -49,102 +51,20 @@ public:
         : pinfo_(&inf)
     {}
 
-    /// Factory method for constructing type_index instance for type T.
-    /// Strips const, volatile and & modifiers from T.
-    template <class T>
-    static type_index construct() BOOST_NOEXCEPT {
-        typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
-        typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
-
-        #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
-            || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
-                BOOST_STATIC_ASSERT_MSG( !boost::is_arithmetic<no_cvr_t>::type::value
-                    , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
-        #endif
-
-        return type_index(typeid(no_cvr_t));
-    }
-
-    /// Factory method for constructing type_index instance for type T.
-    /// Does not strip const, volatile, & and && modifiers from T.
-    /// If T has no const, volatile, & and && modifiers, then returns exactly 
-    /// the same result as in case of calling `construct<T>()`.
-    template <class T>
-    static type_index construct_with_cvr() BOOST_NOEXCEPT {
-        typedef typename boost::mpl::if_c<
-            boost::is_reference<T>::value 
-                || boost::is_const<T>::value 
-                || boost::is_volatile<T>::value,
-            detail::cvr_saver<T>,
-            T
-        >::type type;
-        return construct<type>();
-    }
-
-    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-    /// This method available only with RTTI enabled.
-    template <class T>
-    static type_index construct_rtti_only(T& rtti_val) {
-        return type_index(typeid(rtti_val));
-    }
-
-    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-    /// This method available only with RTTI enabled.
-    template <class T>
-    static type_index construct_rtti_only(T* rtti_val) {
-        return type_index(typeid(rtti_val));
-    }
-
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
     bool before(type_index const& rhs) const BOOST_NOEXCEPT {
-        return !!pinfo_->before(*rhs.pinfo_);
+        return pinfo_->before(rhs);
     }
 
     /// Returns raw name
     const char* name() const BOOST_NOEXCEPT {
-    #ifdef _MSC_VER
-        return pinfo_->raw_name();
-    #else
         return pinfo_->name();
-    #endif
     }
 
     /// Returns user-friendly name
     std::string name_demangled() const {
-        #if defined(__GNUC__)
-            std::string ret;
-            int status = 0;
-            char* demang = abi::__cxa_demangle(pinfo_->name(), NULL, 0, &status);
-            BOOST_ASSERT(!status);
-            
-            BOOST_TRY {
-                ret = demang; // may throw out of memory exception
-            } BOOST_CATCH (...) {
-                free(demang);
-                BOOST_RETHROW;
-            } BOOST_CATCH_END
-            
-            free(demang);
-        #else
-            std::string ret = pinfo_->name();
-        #endif
-            std::string::size_type pos = ret.find("boost::detail::cvr_saver<");
-            if (pos == std::string::npos) {
-                return ret;
-            }
-
-            pos += sizeof("boost::detail::cvr_saver<") - 1;
-            while (ret[pos] == ' ') {
-                ++ pos;
-            }
-            std::string::size_type end = ret.rfind(">");
-            BOOST_ASSERT(end != std::string::npos);
-            while (ret[end] == ' ') {
-                -- end;
-            }
-            
-            return ret.substr(pos, end - pos);
+        return pinfo_->name_demangled();
     }
 
 #ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
@@ -263,37 +183,6 @@ inline bool operator >= (type_index::stl_type_info const& lhs, type_index const&
 
 /// @endcond
 
-/// Function, to get type_index for a type T. Strips const, volatile and & modifiers from T.
-template <class T>
-inline type_index type_id() BOOST_NOEXCEPT {
-    return type_index::construct<T>();
-}
-
-/// Function for constructing type_index instance for type T.
-/// Does not strip const, volatile, & and && modifiers from T.
-/// If T has no const, volatile, & and && modifiers, then returns exactly 
-/// the same result as in case of calling `type_id<T>()`.
-template <class T>
-inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
-    return type_index::construct_with_cvr<T>();
-}
-
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-/// This method available only with RTTI enabled. Without RTTI support it won't compile, 
-/// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
-template <class T>
-inline type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
-    return type_index::construct_rtti_only(rtti_val);
-}
-
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-/// This method available only with RTTI enabled. Without RTTI support it won't compile, 
-/// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
-template <class T>
-inline type_index type_id_rtti_only(T* rtti_val) {
-    return type_index::construct_rtti_only(rtti_val);
-}
-
 /* *************** type_index free functions ******************* */
 
 /// @cond
@@ -326,9 +215,9 @@ inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
 
 /// @endcond
 
-#endif // BOOST_NO_RTTI
-
 } // namespace boost
+
+#endif // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_HPP
 
