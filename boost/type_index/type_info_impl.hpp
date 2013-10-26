@@ -5,17 +5,17 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef BOOST_TYPE_INDEX_TYPE_INDEX_IMPL_HPP
-#define BOOST_TYPE_INDEX_TYPE_INDEX_IMPL_HPP
+#ifndef BOOST_TYPE_INDEX_TYPE_INFO_IMPL_HPP
+#define BOOST_TYPE_INDEX_TYPE_INFO_IMPL_HPP
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
 #endif
 
-#ifndef BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
-#error "Header <boost/type_index/type_index_impl.hpp> must not be included directly."
-#error "Include <boost/type_index/type_index_minimal.hpp> or <boost/type_index.hpp> instead."
+#ifndef BOOST_TYPE_INDEX_TYPE_INFO_HPP
+#error "Header <boost/type_index/type_info_impl.hpp> must not be included directly."
+#error "Include <boost/type_index/type_info.hpp> or <boost/type_index.hpp> instead."
 #endif
 
 /// \file type_info_impl.hpp
@@ -40,20 +40,11 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/current_function.hpp>
 #include <boost/detail/no_exceptions_support.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 #ifndef BOOST_NO_RTTI
 #include <typeinfo>
-#endif
-
-#if !defined(BOOST_NO_IOSTREAM)
-#if !defined(BOOST_NO_IOSFWD)
-#include <iosfwd>               // for std::basic_ostream
-#else
-#include <ostream>
-#endif
 #endif
 
 #ifdef __GNUC__
@@ -89,7 +80,9 @@ namespace detail {
     template <class T> class cvr_saver{};
 }
 
-/// boost::type_info is a class that can be used as a drop-in replacement for std::type_info
+/// boost::type_info is a class that can be used as a drop-in replacement for std::type_info.
+/// It has all the workarounds for compatability and also has a name_demangled() method for
+/// getting human-readable type names. 
 class type_info: public detail::stl_type_info {
 public:
     /// Factory method for constructing boost::type_info instance for type T.
@@ -253,39 +246,14 @@ inline const type_info& type_id_rtti_only(T* rtti_val) {
 
 /* *************** type_index free functions ******************* */
 
-/// @cond
-
-#ifndef BOOST_NO_IOSTREAM
-#ifdef BOOST_NO_TEMPLATED_IOSTREAMS
-
-/// Ostream operator that will output demangled name.
-inline std::ostream& operator<<(std::ostream& ostr, type_index const& ind) {
-    ostr << ind.name_demangled();
-    return ostr;
-}
-
-#else
-
-/// Ostream operator that will output demangled name.
-template <class CharT, class TriatT>
-inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, TriatT>& ostr, type_index const& ind) {
-    ostr << ind.name_demangled();
-    return ostr;
-}
-
-#endif // BOOST_NO_TEMPLATED_IOSTREAMS
-#endif // BOOST_NO_IOSTREAM
-
-/// hash_value function overload for type_index.
+/// hash_value function overload for boost::type_info.
 inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
-
-/// @endcond
 
 #endif // BOOST_NO_RTTI
 
 } // namespace boost
 
-#endif // BOOST_TYPE_INDEX_TYPE_INDEX_IMPL_HPP
+#endif // BOOST_TYPE_INDEX_TYPE_INFO_IMPL_HPP
 

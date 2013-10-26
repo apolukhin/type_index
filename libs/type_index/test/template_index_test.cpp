@@ -11,7 +11,7 @@
 // Byapssing internal assertion for correct header inclusion
 #define BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
 
-#include <boost/type_index/template_index_impl.hpp>
+#include <boost/type_index/template_info.hpp>
 
 namespace my_namespace1 {
     class my_class{};

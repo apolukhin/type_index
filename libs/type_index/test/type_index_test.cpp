@@ -9,9 +9,9 @@
 #include <boost/test/unit_test.hpp>
 
 // Byapssing internal assertion for correct header inclusion
-#define BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
+#define BOOST_TYPE_INDEX_TYPE_INFO_HPP
 
-#include <boost/type_index/type_index_impl.hpp>
+#include <boost/type_index/type_info_impl.hpp>
 
 namespace my_namespace1 {
     class my_class{};

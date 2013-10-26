@@ -6,8 +6,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
-#define BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
+#ifndef BOOST_TYPE_INDEX_TYPE_INFO_HPP
+#define BOOST_TYPE_INDEX_TYPE_INFO_HPP
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
@@ -23,9 +23,9 @@
 #include <boost/config.hpp>
 
 #if !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
-#   include <boost/type_index/type_index_impl.hpp>
+#   include <boost/type_index/type_info_impl.hpp>
 #else
-#   include <boost/type_index/template_index_impl.hpp>
+#   include <boost/type_index/template_info.hpp>
 #   include <boost/static_assert.hpp>
 
 namespace boost {
@@ -33,23 +33,23 @@ namespace boost {
 typedef template_index type_index;
 
 template <class T>
-inline type_index type_id() BOOST_NOEXCEPT {
+inline const type_index& type_id() BOOST_NOEXCEPT {
     return template_index::construct<T>();
 }
 
 template <class T>
-inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
+inline const type_index& type_id_with_cvr() BOOST_NOEXCEPT {
     return template_index::construct_with_cvr<T>();
 }
 
 template <class T>
-inline type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+inline const type_index& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T&) requires RTTI");
     return type_index();
 }
 
 template <class T>
-inline type_index type_id_rtti_only(T* rtti_val) {
+inline const type_index& type_id_rtti_only(T* rtti_val) {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T*) requires RTTI");
     return type_index();
 }
@@ -66,5 +66,5 @@ inline type_index type_id_rtti_only(T* rtti_val) {
 #define BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
-#endif // BOOST_TYPE_INDEX_TYPE_INDEX_MINIMAL_HPP
+#endif // BOOST_TYPE_INDEX_TYPE_INFO_HPP
 
