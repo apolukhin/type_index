@@ -262,16 +262,16 @@ inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
 
 namespace boost {
 
-typedef template_index type_index;
+typedef template_info type_index;
 
 template <class T>
 inline const type_index& type_id() BOOST_NOEXCEPT {
-    return template_index::construct<T>();
+    return template_info::construct<T>();
 }
 
 template <class T>
 inline const type_index& type_id_with_cvr() BOOST_NOEXCEPT {
-    return template_index::construct_with_cvr<T>();
+    return template_info::construct_with_cvr<T>();
 }
 
 template <class T>
