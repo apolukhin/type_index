@@ -80,46 +80,114 @@ namespace boost {
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 namespace detail {
-    template <class T> class cvr_saver{};
-}
-
-/// Copyable type_info class that requires RTTI.
-class type_index {
-public:
-
 #ifdef BOOST_NO_STD_TYPEINFO
-    typedef type_info   stl_type_info;
+    typedef type_info stl_type_info;
 #else
-    typedef std::type_info   stl_type_info;
+    typedef std::type_info stl_type_info;
 #endif
 
-private:
-    const stl_type_info* pinfo_;
+    template <class T> class cvr_saver{};
 
-public:
-    /// Default constructor.
-    type_index() BOOST_NOEXCEPT
-        : pinfo_(&typeid(void))
-    {}
-
-    /// Constructs type_index from an instance of std::type_info.
-    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
-        : pinfo_(&inf)
-    {}
-
-    /// Factory method for constructing type_index instance for type T.
-    /// Strips const, volatile and & modifiers from T.
     template <class T>
-    static type_index construct() BOOST_NOEXCEPT {
+    struct strip_cvr {
         typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
-        typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
+        typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type type;
 
         #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
             || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
                 BOOST_STATIC_ASSERT_MSG( !boost::is_arithmetic<no_cvr_t>::type::value
                     , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
         #endif
+    };
 
+    template <class T>
+    struct save_cvr: boost::mpl::if_c<
+        boost::is_reference<T>::value
+            || boost::is_const<T>::value
+            || boost::is_volatile<T>::value,
+        detail::cvr_saver<T>,
+        T
+    >{};
+}
+
+//
+class type_info: public detail::stl_type_info {
+public:
+    const char* name() const BOOST_NOEXCEPT {
+    #ifdef _MSC_VER
+        return detail::stl_type_info::raw_name();
+    #else
+        return detail::stl_type_info::name();
+    #endif
+    }
+
+    /// Returns user-friendly name
+    std::string name_demangled() const {
+        #if defined(_MSC_VER)
+            std::string ret = detail::stl_type_info::name();
+        #else
+            std::string ret;
+            int status = 0;
+            char* demang = abi::__cxa_demangle(name(), NULL, 0, &status);
+            BOOST_ASSERT(!status);
+
+            BOOST_TRY {
+                ret = demang; // may throw out of memory exception
+            } BOOST_CATCH (...) {
+                free(demang);
+                BOOST_RETHROW;
+            } BOOST_CATCH_END
+
+            free(demang);
+        #endif
+            std::string::size_type pos = ret.find("boost::detail::cvr_saver<");
+            if (pos == std::string::npos) {
+                return ret;
+            }
+
+            pos += sizeof("boost::detail::cvr_saver<") - 1;
+            while (ret[pos] == ' ') {
+                ++ pos;
+            }
+            std::string::size_type end = ret.rfind(">");
+            BOOST_ASSERT(end != std::string::npos);
+            while (ret[end] == ' ') {
+                -- end;
+            }
+
+            return ret.substr(pos, end - pos);
+    }
+};
+
+/// Copyable type_index class that requires RTTI.
+/// Drop-in replacemant for std::type_index.
+class type_index {
+private:
+    const boost::type_info* pinfo_;
+
+public:
+    typedef detail::stl_type_info stl_type_info;
+
+    /// Default constructor.
+    type_index() BOOST_NOEXCEPT
+        : pinfo_(reinterpret_cast<const boost::type_info*>(&typeid(void)))
+    {}
+
+    /// Constructs type_index from an instance of boost::type_info.
+    type_index(const boost::type_info& inf) BOOST_NOEXCEPT
+        : pinfo_(&inf)
+    {}
+
+    /// Constructs type_index from an instance of std::type_info.
+    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
+        : pinfo_(reinterpret_cast<const boost::type_info*>(&inf))
+    {}
+
+    /// Factory method for constructing type_index instance for type T.
+    /// Strips const, volatile and & modifiers from T.
+    template <class T>
+    static type_index construct() BOOST_NOEXCEPT {
+        typedef BOOST_DEDUCED_TYPENAME boost::detail::strip_cvr<T>::type no_cvr_t;
         return type_index(typeid(no_cvr_t));
     }
 
@@ -129,14 +197,8 @@ public:
     /// the same result as in case of calling `construct<T>()`.
     template <class T>
     static type_index construct_with_cvr() BOOST_NOEXCEPT {
-        typedef typename boost::mpl::if_c<
-            boost::is_reference<T>::value 
-                || boost::is_const<T>::value 
-                || boost::is_volatile<T>::value,
-            detail::cvr_saver<T>,
-            T
-        >::type type;
-        return construct<type>();
+        typedef typename boost::detail::save_cvr<T>::type type;
+        return type_index(typeid(type));
     }
 
     /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
@@ -321,35 +383,37 @@ inline bool operator >= (type_index::stl_type_info const& lhs, type_index const&
 
 /// @endcond
 
-/// Function, to get type_index for a type T. Strips const, volatile and & modifiers from T.
+/// Function, to get std::type_info for a type T. Strips const, volatile and & modifiers from T.
 template <class T>
-inline type_index type_id() BOOST_NOEXCEPT {
-    return type_index::construct<T>();
+inline const type_info& type_id() BOOST_NOEXCEPT {
+    typedef BOOST_DEDUCED_TYPENAME boost::detail::strip_cvr<T>::type no_cvr_t;
+    return reinterpret_cast<const type_info&>(typeid(no_cvr_t));
 }
 
-/// Function for constructing type_index instance for type T.
+/// Function for constructing std::type_info instance for type T.
 /// Does not strip const, volatile, & and && modifiers from T.
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `type_id<T>()`.
 template <class T>
-inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
-    return type_index::construct_with_cvr<T>();
+inline const type_info& type_id_with_cvr() BOOST_NOEXCEPT {
+    typedef typename boost::detail::save_cvr<T>::type type;
+    return reinterpret_cast<const type_info&>(typeid(type));
 }
 
 /// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
-inline type_index type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
-    return type_index::construct_rtti_only(rtti_val);
+inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+    return reinterpret_cast<const type_info&>(typeid(rtti_val));
 }
 
 /// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>
-inline type_index type_id_rtti_only(T* rtti_val) {
-    return type_index::construct_rtti_only(rtti_val);
+inline const type_info& type_id_rtti_only(T* rtti_val) {
+    return reinterpret_cast<const type_info&>(typeid(rtti_val));
 }
 
 /* *************** type_index free functions ******************* */
