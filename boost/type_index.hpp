@@ -28,6 +28,7 @@
 #include <boost/type_index/type_info.hpp>
 #include <boost/type_index/type_index.hpp>
 #include <boost/type_index/template_info.hpp>
+#include <boost/type_index/template_index.hpp>
 
 #endif // BOOST_TYPE_INDEX_HPP
 

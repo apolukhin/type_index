@@ -12,7 +12,7 @@
     "boost::type_id_rtti_only(T&) requires RTTI"
 */
 
-#include <boost/type_index/type_index_minimal.hpp>
+#include <boost/type_index/type_info.hpp>
 #include <iostream>
 
 struct A { virtual ~A(){} };

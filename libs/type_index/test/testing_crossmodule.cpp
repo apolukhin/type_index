@@ -8,7 +8,7 @@
 #define BOOST_TEST_MODULE testing_crossmodule_module
 #include <boost/test/unit_test.hpp>
 
-#include <boost/type_index/type_index_minimal.hpp>
+#include <boost/type_index/type_index.hpp>
 #include "test_lib.hpp"
 
 namespace user_defined_namespace {

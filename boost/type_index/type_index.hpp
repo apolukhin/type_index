@@ -18,9 +18,10 @@
 ///
 /// boost::type_index class is used in situations when RTTI is enabled.
 
-#if  !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
-
+#include <boost/config.hpp>
 #include <boost/type_index/type_info.hpp>
+
+#if !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
 
 #if !defined(BOOST_NO_IOSTREAM)
 #if !defined(BOOST_NO_IOSFWD)
@@ -34,27 +35,29 @@ namespace boost {
 
 /// Copyable type_index class that requires RTTI.
 class type_index {
-public:
-    typedef boost::type_info   stl_type_info;
-
 private:
-    const stl_type_info* pinfo_;
+    const type_info* pinfo_;
 
 public:
     /// Default constructor.
     type_index() BOOST_NOEXCEPT
-        : pinfo_(&typeid(void))
+        : pinfo_(static_cast<const type_info*>(&typeid(void)))
+    {}
+
+    /// Constructs type_index from an instance of boost::type_info.
+    type_index(const type_info& inf) BOOST_NOEXCEPT
+        : pinfo_(&inf)
     {}
 
     /// Constructs type_index from an instance of std::type_info.
-    explicit type_index(const stl_type_info& inf) BOOST_NOEXCEPT
-        : pinfo_(&inf)
+    type_index(const detail::stl_type_info& inf) BOOST_NOEXCEPT
+        : pinfo_(static_cast<const type_info*>(&inf))
     {}
 
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
     bool before(type_index const& rhs) const BOOST_NOEXCEPT {
-        return pinfo_->before(rhs);
+        return pinfo_->before(*rhs.pinfo_);
     }
 
     /// Returns raw name
@@ -69,23 +72,15 @@ public:
 
 #ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
     bool operator == (type_index const& rhs) const BOOST_NOEXCEPT {
-        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return !std::strcmp(pinfo_->name(), rhs.pinfo_->name());
-        #else
-            return *pinfo_ == *rhs.pinfo_;
-        #endif
+        return *pinfo_ == *rhs.pinfo_;
     }
 
     bool operator != (type_index const& rhs) const BOOST_NOEXCEPT {
-        return !(*this == rhs);
+        return !(*pinfo_ == *rhs.pinfo_);
     }
 
     bool operator < (type_index const& rhs) const BOOST_NOEXCEPT {
-        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return std::strcmp(pinfo_->name(), rhs.pinfo_->name()) < 0;
-        #else
-            return before(rhs);
-        #endif
+        return before(rhs);
     }
 
     bool operator > (type_index const& rhs) const BOOST_NOEXCEPT {
@@ -100,50 +95,35 @@ public:
         return !(*this < rhs);
     }
 
-    bool operator == (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return !std::strcmp(pinfo_->name(), rhs.name());
-        #else
-            return *pinfo_ == rhs;
-        #endif
+
+    bool operator == (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this == type_index(rhs);
     }
 
-    bool operator != (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        return !(*this == rhs);
+    bool operator != (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this != type_index(rhs);
     }
 
-    bool operator < (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return std::strcmp(pinfo_->name(), rhs.name()) < 0;
-        #else
-            return !!pinfo_->before(rhs);
-        #endif
+    bool operator < (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this < type_index(rhs);
     }
 
-    bool operator > (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return std::strcmp(pinfo_->name(), rhs.name()) > 0;
-        #else
-            return !!rhs.before(*pinfo_);
-        #endif
+    bool operator > (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this > type_index(rhs);
     }
 
-    bool operator <= (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        return !(*this > rhs);
+    bool operator <= (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this <= type_index(rhs);
     }
 
-    bool operator >= (stl_type_info const& rhs) const BOOST_NOEXCEPT {
-        return !(*this < rhs);
+    bool operator >= (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this >= type_index(rhs);
     }
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
-#if _MSC_VER >= 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
         return pinfo_->hash_code();
-#else 
-        return boost::hash_range(name(), name() + std::strlen(name()));
-#endif 
     }
 };
 
@@ -151,27 +131,27 @@ public:
 
 /* *************** type_index free functions ******************* */
 
-inline bool operator == (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator == (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs == lhs; // Operation is commutative
 }
 
-inline bool operator != (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator != (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs != lhs; // Operation is commutative
 }
 
-inline bool operator < (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator < (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs > lhs;
 }
 
-inline bool operator > (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator > (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs < lhs;
 }
 
-inline bool operator <= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator <= (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs >= lhs;
 }
 
-inline bool operator >= (type_index::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
+inline bool operator >= (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs <= lhs;
 }
 
@@ -216,6 +196,15 @@ inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
 /// @endcond
 
 } // namespace boost
+
+#else // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+
+#include <boost/type_index/template_index.hpp>
+namespace boost {
+
+typedef template_index type_index;
+
+}
 
 #endif // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
 

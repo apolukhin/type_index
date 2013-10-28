@@ -101,10 +101,10 @@ public:
                     , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
         #endif
 
-        return reinterpret_cast<const boost::type_info&>(typeid(no_cvr_t));
+        return static_cast<const boost::type_info&>(typeid(no_cvr_t));
     }
 
-    /// Factory method for constructing boost::type_index instance for type T.
+    /// Factory method for constructing boost::type_info instance for type T.
     /// Does not strip const, volatile, & and && modifiers from T.
     /// If T has no const, volatile, & and && modifiers, then returns exactly 
     /// the same result as in case of calling `construct<T>()`.
@@ -118,21 +118,21 @@ public:
             T
         >::type type;
 
-        return reinterpret_cast<const boost::type_info&>(typeid(type));
+        return static_cast<const boost::type_info&>(typeid(type));
     }
 
-    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
     /// This method available only with RTTI enabled.
     template <class T>
-    static const type_index& construct_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
-        return reinterpret_cast<const boost::type_info&>(typeid(rtti_val));
+    static const type_info& construct_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+        return static_cast<const boost::type_info&>(typeid(rtti_val));
     }
 
-    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+    /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
     /// This method available only with RTTI enabled.
     template <class T>
-    static const type_index& construct_rtti_only(T* rtti_val) {
-        return reinterpret_cast<const boost::type_info&>(typeid(rtti_val));
+    static const type_info& construct_rtti_only(T* rtti_val) {
+        return static_cast<const boost::type_info&>(typeid(rtti_val));
     }
 
     const char* name() const BOOST_NOEXCEPT {
@@ -180,26 +180,38 @@ public:
             return ret.substr(pos, end - pos);
     }
 
-    bool operator == (type_index const& rhs) const BOOST_NOEXCEPT {
+    bool operator == (type_info const& rhs) const BOOST_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(name(), rhs.name());
         #else
-            return *this == rhs;
+            return static_cast<const detail::stl_type_info&>(*this) == static_cast<const detail::stl_type_info&>(rhs);
         #endif
     }
 
-    bool operator != (type_index const& rhs) const BOOST_NOEXCEPT {
+    bool operator != (type_info const& rhs) const BOOST_NOEXCEPT {
+        return !(*this == rhs);
+    }
+
+    bool operator == (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return *this == static_cast<const boost::type_info&>(rhs);
+    }
+
+    bool operator != (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return !(*this == rhs);
     }
 
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
-    bool before(type_index const& rhs) const BOOST_NOEXCEPT {
+    bool before(type_info const& rhs) const BOOST_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(name(), rhs.name()) < 0;
         #else
-            return this->before(rhs);
+            return detail::stl_type_info::before(rhs);
         #endif
+    }
+
+    bool before(detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+        return before(static_cast<const boost::type_info&>(rhs));
     }
 
     /// Function for getting hash value
@@ -231,26 +243,35 @@ inline const type_info& type_id_with_cvr() BOOST_NOEXCEPT {
     return type_info::construct_with_cvr<T>();
 }
 
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
 inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
-    return reinterpret_cast<const type_info&>(typeid(rtti_val));
+    return static_cast<const type_info&>(typeid(rtti_val));
 }
 
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
+/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>
 inline const type_info& type_id_rtti_only(T* rtti_val) {
-    return reinterpret_cast<const type_info&>(typeid(rtti_val));
+    return static_cast<const type_info&>(typeid(rtti_val));
 }
 
-/* *************** type_index free functions ******************* */
+/* *************** type_info free functions ******************* */
+
+
+inline bool operator == (detail::stl_type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT {
+    return rhs == static_cast<const boost::type_info&>(lhs);
+}
+
+inline bool operator != (detail::stl_type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT {
+    return !(lhs == rhs);
+}
 
 /// hash_value function overload for boost::type_info.
-inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
+inline std::size_t hash_value(type_info const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
 
@@ -262,28 +283,28 @@ inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
 
 namespace boost {
 
-typedef template_info type_index;
+typedef template_info type_info;
 
 template <class T>
-inline const type_index& type_id() BOOST_NOEXCEPT {
+inline const type_info& type_id() BOOST_NOEXCEPT {
     return template_info::construct<T>();
 }
 
 template <class T>
-inline const type_index& type_id_with_cvr() BOOST_NOEXCEPT {
+inline const type_info& type_id_with_cvr() BOOST_NOEXCEPT {
     return template_info::construct_with_cvr<T>();
 }
 
 template <class T>
-inline const type_index& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T&) requires RTTI");
-    return type_index();
+    return template_info::construct_with_cvr<void>();
 }
 
 template <class T>
-inline const type_index& type_id_rtti_only(T* rtti_val) {
+inline const type_info& type_id_rtti_only(T* rtti_val) {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T*) requires RTTI");
-    return type_index();
+    return template_info::construct_with_cvr<void>();
 }
 
 } // namespace boost

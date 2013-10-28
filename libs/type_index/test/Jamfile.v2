@@ -37,8 +37,6 @@ test-suite type_index
     [ run template_index_test.cpp $(tlib) ]
     [ run testing_both.cpp $(tlib) ]
     [ run testing_both_no_rtti.cpp $(tlib) : : : <rtti>off ]
-    [ run testing_minimal.cpp $(tlib) ]
-    [ run testing_minimal_no_rtti.cpp $(tlib) : : : <rtti>off ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
     [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
     

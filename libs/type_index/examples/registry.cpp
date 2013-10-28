@@ -10,7 +10,7 @@
     Example works with and without RTTI.
 */
 
-#include <boost/type_index/type_index_minimal.hpp>
+#include <boost/type_index/type_index.hpp>
 #include <boost/unordered_set.hpp>
 #include <cassert>
 

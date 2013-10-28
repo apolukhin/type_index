@@ -99,6 +99,7 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
         BOOST_CHECK(typeid(int) <= t_double);
         BOOST_CHECK(t_int <= typeid(double));
     }
+
 }
 
 #endif // BOOST_NO_RTTI

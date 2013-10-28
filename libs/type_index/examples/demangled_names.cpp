@@ -12,7 +12,7 @@
 */
 
 
-#include <boost/type_index/type_index_minimal.hpp>
+#include <boost/type_index/type_info.hpp>
 #include <iostream>
 
 template <class T>
