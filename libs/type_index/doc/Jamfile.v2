@@ -1,4 +1,4 @@
-# Copyright Antony Polukhin 2011. 
+# Copyright Antony Polukhin 2011-2013. 
 # Use, modification, and distribution are
 # subject to the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -18,16 +18,8 @@ doxygen autodoc
         <doxygen:param>ENABLE_PREPROCESSING=YES
         <doxygen:param>EXPAND_ONLY_PREDEF=YES
         <doxygen:param>MACRO_EXPANSION=YES
-        <doxygen:param>"PREDEFINED=\"insert_const_ref_type= const T&\" \\
-                                   \"BOOST_TYPE_INDEX_DOXYGEN_INVOKED\" \\
-                                   \"BOOST_RV_REF(T)=T &&\" \\
-                                   \"BOOST_RV_REF_BEG=\" \\
-                                   \"BOOST_RV_REF_END=&&\" \\
-                                   \"BOOST_CLASSINFO_COMPARISON_NOEXCEPT=\" \\
-                                   \"BOOST_COPY_ASSIGN_REF(T)=const T &\" \\
-                                   \"BOOST_RV_REF_2_TEMPL_ARGS(T,a,b)=T<a, b> &&\" \\
-                                   \"BOOST_RV_REF_3_TEMPL_ARGS(T,a,b,c)=T<a,b,c>T<a,b,c> &&\" \\
-                                   \"BOOST_FWD_REF(a)=a &&\""
+        <doxygen:param>"PREDEFINED=\"stl_type_info=std::type_info\" \\
+                                   \"detail::stl_type_info=std::type_info\""
         <xsl:param>"boost.doxygen.reftitle=Boost.TypeIndex Header Reference"
    ;
 

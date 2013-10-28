@@ -8,7 +8,7 @@
 #ifndef BOOST_TYPE_INDEX_HPP
 #define BOOST_TYPE_INDEX_HPP
 
-/// \file type_index.hpp
+/// \file boost/type_index.hpp
 /// \brief Includes all the headers of the Boost.TypeIndex library.
 ///
 /// By inclusion of this file all classes (boost::type_info + boost::type_index if RTTI is on 

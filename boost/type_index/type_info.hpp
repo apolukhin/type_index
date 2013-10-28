@@ -51,11 +51,10 @@
 
 namespace boost {
 
-#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+/// @cond
 
 // for this compiler at least, cross-shared-library type_info
-// comparisons don't work, so use typeid(x).name() instead. It's not
-// yet clear what the best default strategy is.
+// comparisons don't work, so we are using typeid(x).name() instead.
 # if (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 5))) \
     || defined(_AIX) \
     || (defined(__sgi) && defined(__host_mips)) \
@@ -64,7 +63,7 @@ namespace boost {
 #  define BOOST_CLASSINFO_COMPARE_BY_NAMES
 # endif
 
-#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+/// @endcond
 
 namespace detail {
 #ifdef BOOST_NO_STD_TYPEINFO
@@ -88,6 +87,8 @@ namespace detail {
 /// * workarounds some cimpiler issues
 class type_info: public detail::stl_type_info {
 public:
+    typedef detail::stl_type_info stl_type_info;
+
     /// Factory method for constructing boost::type_info instance for type T.
     /// Strips const, volatile and & modifiers from T.
     template <class T>
@@ -135,18 +136,19 @@ public:
         return static_cast<const boost::type_info&>(typeid(rtti_val));
     }
 
+    /// Returns mangled type name.
     const char* name() const BOOST_NOEXCEPT {
     #ifdef _MSC_VER
-        return detail::stl_type_info::raw_name();
+        return stl_type_info::raw_name();
     #else
-        return detail::stl_type_info::name();
+        return stl_type_info::name();
     #endif
     }
 
     /// Returns user-friendly name
     std::string name_demangled() const {
         #if defined(_MSC_VER)
-            std::string ret = detail::stl_type_info::name();
+            std::string ret = stl_type_info::name();
         #else
             std::string ret;
             int status = 0;
@@ -184,7 +186,7 @@ public:
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return !std::strcmp(name(), rhs.name());
         #else
-            return static_cast<const detail::stl_type_info&>(*this) == static_cast<const detail::stl_type_info&>(rhs);
+            return static_cast<const stl_type_info&>(*this) == static_cast<const stl_type_info&>(rhs);
         #endif
     }
 
@@ -192,32 +194,36 @@ public:
         return !(*this == rhs);
     }
 
-    bool operator == (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator == (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this == static_cast<const boost::type_info&>(rhs);
     }
 
-    bool operator != (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator != (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return !(*this == rhs);
     }
 
     /// Returns true if the type precedes the type of rhs in the collation order.
     /// The collation order is just an internal order.
+    /// Works exactly like operator <
     bool before(type_info const& rhs) const BOOST_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return std::strcmp(name(), rhs.name()) < 0;
         #else
-            return detail::stl_type_info::before(rhs);
+            return stl_type_info::before(rhs);
         #endif
     }
 
-    bool before(detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    /// Returns true if the type precedes the type of rhs in the collation order.
+    /// The collation order is just an internal order.
+    /// Works exactly like operator <
+    bool before(stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return before(static_cast<const boost::type_info&>(rhs));
     }
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
 #if _MSC_VER >= 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
-        return detail::stl_type_info::hash_code();
+        return stl_type_info::hash_code();
 #else 
         return boost::hash_range(name(), name() + std::strlen(name()));
 #endif 
@@ -228,7 +234,8 @@ public:
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #endif
 
-/// Function, to get std::type_info for a type T. Strips const, volatile and & modifiers from T.
+/// Function to get std::type_info for a type T. 
+/// Strips const, volatile and & modifiers from T.
 template <class T>
 inline const type_info& type_id() BOOST_NOEXCEPT {
     return type_info::construct<T>();
@@ -243,7 +250,7 @@ inline const type_info& type_id_with_cvr() BOOST_NOEXCEPT {
     return type_info::construct_with_cvr<T>();
 }
 
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
+/// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
@@ -251,7 +258,7 @@ inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
     return static_cast<const type_info&>(typeid(rtti_val));
 }
 
-/// Function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
+/// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
 /// This method available only with RTTI enabled. Without RTTI support it won't compile, 
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>

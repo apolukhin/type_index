@@ -13,10 +13,12 @@
 # pragma once
 #endif
 
-/// \file type_index.hpp
+/// \file boost/type_index/type_index.hpp
 /// \brief Contains implementation of boost::type_index class.
 ///
 /// boost::type_index class is used in situations when RTTI is enabled.
+/// When RTTI is disabled boost::template_index will be used instead of
+/// this class.
 
 #include <boost/config.hpp>
 #include <boost/type_index/type_info.hpp>
@@ -33,12 +35,16 @@
 
 namespace boost {
 
-/// Copyable type_index class that requires RTTI.
+/// Copyable std::type_index class that requires RTTI.
+/// When RTTI is disabled boost::template_index will be used instead of
+/// this class.
 class type_index {
 private:
     const type_info* pinfo_;
 
 public:
+    typedef detail::stl_type_info stl_type_info;
+
     /// Default constructor.
     type_index() BOOST_NOEXCEPT
         : pinfo_(static_cast<const type_info*>(&typeid(void)))
@@ -50,7 +56,7 @@ public:
     {}
 
     /// Constructs type_index from an instance of std::type_info.
-    type_index(const detail::stl_type_info& inf) BOOST_NOEXCEPT
+    type_index(const stl_type_info& inf) BOOST_NOEXCEPT
         : pinfo_(static_cast<const type_info*>(&inf))
     {}
 
@@ -70,7 +76,6 @@ public:
         return pinfo_->name_demangled();
     }
 
-#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
     bool operator == (type_index const& rhs) const BOOST_NOEXCEPT {
         return *pinfo_ == *rhs.pinfo_;
     }
@@ -96,38 +101,36 @@ public:
     }
 
 
-    bool operator == (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator == (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this == type_index(rhs);
     }
 
-    bool operator != (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator != (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this != type_index(rhs);
     }
 
-    bool operator < (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator < (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this < type_index(rhs);
     }
 
-    bool operator > (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator > (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this > type_index(rhs);
     }
 
-    bool operator <= (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator <= (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this <= type_index(rhs);
     }
 
-    bool operator >= (detail::stl_type_info const& rhs) const BOOST_NOEXCEPT {
+    bool operator >= (stl_type_info const& rhs) const BOOST_NOEXCEPT {
         return *this >= type_index(rhs);
     }
-#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
         return pinfo_->hash_code();
     }
 };
-
-#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 /* *************** type_index free functions ******************* */
 
@@ -155,17 +158,11 @@ inline bool operator >= (detail::stl_type_info const& lhs, type_index const& rhs
     return rhs <= lhs;
 }
 
-#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
-
 #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #endif
 
-/// @endcond
-
 /* *************** type_index free functions ******************* */
-
-/// @cond
 
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS
@@ -192,8 +189,6 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(std::basic_ostream<CharT, T
 inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
     return v.hash_code();
 }
-
-/// @endcond
 
 } // namespace boost
 
