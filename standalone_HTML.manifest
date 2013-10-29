@@ -13,8 +13,8 @@ BOOST_TYPE_INDEX_CTTI_END_SKIP.html
 boost/type_info.html
 boost/type_id.html
 boost/type_id_with_cvr.html
-boost/type_id_rtti_on_idp5667600.html
-boost/type_id_rtti_on_idp5671408.html
+boost/type_id_rtti_on_idp6118528.html
+boost/type_id_rtti_on_idp6122336.html
 BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY.html
 boost_typeindex/space_and_performance.html
 boost_typeindex/code_bloat.html
