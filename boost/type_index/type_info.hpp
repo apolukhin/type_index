@@ -268,6 +268,7 @@ inline const type_info& type_id_rtti_only(T* rtti_val) {
 
 /* *************** type_info free functions ******************* */
 
+#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 inline bool operator == (detail::stl_type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT {
     return rhs == static_cast<const boost::type_info&>(lhs);
@@ -276,6 +277,13 @@ inline bool operator == (detail::stl_type_info const& lhs, type_info const& rhs)
 inline bool operator != (detail::stl_type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT {
     return !(lhs == rhs);
 }
+
+#else // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
+inline bool operator == (std::type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT;
+inline bool operator != (std::type_info const& lhs, type_info const& rhs) BOOST_NOEXCEPT;
+
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 /// hash_value function overload for boost::type_info.
 inline std::size_t hash_value(type_info const& v) BOOST_NOEXCEPT {

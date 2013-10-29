@@ -97,8 +97,27 @@ inline void lazy_function_signature_assert() {
 }
 
 #endif
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
-#if defined(BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP) && defined(BOOST_TYPE_INDEX_CTTI_END_SKIP)
+    /// \def BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP
+    ///
+    /// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE, BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP 
+    /// and BOOST_TYPE_INDEX_CTTI_END_SKIP macroses are used for adding a 
+    /// support for compilers, that by default are not recognized by TypeIndex library.
+    ///
+    /// See Compiler support for more info
+    #define BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP 0
+
+    /// \def BOOST_TYPE_INDEX_CTTI_END_SKIP
+    ///
+    /// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE, BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP 
+    /// and BOOST_TYPE_INDEX_CTTI_END_SKIP macroses are used for adding a 
+    /// support for compilers, that by default are not recognized by TypeIndex library.
+    ///
+    /// See Compiler support for more info
+    #define BOOST_TYPE_INDEX_CTTI_END_SKIP 0
+
+#elif defined(BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP) && defined(BOOST_TYPE_INDEX_CTTI_END_SKIP)
     // skip user specified bytes count
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_begin = BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP);
     // skip user specified bytes count

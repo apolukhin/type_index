@@ -138,6 +138,8 @@ public:
 
 /* *************** type_index free functions ******************* */
 
+#ifndef BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
 inline bool operator == (detail::stl_type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT {
     return rhs == lhs; // Operation is commutative
 }
@@ -162,9 +164,16 @@ inline bool operator >= (detail::stl_type_info const& lhs, type_index const& rhs
     return rhs <= lhs;
 }
 
-#ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-#undef BOOST_CLASSINFO_COMPARE_BY_NAMES
-#endif
+#else // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
+
+inline bool operator == (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+inline bool operator != (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+inline bool operator < (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+inline bool operator > (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+inline bool operator <= (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+inline bool operator >= (std::type_info const& lhs, type_index const& rhs) BOOST_NOEXCEPT;
+
+#endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 /* *************** type_index free functions ******************* */
 
