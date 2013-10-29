@@ -16,7 +16,9 @@
 /// \file boost/type_index/type_index.hpp
 /// \brief Contains implementation of boost::type_index class.
 ///
-/// boost::type_index class is used in situations when RTTI is enabled.
+/// boost::type_index class is used in situations when RTTI is enabled, it is designed to be a drop-in
+/// replacement for C++11 std::type_index class.
+///
 /// When RTTI is disabled boost::template_index will be used instead of
 /// this class.
 
@@ -35,6 +37,8 @@
 
 namespace boost {
 
+/// This class is designed to be a drop-in replacement for C++11 std::type_index class.
+///
 /// Copyable std::type_index class that requires RTTI.
 /// When RTTI is disabled boost::template_index will be used instead of
 /// this class.

@@ -17,12 +17,12 @@
 /// \file type_info.hpp
 /// \brief Contains implementation of boost::type_info class.
 ///
+/// boost::type_info class can be used as a drop-in replacement for std::type_info, but unlike std::type_info
+/// this class has a name_demangled() function for getting human-readable type names.
+///
 /// boost::type_info class is used in situations when RTTI is enabled.
 /// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_info
 /// is used instead of it.
-///
-/// boost::type_info class can be used as a drop-in replacement for std::type_info, but unlike std::type_info
-/// this class has a name_demangled() function for getting human-readable type names.
 
 #include <boost/config.hpp>
 
@@ -83,8 +83,8 @@ namespace detail {
 ///
 /// Unlike std::type_info this class:
 /// * has a name_demangled() function for getting human-readable type names
-/// * name() function always noexcept and returns simple mangled name as character array
-/// * workarounds some cimpiler issues
+/// * name() function always noexcept and returns simple mangled name as character a character array
+/// * contains workarounds for some compiler issues
 class type_info: public detail::stl_type_info {
 public:
     typedef detail::stl_type_info stl_type_info;
@@ -234,14 +234,14 @@ public:
 #undef BOOST_CLASSINFO_COMPARE_BY_NAMES
 #endif
 
-/// Function to get std::type_info for a type T. 
+/// Function to get boost::type_info for a type T. 
 /// Strips const, volatile and & modifiers from T.
 template <class T>
 inline const type_info& type_id() BOOST_NOEXCEPT {
     return type_info::construct<T>();
 }
 
-/// Function for constructing std::type_info instance for type T.
+/// Function for constructing boost::type_info instance for type T.
 /// Does not strip const, volatile, & and && modifiers from T.
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `type_id<T>()`.

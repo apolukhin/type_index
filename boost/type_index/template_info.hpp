@@ -18,7 +18,9 @@
 /// \file template_info.hpp
 /// \brief Contains implementation of boost::template_info class.
 ///
-/// boost::template_info class is used instead of boost::type_index class in situations when RTTI is disabled.
+/// boost::template_info class is used instead of boost::type_info and boost::type_index classes 
+/// in situations when RTTI is disabled.
+///
 /// It combines functionality of std::type_info and std::type_index.
 
 #include <cstring>
@@ -54,7 +56,8 @@ namespace detail {
 /// that outputs the WHOLE function signature, including template parameters.
 ///
 /// If your compiler is not recognised and BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is not defined,
-/// then a compile-time error will arise at any attempt to use boost::template_info class.
+/// then a compile-time error will arise at any attempt to use boost::template_info or 
+/// boost::template_index classes.
 #define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE BOOST_CURRENT_FUNCTION
 
 #elif defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
@@ -147,8 +150,8 @@ inline void lazy_function_signature_assert() {
     };
 } // namespace detail
 
-/// Copyable type_info that does not require RTTI and could store const,
-/// volatile and references if constructed via construct_with_cvr()
+/// Copyable type_info class that does not require RTTI.
+/// When RTTI is disabled this class will be used instead of boost::type_info and boost::type_index.
 class template_info {
 private:
     const char* name_;
@@ -165,7 +168,7 @@ public:
         : name_(detail::ctti<void>::name())
     {}
 
-    /// Factory method for constructing template_info instance for type T.
+    /// Factory method for constructing boost::template_info instance for type T.
     /// Strips const, volatile and & modifiers from T
     template <class T>
     static const template_info& construct(){
@@ -213,7 +216,6 @@ public:
         return std::string(name_, std::strlen(name_ + detail::ctti_skip_size_at_end));
     }
 
-    /// @cond
     bool operator == (const template_info& rhs) const BOOST_NOEXCEPT {
         return !std::strcmp(name_, rhs.name());
     }
@@ -237,7 +239,6 @@ public:
     bool operator >= (const template_info& rhs) const BOOST_NOEXCEPT {
         return std::strcmp(name_, rhs.name()) >= 0;
     }
-    /// @endcond
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
