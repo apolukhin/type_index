@@ -4,8 +4,8 @@
 <title>Examples</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
 <link rel="prev" href="getting_started.html" title="Getting started">
 <link rel="next" href="../boost_typeindex_header_reference.html" title="Boost.TypeIndex Header Reference">
 </head>
@@ -27,27 +27,25 @@
 <a name="boost_typeindex.examples"></a><a class="link" href="examples.html" title="Examples">Examples</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="examples.html#boost_typeindex.examples.getting_human_readable_and_mangled_type_names">Getting
+<dt><span class="section"><a href="examples.html#boost_typeindex.examples.getting_human_readable_and_mangl">Getting
       human readable and mangled type names</a></span></dt>
-<dt><span class="section"><a href="examples.html#boost_typeindex.examples.storing_information_about_a_type_in_container_">Storing
+<dt><span class="section"><a href="examples.html#boost_typeindex.examples.storing_information_about_a_type">Storing
       information about a type in container </a></span></dt>
-<dt><span class="section"><a href="examples.html#boost_typeindex.examples.getting_through_the_inheritance_to_receive_a_real_type_name_">Getting
+<dt><span class="section"><a href="examples.html#boost_typeindex.examples.getting_through_the_inheritance_">Getting
       through the inheritance to receive a real type name </a></span></dt>
-<dt><span class="section"><a href="examples.html#boost_typeindex.examples.exact_type_match__storing_type_with_const__volatile_and_reference_">Exact
+<dt><span class="section"><a href="examples.html#boost_typeindex.examples.exact_type_match_storing_type_wi">Exact
       type match: storing type with const, volatile and reference </a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_typeindex.examples.getting_human_readable_and_mangled_type_names"></a><a class="link" href="examples.html#boost_typeindex.examples.getting_human_readable_and_mangled_type_names" title="Getting human readable and mangled type names">Getting
+<a name="boost_typeindex.examples.getting_human_readable_and_mangl"></a><a class="link" href="examples.html#boost_typeindex.examples.getting_human_readable_and_mangl" title="Getting human readable and mangled type names">Getting
       human readable and mangled type names</a>
 </h3></div></div></div>
 <p>
         The following example shows how short (mangled) and human readable type names
         could be obtained from a type. Works with and without RTTI.
       </p>
-<p>
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_info</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
@@ -77,8 +75,6 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
         Short names are very compiler dependant: some compiler will output <code class="computeroutput"><span class="special">.</span><span class="identifier">H</span></code>, others
         <code class="computeroutput"><span class="identifier">i</span></code>.
       </p>
@@ -89,16 +85,14 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_typeindex.examples.storing_information_about_a_type_in_container_"></a><a class="link" href="examples.html#boost_typeindex.examples.storing_information_about_a_type_in_container_" title="Storing information about a type in container">Storing
+<a name="boost_typeindex.examples.storing_information_about_a_type"></a><a class="link" href="examples.html#boost_typeindex.examples.storing_information_about_a_type" title="Storing information about a type in container">Storing
       information about a type in container </a>
 </h3></div></div></div>
 <p>
         The following example shows how an information about a type could be stored.
         Example works with and without RTTI.
       </p>
-<p>
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
@@ -121,24 +115,22 @@
     <span class="identifier">assert</span><span class="special">(*</span><span class="identifier">types</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_typeindex.examples.getting_through_the_inheritance_to_receive_a_real_type_name_"></a><a class="link" href="examples.html#boost_typeindex.examples.getting_through_the_inheritance_to_receive_a_real_type_name_" title="Getting through the inheritance to receive a real type name">Getting
+<a name="boost_typeindex.examples.getting_through_the_inheritance_"></a><a class="link" href="examples.html#boost_typeindex.examples.getting_through_the_inheritance_" title="Getting through the inheritance to receive a real type name">Getting
       through the inheritance to receive a real type name </a>
 </h3></div></div></div>
 <p>
-        The following example shows that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>
+        The following example shows that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code>
         is able to store the real type, successfully getting through all the inheritances.
+      </p>
+<p>
         Example works with RTTI only. Without RTTI support it won't compile, producing
         a compile-time error with message: "boost::type_id_rtti_only(T&amp;)
         requires RTTI"
       </p>
-<p>
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index_minimal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_info</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
 <span class="keyword">struct</span> <span class="identifier">A</span> <span class="special">{</span> <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">A</span><span class="special">(){}</span> <span class="special">};</span>
@@ -156,18 +148,17 @@
     <span class="identifier">print_real_type</span><span class="special">(</span><span class="identifier">B</span><span class="special">());</span>       <span class="comment">// Outputs `struct B`</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_typeindex.examples.exact_type_match__storing_type_with_const__volatile_and_reference_"></a><a class="link" href="examples.html#boost_typeindex.examples.exact_type_match__storing_type_with_const__volatile_and_reference_" title="Exact type match: storing type with const, volatile and reference">Exact
+<a name="boost_typeindex.examples.exact_type_match_storing_type_wi"></a><a class="link" href="examples.html#boost_typeindex.examples.exact_type_match_storing_type_wi" title="Exact type match: storing type with const, volatile and reference">Exact
       type match: storing type with const, volatile and reference </a>
 </h3></div></div></div>
 <p>
-        The following example shows that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span></code>
-        is able to store the exact type, without stripping const, volatile and references.
-        Example works with and without RTTI.
+        The following example shows that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code>
+        (and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code>) is able to store the exact type,
+        without stripping const, volatile and references. Example works with and
+        without RTTI.
       </p>
 <p>
         In this example we'll create a class, that stores pointer to function and
@@ -175,27 +166,25 @@
         to call the stored function will be made, type of input parameter will be
         checked for exact match with initaily erased type of function.
       </p>
-<p>
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">stdexcept</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
 <span class="keyword">class</span> <span class="identifier">type_erased_unary_function</span> <span class="special">{</span>
     <span class="keyword">void</span><span class="special">*</span>                   <span class="identifier">function_ptr_</span><span class="special">;</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span>   <span class="identifier">exact_param_t_</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span>       <span class="identifier">exact_param_t_</span><span class="special">;</span>
 
 <span class="keyword">public</span><span class="special">:</span>
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ParamT</span><span class="special">&gt;</span>
     <span class="identifier">type_erased_unary_function</span><span class="special">(</span><span class="keyword">void</span><span class="special">(*</span><span class="identifier">ptr</span><span class="special">)(</span><span class="identifier">ParamT</span><span class="special">))</span>
         <span class="special">:</span> <span class="identifier">function_ptr_</span><span class="special">(</span><span class="keyword">reinterpret_cast</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;(</span><span class="identifier">ptr</span><span class="special">))</span> <span class="comment">// ptr - is a pointer to function returning `void` and accepting parameter of type `ParamT`</span>
-        <span class="special">,</span> <span class="identifier">exact_param_t_</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&gt;())</span>
+        <span class="special">,</span> <span class="identifier">exact_param_t_</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&gt;())</span>
     <span class="special">{}</span>
 
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ParamT</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">call</span><span class="special">(</span><span class="identifier">ParamT</span> <span class="identifier">v</span><span class="special">)</span> <span class="special">{</span>
-        <span class="keyword">if</span> <span class="special">(</span><span class="identifier">exact_param_t_</span> <span class="special">!=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&gt;())</span> <span class="special">{</span>
+        <span class="keyword">if</span> <span class="special">(</span><span class="identifier">exact_param_t_</span> <span class="special">!=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">ParamT</span><span class="special">&gt;())</span> <span class="special">{</span>
             <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"Incorrect `ParamT`"</span><span class="special">);</span>
         <span class="special">}</span>
 
@@ -219,8 +208,6 @@
     <span class="special">}</span> <span class="keyword">catch</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">&amp;</span> <span class="comment">/*e*/</span><span class="special">)</span> <span class="special">{}</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;1.&#160;Boost.TypeIndex 1.0</title>
+<title>Chapter&#160;1.&#160;Boost.TypeIndex 2.0</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
 <link rel="next" href="boost_typeindex/getting_started.html" title="Getting started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,7 +21,7 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="boost_typeindex"></a>Chapter&#160;1.&#160;Boost.TypeIndex 1.0</h2></div>
+<a name="boost_typeindex"></a>Chapter&#160;1.&#160;Boost.TypeIndex 2.0</h2></div>
 <div><p class="copyright">Copyright &#169; 2012, 2013 Antony Polukhin</p></div>
 <div><div class="legalnotice">
 <a name="boost_typeindex.legal"></a><p>
@@ -37,26 +37,27 @@
 <dt><span class="section"><a href="boost_typeindex/getting_started.html">Getting started</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/examples.html">Examples</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.getting_human_readable_and_mangled_type_names">Getting
+<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.getting_human_readable_and_mangl">Getting
       human readable and mangled type names</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.storing_information_about_a_type_in_container_">Storing
+<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.storing_information_about_a_type">Storing
       information about a type in container </a></span></dt>
-<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.getting_through_the_inheritance_to_receive_a_real_type_name_">Getting
+<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.getting_through_the_inheritance_">Getting
       through the inheritance to receive a real type name </a></span></dt>
-<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.exact_type_match__storing_type_with_const__volatile_and_reference_">Exact
+<dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.exact_type_match_storing_type_wi">Exact
       type match: storing type with const, volatile and reference </a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="boost_typeindex_header_reference.html">Boost.TypeIndex Header Reference</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp">Header &lt;boost/type_index/template_index_impl.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_impl_hpp">Header &lt;boost/type_index/type_index_impl.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_minimal_hpp">Header &lt;boost/type_index/type_index_minimal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_hpp">Header &lt;boost/type_index/type_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp">Header &lt;boost/type_index/template_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_info_hpp">Header &lt;boost/type_index/template_info.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_info_hpp">Header &lt;boost/type_index/type_info.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="boost_typeindex/space_and_performance.html">Space and Performance</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/code_bloat.html">Code bloat</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/compiler_support.html">Compiler support</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex/mixing_sources_with_rtti_on_and_rtti_off.html">Mixing
+<dt><span class="section"><a href="boost_typeindex/mixing_sources_with_rtti_on_and_.html">Mixing
     sources with RTTI on and RTTI off</a></span></dt>
 </dl>
 </div>
@@ -94,7 +95,7 @@
         </li>
 </ul></div>
 <p>
-      Boost.TypeIndex was designed to work around all those issues.
+      Boost.TypeIndex library was designed to work around all those issues.
     </p>
 <p>
       &#65279;
@@ -115,13 +116,13 @@
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        This library is not accepted to Boost, it is currrently waiting for review.
+        This library is not accepted to Boost, it is currently waiting for review.
       </p></td></tr>
 </table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: October 22, 2013 at 12:36:27 GMT</small></p></td>
+<td align="left"><p><small>Last revised: October 29, 2013 at 12:15:03 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

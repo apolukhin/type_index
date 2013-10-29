@@ -4,8 +4,8 @@
 <title>Mixing sources with RTTI on and RTTI off</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
 <link rel="prev" href="compiler_support.html" title="Compiler support">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -23,16 +23,17 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="boost_typeindex.mixing_sources_with_rtti_on_and_rtti_off"></a><a class="link" href="mixing_sources_with_rtti_on_and_rtti_off.html" title="Mixing sources with RTTI on and RTTI off">Mixing
+<a name="boost_typeindex.mixing_sources_with_rtti_on_and_"></a><a class="link" href="mixing_sources_with_rtti_on_and_.html" title="Mixing sources with RTTI on and RTTI off">Mixing
     sources with RTTI on and RTTI off</a>
 </h2></div></div></div>
 <p>
       Linking a binary from source files that were compiled with different RTTI flags
       is not a very good idea and may lead to a lot of surprises. However if there
-      is a very strong need TypeIndex library provides a solution for mixing sources:
+      is a very strong need, TypeIndex library provides a solution for mixing sources:
       just define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
       macro. This would lead to usage of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span></code>
-      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code> class.
+      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code> class and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_info</span></code>
+      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code> class.
     </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -54,7 +55,7 @@
       flags:
     </p>
 <div class="informaltable">
-<a name="boost_typeindex.mixing_sources_with_rtti_on_and_rtti_off.diffs"></a><table class="table">
+<a name="boost_typeindex.mixing_sources_with_rtti_on_and_.diffs"></a><table class="table">
 <colgroup>
 <col>
 <col>
@@ -88,6 +89,17 @@
 <p>
       Such differences are usually not detected by linker and lead to errors at runtime.
     </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Even with <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
+        defined there is no guarantee that everything will be OK. Libraries that
+        use their own workarounds for disabled RTTI may fail to link orwork correctly.
+      </p></td></tr>
+</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

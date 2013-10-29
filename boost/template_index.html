@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Class template_index</title>
+<title>Type definition template_index</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 1.0">
-<link rel="up" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp" title="Header &lt;boost/type_index/template_index_impl.hpp&gt;">
-<link rel="prev" href="../boost_typeindex_header_reference.html" title="Boost.TypeIndex Header Reference">
-<link rel="next" href="template_id.html" title="Function template template_id">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
+<link rel="up" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp" title="Header &lt;boost/type_index/template_index.hpp&gt;">
+<link rel="prev" href="type_index.html" title="Class type_index">
+<link rel="next" href="template_info.html" title="Class template_info">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,78 +20,22 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost_typeindex_header_reference.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="template_id.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="type_index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="template_info.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="boost.template_index"></a><div class="titlepage"></div>
 <div class="refnamediv">
-<h2><span class="refentrytitle">Class template_index</span></h2>
-<p>boost::template_index</p>
+<h2><span class="refentrytitle">Type definition template_index</span></h2>
+<p>template_index</p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp" title="Header &lt;boost/type_index/template_index_impl.hpp&gt;">boost/type_index/template_index_impl.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp" title="Header &lt;boost/type_index/template_index.hpp&gt;">boost/type_index/template_index.hpp</a>&gt;
 
 </span>
-<span class="keyword">class</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">{</span>
-<span class="keyword">public</span><span class="special">:</span>
-  <span class="comment">// <a class="link" href="template_index.html#boost.template_indexconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <a class="link" href="template_index.html#idm31776-bb"><span class="identifier">template_index</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-
-  <span class="comment">// <a class="link" href="template_index.html#idm6688-bb">public member functions</a></span>
-  <span class="keyword">bool</span> <a class="link" href="template_index.html#idm6128-bb"><span class="identifier">before</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="template_index.html#idm3344-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="template_index.html#idm1936-bb"><span class="identifier">name_demangled</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="template_index.html#idm33488-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-
-  <span class="comment">// <a class="link" href="template_index.html#idm30800-bb">public static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a class="link" href="template_index.html#idm30240-bb"><span class="identifier">construct</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a class="link" href="template_index.html#idm27024-bb"><span class="identifier">construct_with_cvr</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-<span class="special">}</span><span class="special">;</span></pre></div>
+<span class="keyword">typedef</span> <a class="link" href="template_info.html" title="Class template_info">template_info</a> <span class="identifier">template_index</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp62024288"></a><h2>Description</h2>
-<p>Copyable type_info that does not require RTTI and could store const, volatile and references if constructed via construct_with_cvr() </p>
-<div class="refsect2">
-<a name="idp62025072"></a><h3>
-<a name="boost.template_indexconstruct-copy-destruct"></a><code class="computeroutput">template_index</code> 
-        public
-       construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><a name="idm31776-bb"></a><span class="identifier">template_index</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
-<p>Default constructor. </p>
-</li></ol></div>
-</div>
-<div class="refsect2">
-<a name="idp62031376"></a><h3>
-<a name="idm6688-bb"></a><code class="computeroutput">template_index</code> public member functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idm6128-bb"></a><span class="identifier">before</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
-<p>Returns true if the type precedes the type of rhs in the collation order. The collation order is just an internal order. </p>
-</li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idm3344-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Returns raw name. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idm1936-bb"></a><span class="identifier">name_demangled</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns user-friendly name. </li>
-<li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idm33488-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
-<p>Function for getting hash value </p>
-</li>
-</ol></div>
-</div>
-<div class="refsect2">
-<a name="idp62058976"></a><h3>
-<a name="idm30800-bb"></a><code class="computeroutput">template_index</code> public static functions</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a name="idm30240-bb"></a><span class="identifier">construct</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
-<p>Factory method for constructing <code class="computeroutput"><a class="link" href="template_index.html" title="Class template_index">template_index</a></code> instance for type T. Strips const, volatile and &amp; modifiers from T </p>
-</li>
-<li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <a class="link" href="template_index.html" title="Class template_index">template_index</a> <a name="idm27024-bb"></a><span class="identifier">construct_with_cvr</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
-<p>Factory method for constructing <code class="computeroutput"><a class="link" href="template_index.html" title="Class template_index">template_index</a></code> instance for type T. Does not strip const, volatile and &amp; modifiers from T </p>
-</li>
-</ol></div>
-</div>
+<a name="idp5685952"></a><h2>Description</h2>
+<p>boost::template_index is just a typedef of <a class="link" href="template_info.html" title="Class template_info">boost::template_info</a>, that combines functionality of <a class="link" href="type_info.html" title="Class type_info">boost::type_info</a> and <a class="link" href="type_index.html" title="Class type_index">boost::type_index</a> but can work with RTTI disabled. </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -104,7 +48,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../boost_typeindex_header_reference.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_impl_hpp"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="template_id.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="type_index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="template_info.html"><img src="http://www.boost.org/doc/libs/1_53_0/doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
