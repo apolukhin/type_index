@@ -31,33 +31,125 @@ Boost.TypeIndex library was designed to work around all those issues.
 [section Getting started]
 
 `boost::type_info` is a drop-in replacement for `std::type_index` and `boost::type_index` is a drop-in 
-replacement for `std::type_index`. Unlike Standard Library versions those classes usually do not 
-require RTTI. 
+replacement for `std::type_index`. Unlike Standard Library versions those classes may work without RTTI. 
 
 `boost::type_index` provides the full set of comparison operators, hashing functions and ostream 
 operators, so it can be used with any container class.
 
 To start using Boost.TypeIndex:
 
-* Replace headers:
-    * Use `<boost/type_index/type_index.hpp>` instead of `<typeindex>`
-    * Use `<boost/type_index/type_info.hpp>` instead of `<typeinfo>`
-* Replace `std::type_index`, `const std::type_info&` and `const std::type_info*` variables with `boost::type_index`.
-* If you do not want to save `const`, `volatile`, `&` and `&&`:
-    * Use `boost::type_id<T>()` instead of `typeid(T)`, `&typeid(T)`.
-* If you want to save `const`, `volatile`, `&` and `&&`:
-    * Use `boost::type_id_with_cvr<T>()` instead of `typeid(T)`, `&typeid(T)`.
-* To get nice human readable names, use the `name_demangled()` member function:
-``
-#include <boost/type_index.hpp>
+[table:porting
+[[Replace this:][With the following:]]
+[[``
+    #include <typeinfo>
+    #include <typeindex>
+``][``
+    #include <boost/type_index/type_info.hpp>
+    #include <boost/type_index/type_index.hpp>
+`` or ``
+    #include <boost/type_index.hpp>
+``]]
 
-type_index ti = type_id<T>();
-std::string nice_name 
-    = ti.name_demangled();
-...
-std::string nice_name_with_const_volatile_ref 
-    = type_id_with_cvr<ParamT&>().name_demangled();
-``
+[[``
+    std::type_info
+    std::type_index
+``][``
+    boost::type_info
+    boost::type_index
+``]]
+
+[[``
+    typeid(T)
+    typeid(please_save_modifiers<T>)
+    typeid(T).name() // not human readable
+    typeid(variable)
+``][``
+    boost::type_id<T>()
+    boost::type_id_with_cvr<T>()
+    boost::type_id<T>().name_demangled() // human readable
+    boost::type_id_rtti_only(variable)
+``]]
+]
+
+
+Here is how TypeIndex could be used in `boost/any.hpp`:
+[table:any
+[[Before] [With TypeIndex]]
+[[``#include <typeinfo>``][``#include <boost/type_index/type_info.hpp>``]]
+[[``
+    virtual const std::type_info & type() const BOOST_NOEXCEPT
+    {
+        // requires RTTI
+        return typeid(ValueType);
+    }
+``] [``
+    virtual const boost::type_info & type() const BOOST_NOEXCEPT
+    {
+        // now works even with RTTI disabled
+        return boost::type_id<ValueType>();
+    }
+``]]
+]
+
+
+Here is how TypeIndex could be used in `boost/variant/variant.hpp`:
+[table:variant
+[[Before] [With TypeIndex]]
+
+[[``
+#if !defined(BOOST_NO_TYPEID)
+#include <typeinfo> // for typeid, std::type_info
+#endif // BOOST_NO_TYPEID
+``][``
+#include <boost/type_info/type_info.hpp>
+``]]
+[[``
+#if !defined(BOOST_NO_TYPEID)
+
+class reflect
+    : public static_visitor<const std::type_info&>
+{
+public: // visitor interfaces
+
+    template <typename T>
+    const std::type_info& operator()(const T&) const BOOST_NOEXCEPT
+    {
+        return typeid(T);
+    }
+
+};
+
+#endif // BOOST_NO_TYPEID
+``][``
+class reflect
+    : public static_visitor<const boost::type_info&>
+{
+public: // visitor interfaces
+
+    template <typename T>
+    const boost::type_info& operator()(const T&) const BOOST_NOEXCEPT
+    {
+        return boost::type_id<T>();
+    }
+
+};
+``]]
+[[``
+#if !defined(BOOST_NO_TYPEID)
+    const std::type_info& type() const
+    {
+        detail::variant::reflect visitor;
+        return this->apply_visitor(visitor);
+    }
+#endif
+``] [``
+    const boost::type_info& type() const
+    {
+        detail::variant::reflect visitor;
+        return this->apply_visitor(visitor);
+    }
+``]]
+]
 
 [endsect]
 
