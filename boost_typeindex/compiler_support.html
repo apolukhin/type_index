@@ -28,8 +28,8 @@
 </h2></div></div></div>
 <p>
       TypeIndex has been tested and successfully work on MSVC2010, GCC-4.5, Clang-2.9.
-      If your compiler is not in a list of tested compilers, you shall correctly
-      define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</span></code>,
+      If your compiler is not in a list of tested compilers, you must correctly define
+      <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</span></code>,
       <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP</span></code>
       and <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_END_SKIP</span></code>
       macroses:
@@ -37,7 +37,7 @@
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
           define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</span></code>
-          to a a compiler specific macro, that outputs the <span class="bold"><strong>whole</strong></span>
+          to a compiler specific macro, that outputs the <span class="bold"><strong>whole</strong></span>
           function signature, including template parameters
         </li>
 <li class="listitem">

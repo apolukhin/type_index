@@ -7,11 +7,15 @@ boost/template_index.html
 boost/template_info.html
 boost/template_id.html
 boost/template_id_with_cvr.html
+BOOST_TYPE_INDEX_FUNCTION_SIGNATURE.html
+BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP.html
+BOOST_TYPE_INDEX_CTTI_END_SKIP.html
 boost/type_info.html
 boost/type_id.html
 boost/type_id_with_cvr.html
-boost/type_id_rtti_on_idp6020784.html
-boost/type_id_rtti_on_idp6024592.html
+boost/type_id_rtti_on_idp5667600.html
+boost/type_id_rtti_on_idp5671408.html
+BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY.html
 boost_typeindex/space_and_performance.html
 boost_typeindex/code_bloat.html
 boost_typeindex/compiler_support.html
