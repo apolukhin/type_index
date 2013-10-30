@@ -1,0 +1,30 @@
+Index: .
+===================================================================
+--- .	(revision 86520)
++++ .	(working copy)
+@@ -16,6 +16,7 @@
+ #include <iostream>
+ #include <fstream>
+ #include <stdio.h> // for FILE
++#include <boost/type_index/type_info.hpp>
+ #include <boost/property_map/property_map.hpp>
+ #include <boost/tuple/tuple.hpp>
+ #include <boost/graph/graph_traits.hpp>
+@@ -489,7 +490,7 @@
+       bool first = true;
+       for (dynamic_properties::const_iterator i = dp->begin();
+            i != dp->end(); ++i) {
+-        if (typeid(key) == i->second->key()) {
++        if (boost::type_id<Descriptor>() == i->second->key()) {
+           if (first) out << " [";
+           else out << ", ";
+           first = false;
+@@ -518,7 +519,7 @@
+       bool first = true;
+       for (dynamic_properties::const_iterator i = dp->begin();
+            i != dp->end(); ++i) {
+-        if (typeid(key) == i->second->key()
++        if (boost::type_id<Descriptor>() == i->second->key()
+             && i->first != *node_id) {
+           if (first) out << " [";
+           else out << ", ";

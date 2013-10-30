@@ -1,0 +1,61 @@
+Index: .
+===================================================================
+--- .	(revision 86520)
++++ .	(working copy)
+@@ -91,7 +91,10 @@
+ 
+         check_true(value.empty(), "empty");
+         check_null(any_cast<int>(&value), "any_cast<int>");
++#ifndef BOOST_NO_RTTI
+         check_equal(value.type(), typeid(void), "type");
++#endif
++        check_equal(value.type(), boost::type_id<void>(), "type boost");
+     }
+ 
+     void test_converting_ctor()
+@@ -100,7 +103,10 @@
+         any value = text;
+ 
+         check_false(value.empty(), "empty");
++#ifndef BOOST_NO_RTTI
+         check_equal(value.type(), typeid(std::string), "type");
++#endif
++        check_equal(value.type(), boost::type_id<std::string>(), "type boost");
+         check_null(any_cast<int>(&value), "any_cast<int>");
+         check_non_null(any_cast<std::string>(&value), "any_cast<std::string>");
+         check_equal(
+@@ -158,7 +164,10 @@
+         any * assign_result = &(value = text);
+ 
+         check_false(value.empty(), "type");
++#ifndef BOOST_NO_RTTI
+         check_equal(value.type(), typeid(std::string), "type");
++#endif
++        check_equal(value.type(), boost::type_id<std::string>(), "type boost");
+         check_null(any_cast<int>(&value), "any_cast<int>");
+         check_non_null(any_cast<std::string>(&value), "any_cast<std::string>");
+         check_equal(
+@@ -191,7 +200,10 @@
+ 
+         check_true(original.empty(), "empty on original");
+         check_false(swapped.empty(), "empty on swapped");
++#ifndef BOOST_NO_RTTI
+         check_equal(swapped.type(), typeid(std::string), "type");
++#endif
++        check_equal(swapped.type(), boost::type_id<std::string>(), "type boost");
+         check_equal(
+             text, any_cast<std::string>(swapped),
+             "comparing swapped copy against original text");
+@@ -264,8 +276,12 @@
+         check_false(value1.empty(), "type");
+         check_false(value2.empty(), "type");
+ 
++#ifndef BOOST_NO_RTTI
+         check_equal(value1.type(), typeid(const char*), "type");
+         check_equal(value2.type(), typeid(const char*), "type");
++#endif
++        check_equal(value1.type(), boost::type_id<const char*>(), "type boost");
++        check_equal(value2.type(), boost::type_id<const char*>(), "type boost");
+         
+         check_non_null(any_cast<const char*>(&value1), "any_cast<const char*>");
+         check_non_null(any_cast<const char*>(&value2), "any_cast<const char*>");

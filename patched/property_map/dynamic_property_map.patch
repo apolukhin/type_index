@@ -1,0 +1,80 @@
+Index: .
+===================================================================
+--- .	(revision 86520)
++++ .	(working copy)
+@@ -24,7 +24,7 @@
+ #include <boost/any.hpp>
+ #include <boost/function/function3.hpp>
+ #include <boost/type_traits/is_convertible.hpp>
+-#include <typeinfo>
++#include <boost/type_index/type_info.hpp>
+ #include <boost/mpl/bool.hpp>
+ #include <stdexcept>
+ #include <sstream>
+@@ -60,8 +60,8 @@
+   virtual boost::any get(const any& key) = 0;
+   virtual std::string get_string(const any& key) = 0;
+   virtual void put(const any& key, const any& value) = 0;
+-  virtual const std::type_info& key() const = 0;
+-  virtual const std::type_info& value() const = 0;
++  virtual const boost::type_info& key() const = 0;
++  virtual const boost::type_info& value() const = 0;
+ };
+ 
+ 
+@@ -147,7 +147,7 @@
+     using boost::put;
+ 
+     key_type key = any_cast<key_type>(in_key);
+-    if (in_value.type() == typeid(value_type)) {
++    if (in_value.type() == boost::type_id<value_type>()) {
+       put(property_map_, key, any_cast<value_type>(in_value));
+     } else {
+       //  if in_value is an empty string, put a default constructed value_type.
+@@ -188,8 +188,8 @@
+                                       writable_property_map_tag*>::value)>());
+   }
+ 
+-  virtual const std::type_info& key()   const { return typeid(key_type); }
+-  virtual const std::type_info& value() const { return typeid(value_type); }
++  virtual const boost::type_info& key()   const { return boost::type_id<key_type>(); }
++  virtual const boost::type_info& value() const { return boost::type_id<value_type>(); }
+ 
+   PropertyMap&       base()       { return property_map_; }
+   const PropertyMap& base() const { return property_map_; }
+@@ -283,7 +283,7 @@
+ {
+   for (dynamic_properties::iterator i = dp.lower_bound(name);
+        i != dp.end() && i->first == name; ++i) {
+-    if (i->second->key() == typeid(key)) {
++    if (i->second->key() == boost::type_id<Key>()) {
+       i->second->put(key, value);
+       return true;
+     }
+@@ -305,7 +305,7 @@
+ {
+   for (dynamic_properties::const_iterator i = dp.lower_bound(name);
+        i != dp.end() && i->first == name; ++i) {
+-    if (i->second->key() == typeid(key))
++    if (i->second->key() == boost::type_id<Key>())
+       return any_cast<Value>(i->second->get(key));
+   }
+ 
+@@ -318,7 +318,7 @@
+ {
+   for (dynamic_properties::const_iterator i = dp.lower_bound(name);
+        i != dp.end() && i->first == name; ++i) {
+-    if (i->second->key() == typeid(key))
++    if (i->second->key() == boost::type_id<Key>())
+       return any_cast<Value>(i->second->get(key));
+   }
+ 
+@@ -331,7 +331,7 @@
+ {
+   for (dynamic_properties::const_iterator i = dp.lower_bound(name);
+        i != dp.end() && i->first == name; ++i) {
+-    if (i->second->key() == typeid(key))
++    if (i->second->key() == boost::type_id<Key>())
+       return i->second->get_string(key);
+   }
+ 

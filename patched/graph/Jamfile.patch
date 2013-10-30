@@ -1,0 +1,23 @@
+Index: .
+===================================================================
+--- .	(revision 86520)
++++ .	(working copy)
+@@ -59,6 +59,10 @@
+             /boost/test//boost_test_exec_monitor/<link>static
+             ../build//boost_graph
+             ../../regex/build//boost_regex : --log_level=all ]
++    [ run graphviz_test.cpp
++            /boost/test//boost_test_exec_monitor/<link>static
++            ../build//boost_graph
++            ../../regex/build//boost_regex : --log_level=all : : <rtti>off : testing_graphviz_no_rtti  ]
+     [ run metis_test.cpp : $(METIS_INPUT_FILE) ]
+     [ run gursoy_atun_layout_test.cpp ]
+     [ run layout_test.cpp : : : <test-info>always_show_run_output <toolset>intel:<debug-symbols>off ]
+@@ -124,6 +128,7 @@
+     [ run two_graphs_common_spanning_trees_test.cpp ]
+     [ run random_spanning_tree_test.cpp ../build//boost_graph ]
+     [ run graphml_test.cpp ../build//boost_graph : : "graphml_test.xml" ]
++    [ run graphml_test.cpp ../build//boost_graph : : "graphml_test.xml" : <rtti>off : testing_graphml_no_rtti  ]
+     [ run mas_test.cpp ../../test/build//boost_unit_test_framework/<link>static : $(TEST_DIR) ]
+     [ run stoer_wagner_test.cpp ../../test/build//boost_unit_test_framework/<link>static : $(TEST_DIR) ]
+     [ compile filtered_graph_properties_dijkstra.cpp ]

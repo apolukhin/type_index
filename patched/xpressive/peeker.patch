@@ -1,0 +1,43 @@
+Index: .
+===================================================================
+--- .	(revision 86520)
++++ .	(working copy)
+@@ -14,7 +14,7 @@
+ #endif
+ 
+ #include <string>
+-#include <typeinfo>
++#include <boost/type_index/type_info.hpp>
+ #include <boost/assert.hpp>
+ #include <boost/mpl/bool.hpp>
+ #include <boost/mpl/assert.hpp>
+@@ -250,9 +250,9 @@
+         if(0 == this->traits_)
+         {
+             this->traits_ = &tr;
+-            this->traits_type_ = &typeid(Traits);
++            this->traits_type_ = &boost::type_id<Traits>();
+         }
+-        else if(*this->traits_type_ != typeid(Traits) || this->get_traits_<Traits>() != tr)
++        else if(*this->traits_type_ != boost::type_id<Traits>() || this->get_traits_<Traits>() != tr)
+         {
+             this->fail(); // traits mis-match! set all and bail
+         }
+@@ -265,7 +265,7 @@
+     template<typename Traits>
+     Traits const &get_traits_() const
+     {
+-        BOOST_ASSERT(!!(*this->traits_type_ == typeid(Traits)));
++        BOOST_ASSERT(!!(*this->traits_type_ == boost::type_id<Traits>()));
+         return *static_cast<Traits const *>(this->traits_);
+     }
+ 
+@@ -274,7 +274,7 @@
+     bool str_icase_;
+     bool line_start_;
+     void const *traits_;
+-    std::type_info const *traits_type_;
++    boost::type_info const *traits_type_;
+     int leading_simple_repeat_;
+     bool has_backrefs_;
+ };
