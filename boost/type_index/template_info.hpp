@@ -236,27 +236,27 @@ public:
     }
 
     bool operator == (const template_info& rhs) const BOOST_NOEXCEPT {
-        return !std::strcmp(name_, rhs.name());
+        return name_ == rhs.name() || !std::strcmp(name_, rhs.name());
     }
 
     bool operator != (const template_info& rhs) const BOOST_NOEXCEPT {
-        return !!std::strcmp(name_, rhs.name());
+        return name_ != rhs.name() && !!std::strcmp(name_, rhs.name());
     }
 
     bool operator < (const template_info& rhs) const BOOST_NOEXCEPT {
-        return std::strcmp(name_, rhs.name()) < 0;
+        return name_ != rhs.name() && std::strcmp(name_, rhs.name()) < 0;
     }
 
     bool operator > (const template_info& rhs) const BOOST_NOEXCEPT {
-        return std::strcmp(name_, rhs.name()) > 0;
+        return name_ != rhs.name() && std::strcmp(name_, rhs.name()) > 0;
     }
 
     bool operator <= (const template_info& rhs) const BOOST_NOEXCEPT {
-        return std::strcmp(name_, rhs.name()) <= 0;
+        return name_ == rhs.name() || std::strcmp(name_, rhs.name()) <= 0;
     }
 
     bool operator >= (const template_info& rhs) const BOOST_NOEXCEPT {
-        return std::strcmp(name_, rhs.name()) >= 0;
+        return name_ == rhs.name() || std::strcmp(name_, rhs.name()) >= 0;
     }
 
     /// Function for getting hash value

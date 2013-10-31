@@ -184,7 +184,7 @@ public:
 
     bool operator == (type_info const& rhs) const BOOST_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return !std::strcmp(name(), rhs.name());
+            return name() == rhs.name() || !std::strcmp(name(), rhs.name());
         #else
             return static_cast<const stl_type_info&>(*this) == static_cast<const stl_type_info&>(rhs);
         #endif
@@ -207,7 +207,7 @@ public:
     /// Works exactly like operator <
     bool before(type_info const& rhs) const BOOST_NOEXCEPT {
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-            return std::strcmp(name(), rhs.name()) < 0;
+            return name() != rhs.name() && std::strcmp(name(), rhs.name()) < 0;
         #else
             return stl_type_info::before(rhs);
         #endif

@@ -14,7 +14,7 @@
 /// By inclusion of this file all classes (boost::type_info + boost::type_index if RTTI is on 
 /// and boost::template_info + boost::template_index) will be available.
 ///
-/// Consider including <boost/type_index/type_index.hpp> if you do not whant to include 
+/// Consider including <boost/type_index/type_index.hpp> if you do not want to include 
 /// boost::template_info and boost::template_index class while RTTI is available.
 ///
 /// Consider including <boost/type_index/type_info.hpp> if you need only boost::type_info class 
