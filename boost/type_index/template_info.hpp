@@ -232,7 +232,9 @@ public:
 
     /// Returns user-friendly name
     std::string name_demangled() const {
-        return std::string(name_, std::strlen(name_ + detail::ctti_skip_size_at_end));
+        std::size_t len = std::strlen(name_ + detail::ctti_skip_size_at_end);
+        while (name_[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
+        return std::string(name_, len);
     }
 
     bool operator == (const template_info& rhs) const BOOST_NOEXCEPT {

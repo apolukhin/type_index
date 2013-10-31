@@ -175,7 +175,7 @@ public:
             }
             std::string::size_type end = ret.rfind(">");
             BOOST_ASSERT(end != std::string::npos);
-            while (ret[end] == ' ') {
+            while (ret[end - 1] == ' ') {
                 -- end;
             }
 
