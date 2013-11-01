@@ -85,7 +85,17 @@ namespace detail {
 /// * has a name_demangled() function for getting human-readable type names
 /// * name() function always noexcept and returns simple mangled name as character a character array
 /// * contains workarounds for some compiler issues
+///
+/// boost::type_info is not copyable and is not default constructible. Use boost::type_id* functions
+/// to get const references to instances of boost::type_info objects. 
 class type_info: public detail::stl_type_info {
+#ifndef BOOST_NO_DELETED_FUNCTIONS
+    type_info() = delete;
+    type_info(const type_info&) = delete;
+#else
+    type_info();
+    type_info(const type_info&);
+#endif
 public:
     typedef detail::stl_type_info stl_type_info;
 
