@@ -22,7 +22,8 @@
 ///
 /// boost::type_info class is used in situations when RTTI is enabled.
 /// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_info
-/// is usually used instead of it.
+/// is usually used instead of it (some compilers allow calling typeid(T)
+/// even if RTTI is disabled, those copilers will continue to use boost::type_info class).
 
 #include <boost/config.hpp>
 

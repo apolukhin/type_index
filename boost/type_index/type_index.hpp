@@ -19,8 +19,8 @@
 /// boost::type_index class is used in situations when RTTI is enabled, it is designed to be a drop-in
 /// replacement for C++11 std::type_index class.
 ///
-/// When RTTI is disabled boost::template_index will be used instead of
-/// this class.
+/// When RTTI is disabled boost::template_index will be usually (some compilers allow calling typeid(T)
+/// even if RTTI is disabled) used instead of this class.  
 
 #include <boost/config.hpp>
 #include <boost/type_index/type_info.hpp>
