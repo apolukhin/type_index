@@ -1,6 +1,6 @@
 [library Boost.TypeIndex
     [quickbook 1.6]
-    [version 2.0]
+    [version 2.1]
     [copyright 2012-2013 Antony Polukhin]
     [category Language Features Emulation]
     [license

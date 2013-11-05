@@ -22,11 +22,13 @@
 ///
 /// boost::type_info class is used in situations when RTTI is enabled.
 /// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_info
-/// is used instead of it.
+/// is usually used instead of it.
 
 #include <boost/config.hpp>
 
-#if !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+
+// MSVC is capable of calling typeid(T) even when RTTI is off
+#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 
 #include <cstring>
 #include <string>
@@ -136,6 +138,10 @@ public:
     /// This method available only with RTTI enabled.
     template <class T>
     static const type_info& construct_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+#ifdef BOOST_NO_RTTI 
+        BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
+            "boost::type_id_rtti_only(T&) and boost::type_info::construct_rtti_only(T&) require RTTI");
+#endif
         return static_cast<const boost::type_info&>(typeid(rtti_val));
     }
 
@@ -143,6 +149,10 @@ public:
     /// This method available only with RTTI enabled.
     template <class T>
     static const type_info& construct_rtti_only(T* rtti_val) {
+#ifdef BOOST_NO_RTTI 
+        BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
+            "boost::type_id_rtti_only(T*) and boost::type_info::construct_rtti_only(T*) require RTTI");
+#endif
         return static_cast<const boost::type_info&>(typeid(rtti_val));
     }
 
@@ -334,7 +344,7 @@ inline const type_info& type_id_rtti_only(T* rtti_val) {
 
 } // namespace boost
 
-#endif //  !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+#endif //  (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined (BOOST_MSVC)
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 /// \def BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY

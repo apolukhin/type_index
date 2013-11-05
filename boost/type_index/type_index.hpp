@@ -25,7 +25,8 @@
 #include <boost/config.hpp>
 #include <boost/type_index/type_info.hpp>
 
-#if !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+// MSVC is capable of calling typeid(T) even when RTTI is off
+#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 
 #if !defined(BOOST_NO_IOSTREAM)
 #if !defined(BOOST_NO_IOSFWD)
@@ -205,7 +206,7 @@ inline std::size_t hash_value(type_index const& v) BOOST_NOEXCEPT {
 
 } // namespace boost
 
-#else // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+#else // (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 
 #include <boost/type_index/template_index.hpp>
 namespace boost {
@@ -214,7 +215,7 @@ typedef template_index type_index;
 
 }
 
-#endif // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+#endif // (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_HPP
 
