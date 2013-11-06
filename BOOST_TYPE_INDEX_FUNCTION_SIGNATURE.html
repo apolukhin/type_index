@@ -4,7 +4,7 @@
 <title>Macro BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.0">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
 <link rel="up" href="boost_typeindex_header_reference.html#header.boost.type_index.template_info_hpp" title="Header &lt;boost/type_index/template_info.hpp&gt;">
 <link rel="prev" href="boost/template_id_with_cvr.html" title="Function template template_id_with_cvr">
 <link rel="next" href="BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP.html" title="Macro BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP">
@@ -33,7 +33,7 @@
 
 </span>BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</pre></div>
 <div class="refsect1">
-<a name="idp62811360"></a><h2>Description</h2>
+<a name="idp35193040"></a><h2>Description</h2>
 <p>BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is used by <a class="link" href="boost/template_info.html" title="Class template_info">boost::template_info</a> class to deduce the name of a template parameter. If your compiler is not recognized by the TypeIndex library and you wish to work with <a class="link" href="boost/template_info.html" title="Class template_info">boost::template_info</a>, you may define this macro by yourself.</p>
 <p>BOOST_TYPE_INDEX_FUNCTION_SIGNATURE must be defined to a compiler specific macro, that outputs the WHOLE function signature, including template parameters.</p>
 <p>If your compiler is not recognised and BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is not defined, then a compile-time error will arise at any attempt to use <a class="link" href="boost/template_info.html" title="Class template_info">boost::template_info</a> or boost::template_index classes. </p>
