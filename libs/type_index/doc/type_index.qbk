@@ -262,3 +262,12 @@ Such differences are usually not detected by linker and lead to errors at runtim
 
 [endsect]
 
+[section Acknowledgements]
+
+In order of helping and advising:
+
+* Peter Dimov for writing source codes in late 2007, ideas from which were refined and put into this library.
+* Agustín Bergé K-ballo for helping with docs and fixing a lot of typos.
+* Niall Douglas for generating a lot of great ideas and reviewing the sources.
+
+[endsect]
