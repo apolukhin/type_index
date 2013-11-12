@@ -276,6 +276,9 @@ inline const type_info& type_id_with_cvr() BOOST_NOEXCEPT {
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T&) requires RTTI"
 template <class T>
 inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
+#ifdef BOOST_NO_RTTI
+    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T&) requires RTTI");
+#endif
     return static_cast<const type_info&>(typeid(rtti_val));
 }
 
@@ -284,6 +287,9 @@ inline const type_info& type_id_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
 /// producing a compile-time error with message: "boost::type_id_rtti_only(T*) requires RTTI"
 template <class T>
 inline const type_info& type_id_rtti_only(T* rtti_val) {
+#ifdef BOOST_NO_RTTI
+    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, "boost::type_id_rtti_only(T*) requires RTTI");
+#endif
     return static_cast<const type_info&>(typeid(rtti_val));
 }
 
