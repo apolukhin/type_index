@@ -230,7 +230,7 @@ public:
         #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
             return name() != rhs.name() && std::strcmp(name(), rhs.name()) < 0;
         #else
-            return stl_type_info::before(rhs);
+            return !!stl_type_info::before(rhs);
         #endif
     }
 
@@ -243,7 +243,7 @@ public:
 
     /// Function for getting hash value
     std::size_t hash_code() const BOOST_NOEXCEPT {
-#if _MSC_VER >= 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
+#if _MSC_VER > 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
         return stl_type_info::hash_code();
 #else 
         return boost::hash_range(name(), name() + std::strlen(name()));
