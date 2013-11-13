@@ -104,6 +104,8 @@ public:
 
     /// Factory method for constructing boost::type_info instance for type T.
     /// Strips const, volatile and & modifiers from T.
+    ///
+    /// Works exactly like boost::type_id().
     template <class T>
     static const boost::type_info& construct() BOOST_NOEXCEPT {
         typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
@@ -122,6 +124,8 @@ public:
     /// Does not strip const, volatile, & and && modifiers from T.
     /// If T has no const, volatile, & and && modifiers, then returns exactly 
     /// the same result as in case of calling `construct<T>()`.
+    ///
+    /// Works exactly like boost::type_id_with_cvr().
     template <class T>
     static const boost::type_info& construct_with_cvr() BOOST_NOEXCEPT {
         typedef typename boost::mpl::if_c<
@@ -137,6 +141,8 @@ public:
 
     /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
     /// This method available only with RTTI enabled.
+    ///
+    /// Same as boost::type_id_rtti_only().
     template <class T>
     static const type_info& construct_rtti_only(T& rtti_val) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
@@ -148,6 +154,8 @@ public:
 
     /// Factory function, that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
     /// This method available only with RTTI enabled.
+    ///
+    /// Same as boost::type_id_rtti_only().
     template <class T>
     static const type_info& construct_rtti_only(T* rtti_val) {
 #ifdef BOOST_NO_RTTI 

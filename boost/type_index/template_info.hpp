@@ -188,7 +188,9 @@ public:
     {}
 
     /// Factory method for constructing boost::template_info instance for type T.
-    /// Strips const, volatile and & modifiers from T
+    /// Strips const, volatile and & modifiers from T.
+    ///
+    /// Works exactly like boost::template_id().
     template <class T>
     static const template_info& construct(){
         typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
@@ -205,7 +207,9 @@ public:
     }
 
     /// Factory method for constructing template_info instance for type T.
-    /// Does not strip const, volatile and & modifiers from T
+    /// Does not strip const, volatile and & modifiers from T.
+    ///
+    /// Works exactly like boost::template_id_with_cvr().
     template <class T>
     static const template_info& construct_with_cvr() {
         #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
@@ -274,7 +278,7 @@ inline const template_info& template_id() BOOST_NOEXCEPT {
     return template_info::construct<T>();
 }
 
-/// Factory method for constructing template_info instance for type T.
+/// Method for constructing template_info instance for type T.
 /// Does not strip const, volatile and & modifiers from T.
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
 /// the same result as in case of calling `template_id<T>()`.
