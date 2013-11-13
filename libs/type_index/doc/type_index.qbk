@@ -30,7 +30,7 @@ Boost.TypeIndex library was designed to work around all those issues.
 
 [section Getting started]
 
-`boost::type_info` is a drop-in replacement for `std::type_index` and `boost::type_index` is a drop-in 
+`boost::type_info` is a drop-in replacement for `std::type_info` and `boost::type_index` is a drop-in 
 replacement for `std::type_index`. Unlike Standard Library versions those classes may work without RTTI. 
 
 `boost::type_index` provides the full set of comparison operators, hashing functions and ostream 

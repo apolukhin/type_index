@@ -12,7 +12,7 @@ import feature ;
 tlib = /boost/test//boost_unit_test_framework/<link>static ;
 
 # Variable that contains all the stuff required for linking together <rtti>on and <rtti>off
-compat = <define>BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY ;
+compat = <define>BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY ;
 
 # Making own `nortti` that is link compatible
 nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <toolset>msvc:<cxxflags>/GR- ;

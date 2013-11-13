@@ -21,7 +21,7 @@
 /// this class has a name_demangled() function for getting human-readable type names.
 ///
 /// boost::type_info class is used in situations when RTTI is enabled.
-/// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_info
+/// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined boost::template_info
 /// is usually used instead of it (some compilers allow calling typeid(T)
 /// even if RTTI is disabled, those copilers will continue to use boost::type_info class).
 
@@ -29,7 +29,7 @@
 
 
 // MSVC is capable of calling typeid(T) even when RTTI is off
-#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
+#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 
 #include <cstring>
 #include <string>
@@ -81,7 +81,7 @@ namespace detail {
 /// boost::type_info is a class that can be used as a drop-in replacement for std::type_info.
 ///
 /// boost::type_info class is used in situations when RTTI is enabled.
-/// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro is defined boost::template_info
+/// When RTTI is disabled or BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined boost::template_info
 /// is used instead of it.
 ///
 /// Unlike std::type_info this class:
@@ -319,7 +319,7 @@ inline std::size_t hash_value(type_info const& v) BOOST_NOEXCEPT {
 
 } // namespace boost
 
-#else // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)
+#else // !defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
 #   include <boost/type_index/template_info.hpp>
 #   include <boost/static_assert.hpp>
 
@@ -351,14 +351,14 @@ inline const type_info& type_id_rtti_only(T* rtti_val) {
 
 } // namespace boost
 
-#endif //  (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY)) || defined (BOOST_MSVC)
+#endif //  (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined (BOOST_MSVC)
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
-/// \def BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY
-/// Define the BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY macro if you are mixing objects
+/// \def BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
+/// Define the BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro if you are mixing objects
 /// compiled with different RTTI flags. This will force the usage of boost::template_index 
 /// class instead of boost::type_index.
-#define BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY
+#define BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
 #endif // BOOST_TYPE_INDEX_DOXYGEN_INVOKED
 
 #endif // BOOST_TYPE_INDEX_TYPE_INFO_HPP
