@@ -31,7 +31,7 @@
       Linking a binary from source files that were compiled with different RTTI flags
       is not a very good idea and may lead to a lot of surprises. However if there
       is a very strong need, TypeIndex library provides a solution for mixing sources:
-      just define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
+      just define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
       macro. This would lead to usage of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span></code>
       instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code> class and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_info</span></code>
       instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code> class.
@@ -43,13 +43,13 @@
 </tr>
 <tr><td align="left" valign="top"><p>
         Do not forget to rebuild <span class="bold"><strong>all</strong></span> the projects
-        with <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
+        with <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
         macro defined
       </p></td></tr>
 </table></div>
 <p>
       You must know that linking RTTI on and RTTI off binaries may succeed even without
-      defining the <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
+      defining the <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
       macro, but that does not mean that you'll get a working binary. Such actions
       may break the One Definition Rule. Take a look at the table below, that shows
       how the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span> <span class="identifier">get_integer</span><span class="special">();</span></code> function will look like with different RTTI
@@ -96,7 +96,7 @@
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        Even with <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NORTTI_COMPATIBILITY</span></code>
+        Even with <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
         defined there is no guarantee that everything will be OK. Libraries that
         use their own workarounds for disabled RTTI may fail to link or to work correctly.
       </p></td></tr>
