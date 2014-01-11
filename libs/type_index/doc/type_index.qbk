@@ -24,7 +24,7 @@ Boost.TypeIndex library was designed to work around all those issues.
 
 [note `T` means type here. Think of it as of `T` in `template <class T>` ] 
 
-[warning This library is not accepted to Boost, it is currently waiting for review. ] 
+[warning During the Boost review was decided, that it is better to use interface close to v1.0 of this library. Version 3.0 will attempt to fix all the issues found during the review. ] 
 
 [endsect]
 
