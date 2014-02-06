@@ -75,7 +75,7 @@ type_index_base<std::type_info> type_index_base<std::type_info>::construct() BOO
 
 template <>
 template <class T>
-const type_index_base<std::type_info>& type_index_base<std::type_info>::construct_with_cvr() BOOST_NOEXCEPT {
+type_index_base<std::type_info> type_index_base<std::type_info>::construct_with_cvr() BOOST_NOEXCEPT {
     typedef typename boost::mpl::if_c<
         boost::is_reference<T>::value
             || boost::is_const<T>::value
@@ -90,7 +90,7 @@ const type_index_base<std::type_info>& type_index_base<std::type_info>::construc
 
 template <>
 template <class T>
-type_index_base<std::type_info>& type_index_base<std::type_info>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
+type_index_base<std::type_info> type_index_base<std::type_info>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(T&) and type_index::construct_runtime(T&) require RTTI");
@@ -211,7 +211,7 @@ std::size_t type_index_base<std::type_info>::hash_code() const BOOST_NOEXCEPT {
 #if _MSC_VER > 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
     return data_->hash_code();
 #else 
-    return boost::hash_range(raw_name(), raw_name() + std::strlen(name()));
+    return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
 #endif 
 }
 

@@ -28,7 +28,7 @@
 #if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.ipp>
 #else 
-
+#   include <boost/type_index/ctti_type_index.ipp>
 #endif
 
 namespace boost { namespace typeind {
@@ -36,7 +36,7 @@ namespace boost { namespace typeind {
 #if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
     typedef boost::typeind::detail::type_index_base<std::type_info> type_index;
 #else 
-
+    typedef boost::typeind::detail::type_index_base<boost::typeind::detail::ctti_data> type_index;
 #endif
 
 typedef type_index::type_info_t type_info;

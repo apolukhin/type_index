@@ -34,6 +34,7 @@ nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <to
 test-suite type_index
   : 
     [ run type_index_test.cpp $(tlib) ]
+    [ run type_index_test.cpp $(tlib) : : : <rtti>off : type_index_test_no_rtti ]
 #    [ run template_index_test.cpp $(tlib) ]
 #    [ run testing_both.cpp $(tlib) ]
 #    [ run testing_both_no_rtti.cpp $(tlib) : : : <rtti>off ]
