@@ -96,6 +96,70 @@ inline bool operator != (const type_index_base<TypeInfo>& lhs, const type_index_
     return !(lhs == rhs);
 }
 
+// ######################### COMPARISONS with TypeInfo ############################ //
+template <class TypeInfo>
+inline bool operator == (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return type_index_base<TypeInfo>(lhs) == rhs;
+}
+
+template <class TypeInfo>
+inline bool operator < (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return type_index_base<TypeInfo>(lhs) < rhs;
+}
+
+template <class TypeInfo>
+inline bool operator > (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return rhs < type_index_base<TypeInfo>(lhs);
+}
+
+template <class TypeInfo>
+inline bool operator <= (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return !(type_index_base<TypeInfo>(lhs) > rhs);
+}
+
+template <class TypeInfo>
+inline bool operator >= (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return !(type_index_base<TypeInfo>(lhs) < rhs);
+}
+
+template <class TypeInfo>
+inline bool operator != (const TypeInfo& lhs, const type_index_base<TypeInfo>& rhs) BOOST_NOEXCEPT {
+    return !(type_index_base<TypeInfo>(lhs) == rhs);
+}
+
+
+template <class TypeInfo>
+inline bool operator == (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return lhs == type_index_base<TypeInfo>(rhs);
+}
+
+template <class TypeInfo>
+inline bool operator < (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return lhs < type_index_base<TypeInfo>(rhs);
+}
+
+template <class TypeInfo>
+inline bool operator > (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return type_index_base<TypeInfo>(rhs) < lhs;
+}
+
+template <class TypeInfo>
+inline bool operator <= (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return !(lhs > type_index_base<TypeInfo>(rhs));
+}
+
+template <class TypeInfo>
+inline bool operator >= (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return !(lhs < type_index_base<TypeInfo>(rhs));
+}
+
+template <class TypeInfo>
+inline bool operator != (const type_index_base<TypeInfo>& lhs, const TypeInfo& rhs) BOOST_NOEXCEPT {
+    return !(lhs == type_index_base<TypeInfo>(rhs));
+}
+
+// ######################### COMPARISONS with TypeInfo END ############################ //
+
 
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS

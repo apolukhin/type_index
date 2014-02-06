@@ -207,8 +207,108 @@ BOOST_AUTO_TEST_CASE(type_index_user_defined_class_test)
     BOOST_CHECK_EQUAL(type_id<my_namespace1::my_class>(), type_id<my_namespace1::my_class>());
     BOOST_CHECK_EQUAL(type_id<my_namespace2::my_class>(), type_id<my_namespace2::my_class>());
 
+#ifndef BOOST_NO_RTTI
+    BOOST_CHECK(type_id<my_namespace1::my_class>() == typeid(my_namespace1::my_class));
+    BOOST_CHECK(type_id<my_namespace2::my_class>() == typeid(my_namespace2::my_class));
+    BOOST_CHECK(typeid(my_namespace1::my_class) == type_id<my_namespace1::my_class>());
+    BOOST_CHECK(typeid(my_namespace2::my_class) == type_id<my_namespace2::my_class>());
+#endif
+
     BOOST_CHECK_NE(type_id<my_namespace1::my_class>(), type_id<my_namespace2::my_class>());
     BOOST_CHECK_NE(
         type_id<my_namespace1::my_class>().pretty_name().find("my_namespace1::my_class"),
         std::string::npos);
 }
+
+
+#ifndef BOOST_NO_RTTI
+
+class A { public: virtual ~A(){} };
+class B: public A{};
+class C: public B {};
+
+BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
+{
+    C c1;
+    B b1;
+    A* pc1 = &c1;
+    A& rc1 = c1;
+    A* pb1 = &b1;
+    A& rb1 = b1;
+    BOOST_CHECK(typeid(rc1) == typeid(*pc1));
+    BOOST_CHECK(typeid(rb1) == typeid(*pb1));
+
+    BOOST_CHECK(typeid(rc1) != typeid(*pb1));
+    BOOST_CHECK(typeid(rb1) != typeid(*pc1));
+
+    BOOST_CHECK(typeid(&rc1) == typeid(pb1));
+    BOOST_CHECK(typeid(&rb1) == typeid(pc1));
+
+    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pc1));
+    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pb1));
+
+    BOOST_CHECK_NE(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pb1));
+    BOOST_CHECK_NE(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pc1));
+    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rc1), boost::typeind::type_id_runtime(pb1));
+    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rb1), boost::typeind::type_id_runtime(pc1));
+
+    BOOST_CHECK(boost::typeind::type_id_runtime(rc1) == typeid(*pc1));
+    BOOST_CHECK(boost::typeind::type_id_runtime(rb1) == typeid(*pb1));
+
+    BOOST_CHECK(boost::typeind::type_id_runtime(rc1) != typeid(*pb1));
+    BOOST_CHECK(boost::typeind::type_id_runtime(rb1) != typeid(*pc1));
+    BOOST_CHECK(boost::typeind::type_id_runtime(&rc1) == typeid(pb1));
+    BOOST_CHECK(boost::typeind::type_id_runtime(&rb1) == typeid(pc1));
+}
+
+
+BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
+{
+    using namespace boost::typeind;
+    type_index t_int = type_id<int>();
+
+    BOOST_CHECK(t_int == typeid(int));
+    BOOST_CHECK(typeid(int) == t_int);
+    BOOST_CHECK(t_int <= typeid(int));
+    BOOST_CHECK(typeid(int) <= t_int);
+    BOOST_CHECK(t_int >= typeid(int));
+    BOOST_CHECK(typeid(int) >= t_int);
+
+    type_index t_double = type_id<double>();
+
+    BOOST_CHECK(t_double == typeid(double));
+    BOOST_CHECK(typeid(double) == t_double);
+    BOOST_CHECK(t_double <= typeid(double));
+    BOOST_CHECK(typeid(double) <= t_double);
+    BOOST_CHECK(t_double >= typeid(double));
+    BOOST_CHECK(typeid(double) >= t_double);
+
+    if (t_double < t_int) {
+        BOOST_CHECK(t_double < typeid(int));
+        BOOST_CHECK(typeid(double) < t_int);
+        BOOST_CHECK(typeid(int) > t_double);
+        BOOST_CHECK(t_int > typeid(double));
+
+
+        BOOST_CHECK(t_double <= typeid(int));
+        BOOST_CHECK(typeid(double) <= t_int);
+        BOOST_CHECK(typeid(int) >= t_double);
+        BOOST_CHECK(t_int >= typeid(double));
+    } else {
+        BOOST_CHECK(t_double > typeid(int));
+        BOOST_CHECK(typeid(double) > t_int);
+        BOOST_CHECK(typeid(int) < t_double);
+        BOOST_CHECK(t_int < typeid(double));
+
+
+        BOOST_CHECK(t_double >= typeid(int));
+        BOOST_CHECK(typeid(double) >= t_int);
+        BOOST_CHECK(typeid(int) <= t_double);
+        BOOST_CHECK(t_int <= typeid(double));
+    }
+
+}
+
+#endif // BOOST_NO_RTTI
+
+

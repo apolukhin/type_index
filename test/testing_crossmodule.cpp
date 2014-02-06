@@ -8,7 +8,7 @@
 #define BOOST_TEST_MODULE testing_crossmodule_module
 #include <boost/test/unit_test.hpp>
 
-#include <boost/type_index/type_index.hpp>
+#include <boost/type_index.hpp>
 #include "test_lib.hpp"
 
 namespace user_defined_namespace {
@@ -17,8 +17,8 @@ namespace user_defined_namespace {
 
 BOOST_AUTO_TEST_CASE(comparing_types_between_modules)
 {
-    boost::type_index t_const_int = boost::type_id_with_cvr<const int>();
-    boost::type_index t_int = boost::type_id<int>();
+    boost::typeind::type_index t_const_int = boost::typeind::type_id_with_cvr<const int>();
+    boost::typeind::type_index t_int = boost::typeind::type_id<int>();
 
     BOOST_CHECK_EQUAL(t_int, test_lib::get_integer());
     BOOST_CHECK_EQUAL(t_const_int, test_lib::get_const_integer());
@@ -26,8 +26,10 @@ BOOST_AUTO_TEST_CASE(comparing_types_between_modules)
     BOOST_CHECK_NE(t_int, test_lib::get_const_integer());
 
 
-    boost::type_index t_const_userdef = boost::type_id_with_cvr<const user_defined_namespace::user_defined>();
-    boost::type_index t_userdef = boost::type_id<user_defined_namespace::user_defined>();
+    boost::typeind::type_index t_const_userdef 
+        = boost::typeind::type_id_with_cvr<const user_defined_namespace::user_defined>();
+    boost::typeind::type_index t_userdef 
+        = boost::typeind::type_id<user_defined_namespace::user_defined>();
 
     BOOST_CHECK_EQUAL(t_userdef, test_lib::get_user_defined_class());
     BOOST_CHECK_EQUAL(t_const_userdef, test_lib::get_const_user_defined_class());
