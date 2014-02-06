@@ -8,7 +8,7 @@
 #define BOOST_TEST_MODULE template_index_test_module
 #include <boost/test/unit_test.hpp>
 
-#include <boost/type_index/template_index.hpp>
+#include <boost/type_index.hpp>
 
 namespace my_namespace1 {
     class my_class{};

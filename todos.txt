@@ -1,0 +1,72 @@
+Sketch of TypeIndex v3 library interface:
+
+// boost/type_index/type_index_base.hpp
+namespace boost{ namespace typeind {
+
+namespce detail {
+
+template <class TypeInfo>
+class type_index_base
+    const TypeInfo* data_;
+
+public:
+type_index_base(const TypeInfo&);
+
+const char* raw_name() const noexcept;
+const char* name() const noexcept;
+const char* pretty_name() const;
+std::size_t hash_value() const noexcept;
+const TypeInfo& type_info() const noexcept;
+
+// comparison operators
+};
+
+}}} // namespace boost::typeind::detail
+
+
+// boost/type_index.hpp
+/// Contians core functionality for everyday use
+namespace boost{ namespace typeind {
+
+// MSVC is capable of calling typeid(T) even when RTTI is off
+#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
+typedef std::type_info type_info; // RTTI on/off dependent
+typedef type_index_base<type_info> type_index;
+#else 
+#else
+#endif
+
+inline bool is_equal(const type_info&, const type_info&) noexcept;
+
+template <class T>
+type_index type_id() noexcept;
+
+template <class T>
+type_index type_id_with_cvr() noexcept;
+
+template <class T>
+type_index type_id_runtime(const T&) noexcept;
+
+template <class T>
+type_index type_id_runtime(const T*) noexcept;
+
+/* macro that must be put inside class to allow `type_id_runtime` calls with RTTI disabled */
+/// Empty if RTTI is on
+#define BOOST_TYPE_INDEX_REGISTER_CLASS
+
+}} // namespace boost::typeind
+
+// boost/type_index/ctti.hpp
+/// Contians minimal functionality required by boost/type_index.hpp with RTTI off
+namespace boost { namespace detail {
+    template <class T>
+    struct ctti {
+        /// Returns raw name. Must be as short, as possible, to avoid code bloat
+        static const char* n() noexcept;
+    };
+} // namespace detail
+
+namespace typeind {
+    // Will be used instead of std::type_info when RTTI is off
+    class ctti_data; // POD. Interface is close to std::type_info
+}}
