@@ -34,26 +34,30 @@
 #endif
 
 #include <typeinfo>
-
-#ifdef __GNUC__
-#include <cxxabi.h>
-#endif
-
-
-#include <cstring>
-#include <boost/assert.hpp>
+#include <cstring>                                  // std::strcmp, std::strlen
 #include <boost/static_assert.hpp>
-#include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_reference.hpp>
 #include <boost/type_traits/is_volatile.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/detail/no_exceptions_support.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 
+#ifdef __GNUC__
+#include <cxxabi.h>
+#endif
+
+#if !defined(BOOST_MSVC)
+#   include <boost/assert.hpp>
+#   include <boost/detail/no_exceptions_support.hpp>
+#endif
+
+#if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
+        || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
+#   include <boost/type_traits/is_arithmetic.hpp>
+#endif
 
 namespace boost { namespace typeind { namespace detail {
 
@@ -157,7 +161,6 @@ inline std::string type_index_base<std::type_info>::pretty_name() const {
     }
 
     std::string::size_type end = ret.rfind(">");
-    BOOST_ASSERT(end != std::string::npos);
     while (ret[end - 1] == ' ') {
         -- end;
     }
