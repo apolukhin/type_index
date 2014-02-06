@@ -1,8 +1,6 @@
 #define TEST_LIB_SOURCE
 #include "test_lib.hpp"
 
-#include <boost/functional/hash.hpp>
-
 namespace user_defined_namespace {
     class user_defined{};
 }

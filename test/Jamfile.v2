@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2013 Antony Polukhin
+# Copyright (C) 2012-2014 Antony Polukhin
 #
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -19,8 +19,8 @@ nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <to
 
 
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
-#obj test_lib_nortti-obj : test_lib.cpp : <link>shared <rtti>off ;
-#lib test_lib_nortti : test_lib_nortti-obj : <link>shared <rtti>off ;
+obj test_lib_nortti-obj : test_lib.cpp : <link>shared <rtti>off ;
+lib test_lib_nortti : test_lib_nortti-obj : <link>shared <rtti>off ;
 
 obj test_lib_rtti-obj : test_lib.cpp : <link>shared ;
 lib test_lib_rtti : test_lib_rtti-obj : <link>shared ;
@@ -37,7 +37,7 @@ test-suite type_index
     [ run type_index_test.cpp $(tlib) ]
     [ run type_index_test.cpp $(tlib) : : : <rtti>off : type_index_test_no_rtti ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
-#    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
+    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
     
     # Mixing RTTI on and off
     [ link-fail testing_crossmodule.cpp $(tlib) test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
@@ -46,16 +46,16 @@ test-suite type_index
     [ run testing_crossmodule.cpp $(tlib) test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
     [ run testing_crossmodule.cpp $(tlib) test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
 
-#    # Examples that must work even with RTTI disabled
-#    [ run ../examples/registry.cpp : : : <rtti>off : registry_no_rtti ]
-#    [ run ../examples/exact_types_match.cpp : : : <rtti>off : exact_types_match_no_rtti ]
-#    [ run ../examples/demangled_names.cpp : : : <rtti>off : demangled_names_no_rtti ]
-#    [ compile-fail ../examples/inheritance.cpp : <rtti>off : failing_inheritance_example ]
+    # Examples that must work even with RTTI disabled
+    [ run ../examples/registry.cpp : : : <rtti>off : registry_no_rtti ]
+    [ run ../examples/exact_types_match.cpp : : : <rtti>off : exact_types_match_no_rtti ]
+    [ run ../examples/demangled_names.cpp : : : <rtti>off : demangled_names_no_rtti ]
+    [ compile-fail ../examples/inheritance.cpp : <rtti>off : failing_inheritance_example ]
   ;
   
 # Assuring that examples compile and run. Adding sources from `examples` directory to the `type_index` test suite. 
-#for local p in [ glob ../examples/*.cpp ]
-#{
-#    type_index += [ run $(p) ] ;
-#}
+for local p in [ glob ../examples/*.cpp ]
+{
+    type_index += [ run $(p) ] ;
+}
 

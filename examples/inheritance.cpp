@@ -1,4 +1,4 @@
-// Copyright 2013 Antony Polukhin
+// Copyright 2013-2014 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -13,7 +13,7 @@
     "boost::type_id_rtti_only(T&) requires RTTI"
 */
 
-#include <boost/type_index/type_info.hpp>
+#include <boost/type_index.hpp>
 #include <iostream>
 
 struct A { virtual ~A(){} };
@@ -21,7 +21,7 @@ struct B: public A {};
 struct C: public B {};
 
 void print_real_type(const A& a) {
-    std::cout << boost::type_id_rtti_only(a).name_demangled() << '\n';
+    std::cout << boost::typeind::type_id_runtime(a).pretty_name() << '\n';
 }
 
 int main() {

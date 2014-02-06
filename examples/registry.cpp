@@ -1,4 +1,4 @@
-// Copyright 2013 Antony Polukhin
+// Copyright 2013-2014 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -10,27 +10,28 @@
     Example works with and without RTTI.
 */
 
-#include <boost/type_index/type_index.hpp>
+#include <boost/type_index.hpp>
 #include <boost/unordered_set.hpp>
+#include <boost/functional/hash.hpp>
 #include <cassert>
 
 int main() {
-    boost::unordered_set<boost::type_index> types;
+    boost::unordered_set<boost::typeind::type_index> types;
     
     // Storing some `boost::type_info`s
-    types.insert(boost::type_id<int>());
-    types.insert(boost::type_id<float>());
+    types.insert(boost::typeind::type_id<int>());
+    types.insert(boost::typeind::type_id<float>());
     
     // `types` variable contains two `boost::type_index`es:
     assert(types.size() == 2);
 
     // Const, volatile and reference will be striped from the type:
-    bool is_inserted = types.insert(boost::type_id<const int>()).second;
+    bool is_inserted = types.insert(boost::typeind::type_id<const int>()).second;
     assert(!is_inserted);
-    assert(types.erase(boost::type_id<float&>()) == 1);
+    assert(types.erase(boost::typeind::type_id<float&>()) == 1);
     
     // We have erased the `float` type, only `int` remains
-    assert(*types.begin() == boost::type_id<int>());
+    assert(*types.begin() == boost::typeind::type_id<int>());
 }
 
 //] [/type_index_registry_example]

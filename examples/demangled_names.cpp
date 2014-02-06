@@ -1,4 +1,4 @@
-// Copyright 2013 Antony Polukhin
+// Copyright 2013-2014 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -12,13 +12,13 @@
 */
 
 
-#include <boost/type_index/type_info.hpp>
+#include <boost/type_index.hpp>
 #include <iostream>
 
 template <class T>
 void foo(T) {
-    std::cout << "\n Short name: " << boost::type_id<T>().name();
-    std::cout << "\n Readable name: " << boost::type_id<T>().name_demangled();
+    std::cout << "\n Short name: " << boost::typeind::type_id<T>().raw_name();
+    std::cout << "\n Readable name: " << boost::typeind::type_id<T>().pretty_name();
 }
 
 struct user_defined_type{};

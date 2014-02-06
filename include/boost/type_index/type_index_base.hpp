@@ -182,6 +182,10 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(
 #endif // BOOST_NO_TEMPLATED_IOSTREAMS
 #endif // BOOST_NO_IOSTREAM
 
+template <class TypeInfo>
+inline std::size_t hash_value(const type_index_base<TypeInfo>& lhs) BOOST_NOEXCEPT {
+    return lhs.hash_code();
+}
 
 }}} // namespace boost::typeind::detail
 

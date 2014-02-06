@@ -25,6 +25,8 @@
 # pragma once
 #endif
 
+#include <boost/config.hpp>
+
 #if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.ipp>
 #else 

@@ -29,16 +29,9 @@
 #include <boost/type_index/detail/compile_time_type_info.hpp>
 
 #include <cstring>
-#include <boost/assert.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits/is_arithmetic.hpp>
-#include <boost/type_traits/is_const.hpp>
-#include <boost/type_traits/is_reference.hpp>
-#include <boost/type_traits/is_volatile.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/detail/no_exceptions_support.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 namespace boost { namespace typeind { namespace detail {
@@ -56,7 +49,7 @@ inline const ctti_data& ctti_construct() BOOST_NOEXCEPT {
 
 template <>
 template <class T>
-type_index_base<ctti_data> type_index_base<ctti_data>::construct() BOOST_NOEXCEPT {
+inline type_index_base<ctti_data> type_index_base<ctti_data>::construct() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
     return ctti_construct<no_cvr_t>();
@@ -65,14 +58,14 @@ type_index_base<ctti_data> type_index_base<ctti_data>::construct() BOOST_NOEXCEP
 
 template <>
 template <class T>
-type_index_base<ctti_data> type_index_base<ctti_data>::construct_with_cvr() BOOST_NOEXCEPT {
+inline type_index_base<ctti_data> type_index_base<ctti_data>::construct_with_cvr() BOOST_NOEXCEPT {
     return ctti_construct<T>();
 }
 
 
 template <>
 template <class T>
-type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
+inline type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(T&) and type_index::construct_runtime(T&) require RTTI");
     
@@ -82,7 +75,7 @@ type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T& rtti
 
 template <>
 template <class T>
-type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T* rtti_val) {
+inline type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T* rtti_val) {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(T*) and type_index::construct_runtime(T*) require RTTI");
 
@@ -91,18 +84,18 @@ type_index_base<ctti_data> type_index_base<ctti_data>::construct_runtime(T* rtti
 
 
 template <>
-const char* type_index_base<ctti_data>::raw_name() const BOOST_NOEXCEPT {
+inline const char* type_index_base<ctti_data>::raw_name() const BOOST_NOEXCEPT {
     return data_->typename_;
 }
 
 
 template <>
-const char* type_index_base<ctti_data>::name() const BOOST_NOEXCEPT {
+inline const char* type_index_base<ctti_data>::name() const BOOST_NOEXCEPT {
     return data_->typename_;
 }
 
 template <>
-std::string type_index_base<ctti_data>::pretty_name() const {
+inline std::string type_index_base<ctti_data>::pretty_name() const {
     std::size_t len = std::strlen(raw_name() + ctti_skip_size_at_end);
     while (raw_name()[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
     return std::string(raw_name(), len);
@@ -110,19 +103,19 @@ std::string type_index_base<ctti_data>::pretty_name() const {
 
 
 template <>
-bool type_index_base<ctti_data>::equal(const type_index_base<ctti_data>& rhs) const BOOST_NOEXCEPT {
+inline bool type_index_base<ctti_data>::equal(const type_index_base<ctti_data>& rhs) const BOOST_NOEXCEPT {
     return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
 }
 
 
 template <>
-bool type_index_base<ctti_data>::before(const type_index_base<ctti_data>& rhs) const BOOST_NOEXCEPT {
+inline bool type_index_base<ctti_data>::before(const type_index_base<ctti_data>& rhs) const BOOST_NOEXCEPT {
     return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
 }
 
 
 template <>
-std::size_t type_index_base<ctti_data>::hash_code() const BOOST_NOEXCEPT {
+inline std::size_t type_index_base<ctti_data>::hash_code() const BOOST_NOEXCEPT {
     return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name() + detail::ctti_skip_size_at_end));
 }
 

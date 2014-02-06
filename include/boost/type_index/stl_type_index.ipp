@@ -59,7 +59,7 @@ namespace boost { namespace typeind { namespace detail {
 
 template <>
 template <class T>
-type_index_base<std::type_info> type_index_base<std::type_info>::construct() BOOST_NOEXCEPT {
+inline type_index_base<std::type_info> type_index_base<std::type_info>::construct() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
 
@@ -75,7 +75,7 @@ type_index_base<std::type_info> type_index_base<std::type_info>::construct() BOO
 
 template <>
 template <class T>
-type_index_base<std::type_info> type_index_base<std::type_info>::construct_with_cvr() BOOST_NOEXCEPT {
+inline type_index_base<std::type_info> type_index_base<std::type_info>::construct_with_cvr() BOOST_NOEXCEPT {
     typedef typename boost::mpl::if_c<
         boost::is_reference<T>::value
             || boost::is_const<T>::value
@@ -90,7 +90,7 @@ type_index_base<std::type_info> type_index_base<std::type_info>::construct_with_
 
 template <>
 template <class T>
-type_index_base<std::type_info> type_index_base<std::type_info>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
+inline type_index_base<std::type_info> type_index_base<std::type_info>::construct_runtime(T& rtti_val) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(T&) and type_index::construct_runtime(T&) require RTTI");
@@ -102,7 +102,7 @@ type_index_base<std::type_info> type_index_base<std::type_info>::construct_runti
 
 template <>
 template <class T>
-type_index_base<std::type_info> type_index_base<std::type_info>::construct_runtime(T* rtti_val) {
+inline type_index_base<std::type_info> type_index_base<std::type_info>::construct_runtime(T* rtti_val) {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(T*) and type_index::construct_runtime(T*) require RTTI");
@@ -112,7 +112,7 @@ type_index_base<std::type_info> type_index_base<std::type_info>::construct_runti
 
 
 template <>
-const char* type_index_base<std::type_info>::raw_name() const BOOST_NOEXCEPT {
+inline const char* type_index_base<std::type_info>::raw_name() const BOOST_NOEXCEPT {
 #ifdef _MSC_VER
     return data_->raw_name();
 #else
@@ -122,12 +122,12 @@ const char* type_index_base<std::type_info>::raw_name() const BOOST_NOEXCEPT {
 
 
 template <>
-const char* type_index_base<std::type_info>::name() const BOOST_NOEXCEPT {
+inline const char* type_index_base<std::type_info>::name() const BOOST_NOEXCEPT {
     return data_->name();
 }
 
 template <>
-std::string type_index_base<std::type_info>::pretty_name() const {
+inline std::string type_index_base<std::type_info>::pretty_name() const {
 #if defined(_MSC_VER)
     std::string ret = data_->name();
 #else
@@ -182,7 +182,7 @@ std::string type_index_base<std::type_info>::pretty_name() const {
 
 
 template <>
-bool type_index_base<std::type_info>::equal(const type_index_base<std::type_info>& rhs) const BOOST_NOEXCEPT {
+inline bool type_index_base<std::type_info>::equal(const type_index_base<std::type_info>& rhs) const BOOST_NOEXCEPT {
 #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
     return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
 #else
@@ -192,7 +192,7 @@ bool type_index_base<std::type_info>::equal(const type_index_base<std::type_info
 
 
 template <>
-bool type_index_base<std::type_info>::before(const type_index_base<std::type_info>& rhs) const BOOST_NOEXCEPT {
+inline bool type_index_base<std::type_info>::before(const type_index_base<std::type_info>& rhs) const BOOST_NOEXCEPT {
 #ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
     return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
 #else
@@ -207,7 +207,7 @@ bool type_index_base<std::type_info>::before(const type_index_base<std::type_inf
 
 
 template <>
-std::size_t type_index_base<std::type_info>::hash_code() const BOOST_NOEXCEPT {
+inline std::size_t type_index_base<std::type_info>::hash_code() const BOOST_NOEXCEPT {
 #if _MSC_VER > 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
     return data_->hash_code();
 #else 
