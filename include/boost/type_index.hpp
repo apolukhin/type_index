@@ -27,18 +27,22 @@
 
 #include <boost/config.hpp>
 
-#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
-#   include <boost/type_index/stl_type_index.ipp>
+#if defined(BOOST_TYPE_INDEX_USER_TYPEINFO) && defined(BOOST_TYPE_INDEX_USER_TYPEINFO_NAME) 
+#   include BOOST_TYPE_INDEX_USER_TYPEINFO
+#elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
+#   include <boost/type_index/stl_type_index.hpp>
 #else 
-#   include <boost/type_index/ctti_type_index.ipp>
+#   include <boost/type_index/ctti_type_index.hpp>
 #endif
 
 namespace boost { namespace typeind {
 
-#if (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
-    typedef boost::typeind::detail::type_index_base<std::type_info> type_index;
+#if defined(BOOST_TYPE_INDEX_USER_TYPEINFO) && defined(BOOST_TYPE_INDEX_USER_TYPEINFO_NAME) 
+    typedef boost::typeind::detail::type_index_base<BOOST_TYPE_INDEX_USER_TYPEINFO_NAME> type_index;
+#elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
+    typedef boost::typeind::detail::stl_type_index type_index;
 #else 
-    typedef boost::typeind::detail::type_index_base<boost::typeind::detail::ctti_data> type_index;
+    typedef boost::typeind::detail::ctti_type_index type_index;
 #endif
 
 typedef type_index::type_info_t type_info;
@@ -66,13 +70,13 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 
 /// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
 template <class T>
-inline type_index type_id_runtime(T& runtime_val) BOOST_NOEXCEPT {
+inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
     return type_index::construct_runtime(runtime_val);
 }
 
 /// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_info.
 template <class T>
-inline type_index type_id_runtime(T* runtime_val) {
+inline type_index type_id_runtime(const T* runtime_val) {
     return type_index::construct_runtime(runtime_val);
 }
 
