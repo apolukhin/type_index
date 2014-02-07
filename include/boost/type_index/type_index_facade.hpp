@@ -25,7 +25,7 @@
 #endif
 #endif
 
-namespace boost { namespace typeind { namespace detail {
+namespace boost { namespace typeind {
 
 /// type_index_facade - use as a public base class for defining new
 /// standard-conforming iterators.
@@ -198,7 +198,7 @@ inline std::size_t hash_value(const type_index_facade<Derived, TypeInfo>& lhs) B
     return lhs.hash_code();
 }
 
-}}} // namespace boost::typeind::detail
+}} // namespace boost::typeind
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_FACADE_HPP
 

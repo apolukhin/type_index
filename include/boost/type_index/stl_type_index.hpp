@@ -59,7 +59,7 @@
 #   include <boost/type_traits/is_arithmetic.hpp>
 #endif
 
-namespace boost { namespace typeind { namespace detail {
+namespace boost { namespace typeind {
 
 class stl_type_index
     : public type_index_facade<
@@ -223,8 +223,9 @@ inline stl_type_index stl_type_index::construct() BOOST_NOEXCEPT {
     return typeid(no_cvr_t);
 }
 
-template <class T> class cvr_saver{};
-
+namespace detail {
+    template <class T> class cvr_saver{};
+}
 
 template <class T>
 inline stl_type_index stl_type_index::construct_with_cvr() BOOST_NOEXCEPT {
@@ -232,7 +233,7 @@ inline stl_type_index stl_type_index::construct_with_cvr() BOOST_NOEXCEPT {
         boost::is_reference<T>::value
             || boost::is_const<T>::value
             || boost::is_volatile<T>::value,
-        cvr_saver<T>,
+        detail::cvr_saver<T>,
         T
     >::type type;
 
@@ -257,7 +258,7 @@ inline stl_type_index stl_type_index::construct_runtime(const T& value) BOOST_NO
     return typeid(value);
 }
 
-}}} // namespace boost::typeind::detail
+}} // namespace boost::typeind
 
 
 #endif // BOOST_TYPE_INDEX_STL_TYPE_INDEX_HPP

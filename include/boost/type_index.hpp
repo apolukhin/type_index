@@ -38,11 +38,11 @@
 namespace boost { namespace typeind {
 
 #if defined(BOOST_TYPE_INDEX_USER_TYPEINFO) && defined(BOOST_TYPE_INDEX_USER_TYPEINFO_NAME) 
-    typedef boost::typeind::detail::type_index_base<BOOST_TYPE_INDEX_USER_TYPEINFO_NAME> type_index;
+    typedef BOOST_TYPE_INDEX_USER_TYPEINFO_NAME type_index;
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
-    typedef boost::typeind::detail::stl_type_index type_index;
+    typedef boost::typeind::stl_type_index type_index;
 #else 
-    typedef boost::typeind::detail::ctti_type_index type_index;
+    typedef boost::typeind::ctti_type_index type_index;
 #endif
 
 typedef type_index::type_info_t type_info;

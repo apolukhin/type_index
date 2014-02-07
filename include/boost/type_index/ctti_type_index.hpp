@@ -34,7 +34,9 @@
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
-namespace boost { namespace typeind { namespace detail {
+namespace boost { namespace typeind {
+
+namespace detail {
 
 struct ctti_data {
     const char* typename_;
@@ -46,12 +48,13 @@ inline const ctti_data& ctti_construct() BOOST_NOEXCEPT {
     return result;
 }
 
+} // namespace detail
 
-class ctti_type_index: public type_index_facade<ctti_type_index, ctti_data> {
-    const ctti_data* data_;
+class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
+    const detail::ctti_data* data_;
 
 public:
-    typedef ctti_data type_info_t;
+    typedef detail::ctti_data type_info_t;
 
     inline ctti_type_index(const type_info_t& data) BOOST_NOEXCEPT
         : data_(&data)
@@ -85,14 +88,14 @@ template <class T>
 inline ctti_type_index ctti_type_index::construct() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
-    return ctti_construct<no_cvr_t>();
+    return detail::ctti_construct<no_cvr_t>();
 }
 
 
 
 template <class T>
 inline ctti_type_index ctti_type_index::construct_with_cvr() BOOST_NOEXCEPT {
-    return ctti_construct<T>();
+    return detail::ctti_construct<T>();
 }
 
 
@@ -101,7 +104,7 @@ inline ctti_type_index ctti_type_index::construct_runtime(const T* rtti_val) BOO
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T*) and type_index::construct_runtime(const T*) require RTTI");
 
-    return ctti_construct<T>();
+    return detail::ctti_construct<T>();
 }
 
 template <class T>
@@ -109,7 +112,7 @@ inline ctti_type_index ctti_type_index::construct_runtime(const T& rtti_val) BOO
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T&) and type_index::construct_runtime(const T&) require RTTI");
 
-    return ctti_construct<T>();
+    return detail::ctti_construct<T>();
 }
 
 
@@ -123,7 +126,7 @@ inline const char* ctti_type_index::name() const BOOST_NOEXCEPT {
 }
 
 inline std::string ctti_type_index::pretty_name() const {
-    std::size_t len = std::strlen(raw_name() + ctti_skip_size_at_end);
+    std::size_t len = std::strlen(raw_name() + detail::ctti_skip_size_at_end);
     while (raw_name()[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
     return std::string(raw_name(), len);
 }
@@ -144,7 +147,7 @@ inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
 }
 
 
-}}} // namespace boost::typeind::detail
+}} // namespace boost::typeind
 
 
 #endif // BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_IPP
