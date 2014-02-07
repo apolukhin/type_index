@@ -27,12 +27,35 @@
 
 namespace boost { namespace typeind {
 
-/// type_index_facade - use as a public base class for defining new
-/// standard-conforming iterators.
+/// \class type_index_facade
 ///
+/// This class takes care about the comparison operators, hash functions and 
+/// ostream operators. Use this class as a public base class for defining new
+/// type_info-conforming classes.
+///
+/// \b Example:
+/// \code
+/// class stl_type_index: public type_index_facade<stl_type_index, std::type_info> 
+/// {
+/// public:
+///     typedef std::type_info type_info_t;
+/// private:
+///     const type_info_t* data_;
+///
+/// public:
+///     stl_type_index(const type_info_t& data) noexcept
+///         : data_(&data)
+///     {}
+/// // ...
+/// };
+/// \endcode
+///
+/// \tparam Derived Class derived from type_index_facade.
+/// \tparam TypeInfo Class that will be used as a base type_info class.
 template <class Derived, class TypeInfo>
 class type_index_facade {
 private:
+    /// @cond
     Derived& derived() BOOST_NOEXCEPT {
       return *static_cast<Derived*>(this);
     }
@@ -40,7 +63,7 @@ private:
     const Derived & derived() const BOOST_NOEXCEPT {
       return *static_cast<Derived const*>(this);
     }
-
+    /// @endcond
 public:
     typedef TypeInfo                                type_info_t;
     typedef type_index_facade<Derived, TypeInfo>    this_type;
@@ -74,7 +97,7 @@ public:
     }
 };
 
-
+/// @cond
 template <class Derived, class TypeInfo>
 inline bool operator == (const type_index_facade<Derived, TypeInfo>& lhs, const type_index_facade<Derived, TypeInfo>& rhs) BOOST_NOEXCEPT {
     return lhs.equal(rhs);
@@ -171,17 +194,33 @@ inline bool operator != (const type_index_facade<Derived, TypeInfo>& lhs, const 
 
 // ######################### COMPARISONS with Derived END ############################ //
 
+/// @endcond
+
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
+
+/// noexcept comparison operators for type_index_facade classes.
+bool operator ? (const type_index_facade& lhs, const type_index_facade& rhs) noexcept;
+
+/// noexcept comparison operators for type_index_facade and it's TypeInfo classes.
+bool operator ? (const type_index_facade& lhs, const TypeInfo& rhs) noexcept;
+
+/// noexcept comparison operators for type_index_facade's TypeInfo and type_index_facade classes.
+bool operator ? (const TypeInfo& lhs, const type_index_facade& rhs) noexcept;
+
+#endif
 
 #ifndef BOOST_NO_IOSTREAM
 #ifdef BOOST_NO_TEMPLATED_IOSTREAMS
+/// @cond
 /// Ostream operator that will output demangled name
 template <class Derived, class TypeInfo>
 inline std::ostream& operator<<(std::ostream& ostr, const type_index_facade<Derived, TypeInfo>& ind) {
     ostr << ind.pretty_name();
     return ostr;
 }
+/// @endcond
 #else
-/// Ostream operator that will output demangled name
+/// Ostream operator that will output demangled name.
 template <class CharT, class TriatT, class Derived, class TypeInfo>
 inline std::basic_ostream<CharT, TriatT>& operator<<(
     std::basic_ostream<CharT, TriatT>& ostr, 
@@ -193,6 +232,7 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(
 #endif // BOOST_NO_TEMPLATED_IOSTREAMS
 #endif // BOOST_NO_IOSTREAM
 
+/// This free function is used by Boost's unordered containers.
 template <class Derived, class TypeInfo>
 inline std::size_t hash_value(const type_index_facade<Derived, TypeInfo>& lhs) BOOST_NOEXCEPT {
     return lhs.hash_code();

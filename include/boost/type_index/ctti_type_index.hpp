@@ -14,16 +14,14 @@
 # pragma once
 #endif
 
-/// \file stl_type_index.ipp
-/// \brief Contains specialization of boost::type_index_base<std::type_info>.
+/// \file ctti_type_index.hpp
+/// \brief Contains boost::typeind::ctti_type_index class.
 ///
-/// boost::type_index_base<std::type_info> class can be used as a drop-in replacement 
+/// boost::typeind::ctti_type_index class can be used as a drop-in replacement 
 /// for std::type_index.
 ///
-/// It is used in situations when RTTI is enabled or typeid() method is available.
-/// When typeid() is not is disabled or BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined boost::template_info
-/// is usually used instead of it (some compilers allow calling typeid(T)
-/// even if RTTI is disabled, those copilers will continue to use boost::type_info class).
+/// It is used in situations when typeid() method is not available or 
+/// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined.
 
 #include <boost/type_index/type_index_facade.hpp>
 #include <boost/type_index/detail/compile_time_type_info.hpp>
@@ -50,6 +48,7 @@ inline const ctti_data& ctti_construct() BOOST_NOEXCEPT {
 
 } // namespace detail
 
+/// \class ctti_type_index
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
     const detail::ctti_data* data_;
 

@@ -1,6 +1,6 @@
 [library Boost.TypeIndex
     [quickbook 1.6]
-    [version 2.1]
+    [version 3.0]
     [copyright 2012-2013 Antony Polukhin]
     [category Language Features Emulation]
     [license
@@ -24,7 +24,7 @@ Boost.TypeIndex library was designed to work around all those issues.
 
 [note `T` means type here. Think of it as of `T` in `template <class T>` ] 
 
-[warning During the Boost review was decided, that it is better to use interface close to v1.0 of this library. Version 3.0 will attempt to fix all the issues found during the review. ] 
+[warning Version 3.0 of this library is waitning for Boost mini-review. ] 
 
 [endsect]
 
@@ -44,9 +44,6 @@ To start using Boost.TypeIndex:
     #include <typeinfo>
     #include <typeindex>
 ``][``
-    #include <boost/type_index/type_info.hpp>
-    #include <boost/type_index/type_index.hpp>
-`` or ``
     #include <boost/type_index.hpp>
 ``]]
 
@@ -54,8 +51,15 @@ To start using Boost.TypeIndex:
     std::type_info
     std::type_index
 ``][``
-    boost::type_info
     boost::type_index
+``]]
+
+[[``
+    std::type_info&
+    const std::type_info&
+``][``
+    boost::type_index&
+    const boost::type_index&
 ``]]
 
 [[``
@@ -66,8 +70,8 @@ To start using Boost.TypeIndex:
 ``][``
     boost::type_id<T>()
     boost::type_id_with_cvr<T>()
-    boost::type_id<T>().name_demangled() // human readable
-    boost::type_id_rtti_only(variable)
+    boost::type_id<T>().pretty_name() // human readable
+    boost::type_id_runtime(variable)
 ``]]
 ]
 
@@ -75,7 +79,7 @@ To start using Boost.TypeIndex:
 Here is how TypeIndex could be used in `boost/any.hpp`:
 [table:any
 [[Before] [With TypeIndex]]
-[[``#include <typeinfo>``][``#include <boost/type_index/type_info.hpp>``]]
+[[``#include <typeinfo>``][``#include <boost/type_index.hpp>``]]
 [[``
     virtual const std::type_info & type() const BOOST_NOEXCEPT
     {
@@ -86,7 +90,7 @@ Here is how TypeIndex could be used in `boost/any.hpp`:
     virtual const boost::type_info & type() const BOOST_NOEXCEPT
     {
         // now works even with RTTI disabled
-        return boost::type_id<ValueType>();
+        return boost::type_id<ValueType>()->type_info();
     }
 ``]]
 ]
@@ -101,7 +105,7 @@ Here is how TypeIndex could be used in `boost/variant/variant.hpp`:
 #include <typeinfo> // for typeid, std::type_info
 #endif // BOOST_NO_TYPEID
 ``][``
-#include <boost/type_info/type_info.hpp>
+#include <boost/type_index.hpp>
 ``]]
 [[``
 #if !defined(BOOST_NO_TYPEID)
@@ -129,7 +133,7 @@ public: // visitor interfaces
     template <typename T>
     const boost::type_info& operator()(const T&) const BOOST_NOEXCEPT
     {
-        return boost::type_id<T>();
+        return boost::type_id<T>()->type_info();
     }
 
 };
@@ -174,20 +178,21 @@ public: // visitor interfaces
 
 [section Space and Performance]
 
-* `template_info` uses macro for getting full text representation of function name which could lead to code bloat, 
-so prefer using `type_info` type.
-* `type_index` and `template_index` classes hold a single pointer, so they are easy and fast to copy. 
-* Calls to `const char* name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image. 
+* `ctti_type_info` uses macro for getting full text representation of function name which could lead to code bloat, 
+so prefer using `stl_type_info` type.
+* `type_index` class hold a single pointer, so it is easy and fast to copy. 
+* Calls to `const char* raw_name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image. 
 * Comparison operators are optimized as much as possible, and will at worst execute a single `std::strcmp`. 
-* Calls to `std::string name_demangled()` usually require dynamic memory allocation and some computations, so they are not recommended for usage in performance critical sections.
+* Calls to `std::string pretty_name()` usually require dynamic memory allocation and some computations, so they are not recommended for usage in performance critical sections.
 
 [endsect]
 
 [section Code bloat]
 
-Without RTTI TypeIndex library will switch from using `boost::type_info` class to `boost::template_info`. 
-`boost::template_info` uses macro for getting full text representation of function name for each type that
-is passed to `type_id()` and `type_id_with_cvr()` functions. 
+Without RTTI TypeIndex library will switch from using `boost::typeind::stl_type_info` class to
+`boost::typeind::ctti_type_info`. `boost::typeind::ctti_type_info` uses macro for getting full
+text representation of function name for each type that is passed to `type_id()` and 
+`type_id_with_cvr()` functions. 
 
 This leads to big strings in binary file:
 ```
@@ -224,10 +229,10 @@ feature request to add your compiler to supported compilers list. Include
 Consider the following example:
 
 With `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` set to `0`, 
-`boost::template_id<int>().name()` returns "const char *__cdecl boost::detail::ctti<int>::n(void)".
-Then you shall set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to 
-`sizeof("const char *__cdecl boost::detail::ctti<") - 1` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` 
-to `sizeof(">::n(void)") - 1`
+`boost::typeind::ctti_type_info::construct<int>().raw_name()` returns
+"const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set
+`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1`
+and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`.
 
 [endsect]
 
@@ -236,8 +241,8 @@ to `sizeof(">::n(void)") - 1`
 Linking a binary from source files that were compiled with different RTTI flags is not a very good
 idea and may lead to a lot of surprises. However if there is a very strong need, TypeIndex library 
 provides a solution for mixing sources: just define `BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY` 
-macro. This would lead to usage of `boost::template_index` instead of `boost::type_index` class
-and `boost::template_info` instead of `boost::type_info` class.
+macro. This would lead to usage of `boost::typeind::ctti_type_info` instead of
+`boost::typeind::stl_type_info` class.
 
 [note Do not forget to rebuild *all* the projects with `BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY` macro defined ]
 
@@ -249,7 +254,7 @@ RTTI flags:
 
 [table:diffs
 [[RTTI on] [RTTI off]]
-[[`boost::type_index get_integer();`] [`boost::template_index get_integer();`]]
+[[`boost::typeind::stl_type_info get_integer();`] [`boost::typeind::ctti_type_info get_integer();`]]
 ]
 
 Such differences are usually not detected by linker and lead to errors at runtime.
@@ -266,8 +271,8 @@ Such differences are usually not detected by linker and lead to errors at runtim
 
 In order of helping and advising:
 
-* Peter Dimov for writing source codes in late 2007, ideas from which were refined and put into this library.
+* Peter Dimov for writing source codes in late 2007, that gave me an idea of how to emulate RTTI.
 * Agustín Bergé K-ballo for helping with docs and fixing a lot of typos.
-* Niall Douglas for generating a lot of great ideas and reviewing the sources.
+* Niall Douglas for generating a lot of great ideas, reviewing the sources and being the review manager for the library.
 
 [endsect]
