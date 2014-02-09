@@ -30,7 +30,6 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
-#include <boost/functional/hash_fwd.hpp>
 
 namespace boost { namespace typeind {
 
@@ -60,14 +59,9 @@ public:
     {}
 
     inline const type_info_t&  type_info() const BOOST_NOEXCEPT;
-
     inline const char*  raw_name() const BOOST_NOEXCEPT;
-    inline const char*  name() const BOOST_NOEXCEPT;
     inline std::string  pretty_name() const;
-
     inline std::size_t  hash_code() const BOOST_NOEXCEPT;
-    inline bool         equal(const ctti_type_index& rhs) const BOOST_NOEXCEPT;
-    inline bool         before(const ctti_type_index& rhs) const BOOST_NOEXCEPT;
 
     template <class T>
     inline static ctti_type_index construct() BOOST_NOEXCEPT;
@@ -120,24 +114,10 @@ inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
 }
 
 
-inline const char* ctti_type_index::name() const BOOST_NOEXCEPT {
-    return data_->typename_;
-}
-
 inline std::string ctti_type_index::pretty_name() const {
     std::size_t len = std::strlen(raw_name() + detail::ctti_skip_size_at_end);
     while (raw_name()[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
     return std::string(raw_name(), len);
-}
-
-
-inline bool ctti_type_index::equal(const ctti_type_index& rhs) const BOOST_NOEXCEPT {
-    return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
-}
-
-
-inline bool ctti_type_index::before(const ctti_type_index& rhs) const BOOST_NOEXCEPT {
-    return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
 }
 
 

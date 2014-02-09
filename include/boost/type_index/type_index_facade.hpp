@@ -15,7 +15,9 @@
 #endif
 
 #include <boost/config.hpp>
+#include <boost/functional/hash_fwd.hpp>
 #include <string>
+#include <cstring>
 
 #if !defined(BOOST_NO_IOSTREAM)
 #if !defined(BOOST_NO_IOSFWD)
@@ -56,56 +58,65 @@ template <class Derived, class TypeInfo>
 class type_index_facade {
 private:
     /// @cond
-    Derived& derived() BOOST_NOEXCEPT {
-      return *static_cast<Derived*>(this);
-    }
-
     const Derived & derived() const BOOST_NOEXCEPT {
       return *static_cast<Derived const*>(this);
     }
     /// @endcond
 public:
     typedef TypeInfo                                type_info_t;
-    typedef type_index_facade<Derived, TypeInfo>    this_type;
 
-    const type_info_t& type_info() const BOOST_NOEXCEPT {
+    /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
+    /// \return Const reference to underlying low level type_info_t.
+    inline const type_info_t& type_info() const BOOST_NOEXCEPT {
         return derived().type_info();
     }
 
+    /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
+    /// \return Pointer to unredable/raw type name.
     inline const char* raw_name() const BOOST_NOEXCEPT {
         return derived().raw_name();
     }
 
-    inline const char* name() const BOOST_NOEXCEPT {
-        return derived().name();
-    }
-
+    /// \b Override: This function \b must be redefined in Derived class. Overrides may throw.
+    /// \return Human redable type name.
     inline std::string pretty_name() const {
         return derived().pretty_name();
     }
 
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return Name of a type. By default retuns raw_name().
+    inline const char* name() const BOOST_NOEXCEPT {
+        return raw_name();
+    }
+
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return True if two types are equal. By default compares types by raw_name().
+    inline bool equal(const Derived& rhs) const BOOST_NOEXCEPT {
+        return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
+    }
+
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return True if rhs is greater than this. By default compares types by raw_name().
+    inline bool before(const Derived& rhs) const BOOST_NOEXCEPT {
+        return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
+    }
+
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return Hash code of a type. By default hashes types by raw_name().
     inline std::size_t hash_code() const BOOST_NOEXCEPT {
-        return derived().hash_code();
-    }
-
-    inline bool equal(const this_type& rhs) const BOOST_NOEXCEPT {
-        return derived().equal(rhs.derived());
-    }
-
-    inline bool before(const this_type& rhs) const BOOST_NOEXCEPT {
-        return derived().before(rhs.derived());
+        return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
     }
 };
 
 /// @cond
 template <class Derived, class TypeInfo>
 inline bool operator == (const type_index_facade<Derived, TypeInfo>& lhs, const type_index_facade<Derived, TypeInfo>& rhs) BOOST_NOEXCEPT {
-    return lhs.equal(rhs);
+    return static_cast<Derived const&>(lhs).equal(static_cast<Derived const&>(rhs));
 }
 
 template <class Derived, class TypeInfo>
 inline bool operator < (const type_index_facade<Derived, TypeInfo>& lhs, const type_index_facade<Derived, TypeInfo>& rhs) BOOST_NOEXCEPT {
-    return lhs.before(rhs);
+    return static_cast<Derived const&>(lhs).before(static_cast<Derived const&>(rhs));;
 }
 
 
@@ -235,7 +246,7 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(
 /// This free function is used by Boost's unordered containers.
 template <class Derived, class TypeInfo>
 inline std::size_t hash_value(const type_index_facade<Derived, TypeInfo>& lhs) BOOST_NOEXCEPT {
-    return lhs.hash_code();
+    return static_cast<Derived const&>(lhs).hash_code();
 }
 
 }} // namespace boost::typeind
