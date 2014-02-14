@@ -145,7 +145,7 @@ protected:
     /// \param variable Variable which runtime type will be stored in type_index.
     /// \return type_index with runtime type of variable.
     template <class T>
-    static Derived type_id_runtime(const T& variablel) BOOST_NOEXCEPT;
+    static Derived type_id_runtime(const T& variable) BOOST_NOEXCEPT;
 
 #endif
 

@@ -53,10 +53,6 @@ namespace boost { namespace typeind {
 /// some user defined class.
 typedef type_index::type_info_t type_info;
 
-// TODO:
-// inline bool is_equal(const type_info&, const type_info&) BOOST_NOEXCEPT;
-// inline bool is_before(const type_info&, const type_info&) BOOST_NOEXCEPT;
-
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
 /// \def BOOST_TYPE_INDEX_USER_TYPEINFO
