@@ -48,11 +48,20 @@ inline const ctti_data& ctti_construct() BOOST_NOEXCEPT {
 } // namespace detail
 
 /// \class ctti_type_index
+/// This class is a wrapper that pretends to work exactly like stl_type_info, but does 
+/// not require RTTI support. For description of functions see type_index_facade.
+///
+/// This class produces slightly longer type names, so consider using stl_type_index 
+/// in situations when typeid() is working.
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
     const detail::ctti_data* data_;
 
 public:
     typedef detail::ctti_data type_info_t;
+
+    inline ctti_type_index() BOOST_NOEXCEPT
+        : data_(&detail::ctti_construct<void>())
+    {}
 
     inline ctti_type_index(const type_info_t& data) BOOST_NOEXCEPT
         : data_(&data)
@@ -64,21 +73,21 @@ public:
     inline std::size_t  hash_code() const BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index construct() BOOST_NOEXCEPT;
+    inline static ctti_type_index type_id() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index construct_with_cvr() BOOST_NOEXCEPT;
+    inline static ctti_type_index type_id_with_cvr() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index construct_runtime(const T* variable) BOOST_NOEXCEPT;
+    inline static ctti_type_index type_id_runtime(const T* variable) BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index construct_runtime(const T& variable) BOOST_NOEXCEPT;
+    inline static ctti_type_index type_id_runtime(const T& variable) BOOST_NOEXCEPT;
 };
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::construct() BOOST_NOEXCEPT {
+inline ctti_type_index ctti_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
     return detail::ctti_construct<no_cvr_t>();
@@ -87,13 +96,13 @@ inline ctti_type_index ctti_type_index::construct() BOOST_NOEXCEPT {
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::construct_with_cvr() BOOST_NOEXCEPT {
+inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
     return detail::ctti_construct<T>();
 }
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::construct_runtime(const T* rtti_val) BOOST_NOEXCEPT {
+inline ctti_type_index ctti_type_index::type_id_runtime(const T* rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T*) and type_index::construct_runtime(const T*) require RTTI");
 
@@ -101,7 +110,7 @@ inline ctti_type_index ctti_type_index::construct_runtime(const T* rtti_val) BOO
 }
 
 template <class T>
-inline ctti_type_index ctti_type_index::construct_runtime(const T& rtti_val) BOOST_NOEXCEPT {
+inline ctti_type_index ctti_type_index::type_id_runtime(const T& rtti_val) BOOST_NOEXCEPT {
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T&) and type_index::construct_runtime(const T&) require RTTI");
 

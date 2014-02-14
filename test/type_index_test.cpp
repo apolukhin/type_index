@@ -35,6 +35,30 @@ BOOST_AUTO_TEST_CASE(names_matches_type_id)
     BOOST_CHECK_EQUAL(type_id<double>().name(), type_id<double>().name());
 }
 
+BOOST_AUTO_TEST_CASE(default_construction)
+{
+    using namespace boost::typeind;
+    type_index ti1, ti2;
+    BOOST_CHECK_EQUAL(ti1, ti2);
+    BOOST_CHECK_EQUAL(type_id<void>(), ti1);
+
+    BOOST_CHECK_EQUAL(type_id<void>().name(),   ti1.name());
+    BOOST_CHECK_NE(type_id<int>(),              ti1);
+}
+
+
+BOOST_AUTO_TEST_CASE(copy_construction)
+{
+    using namespace boost::typeind;
+    type_index ti1, ti2 = type_id<int>();
+    BOOST_CHECK_NE(ti1, ti2);
+    ti1 = ti2;    
+    BOOST_CHECK_EQUAL(ti2, ti1);
+
+    const type_index ti3(ti1);
+    BOOST_CHECK_EQUAL(ti3, ti1);
+}
+
 BOOST_AUTO_TEST_CASE(comparators_type_id)
 {
     using namespace boost::typeind;

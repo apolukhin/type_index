@@ -86,11 +86,12 @@ typedef type_index::type_info_t type_info;
 /// std::cout << ti.pretty_name();  // Outputs 'int'
 /// \endcode
 ///
+/// \tparam T Type for which type_index must be created.
 /// \throw Nothing.
 /// \return boost::typeind::type_index with information about the specified type T.
 template <class T>
 inline type_index type_id() BOOST_NOEXCEPT {
-    return type_index::construct<T>();
+    return type_index::type_id<T>();
 }
 
 /// Function for constructing boost::type_index instance for type T. 
@@ -105,11 +106,12 @@ inline type_index type_id() BOOST_NOEXCEPT {
 /// std::cout << ti.pretty_name();  // Outputs 'int&'
 /// \endcode
 ///
+/// \tparam T Type for which type_index must be created.
 /// \throw Nothing.
 /// \return boost::typeind::type_index with information about the specified type T.
 template <class T>
 inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
-    return type_index::construct_with_cvr<T>();
+    return type_index::type_id_with_cvr<T>();
 }
 
 /// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
@@ -135,10 +137,9 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 /// \return boost::typeind::type_index with information about the specified variable.
 template <class T>
 inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
-    return type_index::construct_runtime(runtime_val);
+    return type_index::type_id_runtime(runtime_val);
 }
 
-/// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
 /// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
 ///
 /// Retunrs runtime information about specified type.
@@ -161,7 +162,7 @@ inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
 /// \return boost::typeind::type_index with information about the specified variable.
 template <class T>
 inline type_index type_id_runtime(const T* runtime_val) {
-    return type_index::construct_runtime(runtime_val);
+    return type_index::type_id_runtime(runtime_val);
 }
 
 }} // namespace boost::typeind

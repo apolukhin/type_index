@@ -61,6 +61,10 @@
 namespace boost { namespace typeind {
 
 /// \class stl_type_index
+/// This class is a wrapper around std::type_info, that workarounds issues and provides
+/// much more rich interface. For description of functions see type_index_facade.
+///
+/// This class requires typeid() to work. For cases when RTTI is disabled see ctti_type_index.
 class stl_type_index
     : public type_index_facade<
         stl_type_index, 
@@ -82,6 +86,10 @@ private:
     const type_info_t* data_;
 
 public:
+    inline stl_type_index() BOOST_NOEXCEPT
+        : data_(&typeid(void))
+    {}
+
     inline stl_type_index(const type_info_t& data) BOOST_NOEXCEPT
         : data_(&data)
     {}
@@ -97,16 +105,16 @@ public:
     inline bool         before(const stl_type_index& rhs) const BOOST_NOEXCEPT;
 
     template <class T>
-    inline static stl_type_index construct() BOOST_NOEXCEPT;
+    inline static stl_type_index type_id() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static stl_type_index construct_with_cvr() BOOST_NOEXCEPT;
+    inline static stl_type_index type_id_with_cvr() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static stl_type_index construct_runtime(const T* variable);
+    inline static stl_type_index type_id_runtime(const T* variable);
 
     template <class T>
-    inline static stl_type_index construct_runtime(const T& value) BOOST_NOEXCEPT;
+    inline static stl_type_index type_id_runtime(const T& value) BOOST_NOEXCEPT;
 };
 
 inline const stl_type_index::type_info_t& stl_type_index::type_info() const BOOST_NOEXCEPT {
@@ -210,7 +218,7 @@ inline bool stl_type_index::before(const stl_type_index& rhs) const BOOST_NOEXCE
 
 
 template <class T>
-inline stl_type_index stl_type_index::construct() BOOST_NOEXCEPT {
+inline stl_type_index stl_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
 
@@ -228,7 +236,7 @@ namespace detail {
 }
 
 template <class T>
-inline stl_type_index stl_type_index::construct_with_cvr() BOOST_NOEXCEPT {
+inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
     typedef typename boost::mpl::if_c<
         boost::is_reference<T>::value
             || boost::is_const<T>::value
@@ -241,7 +249,7 @@ inline stl_type_index stl_type_index::construct_with_cvr() BOOST_NOEXCEPT {
 }
 
 template <class T>
-inline stl_type_index stl_type_index::construct_runtime(const T* rtti_val) {
+inline stl_type_index stl_type_index::type_id_runtime(const T* rtti_val) {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T*) and type_index::construct_runtime(const T*) require RTTI");
@@ -250,7 +258,7 @@ inline stl_type_index stl_type_index::construct_runtime(const T* rtti_val) {
 }
 
 template <class T>
-inline stl_type_index stl_type_index::construct_runtime(const T& value) BOOST_NOEXCEPT {
+inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
         "type_id_runtime(const T&) and type_index::construct_runtime(const T&) require RTTI");

@@ -106,6 +106,49 @@ public:
     inline std::size_t hash_code() const BOOST_NOEXCEPT {
         return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
     }
+
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
+protected:
+    /// This is a factory method that is used to create instances of Derived classes.
+    /// boost::typeind::type_id() will call this method, if Derived has same type as boost::typeind::type_index.
+    ///
+    /// \b Override: This function \b may be redefined and made public in Derived class. Overrides \b must not throw. 
+    /// Overrides \b must remove const, volatile && and & modifiers from T.
+    /// \tparam T Type for which type_index must be created.
+    /// \return type_index for type T.
+    template <class T>
+    static Derived type_id() BOOST_NOEXCEPT;
+
+    /// This is a factory method that is used to create instances of Derived classes.
+    /// boost::typeind::type_id_with_cvr() will call this method, if Derived has same type as boost::typeind::type_index.
+    ///
+    /// \b Override: This function \b may be redefined and made public in Derived class. Overrides \b must not throw. 
+    /// Overrides \b must \b not remove const, volatile && and & modifiers from T.
+    /// \tparam T Type for which type_index must be created.
+    /// \return type_index for type T.
+    template <class T>
+    static Derived type_id_with_cvr() BOOST_NOEXCEPT;
+
+    /// This is a factory method that is used to create instances of Derived classes.
+    /// boost::typeind::type_id_runtime(const T*) will call this method, if Derived has same type as boost::typeind::type_index.
+    ///
+    /// \b Override: This function \b may be redefined and made public in Derived class.
+    /// \param variable Variable which runtime type will be stored in type_index.
+    /// \return type_index with runtime type of variable.
+    template <class T>
+    static Derived type_id_runtime(const T* variable);
+
+    /// This is a factory method that is used to create instances of Derived classes.
+    /// boost::typeind::type_id_runtime(const T&) will call this method, if Derived has same type as boost::typeind::type_index.
+    ///
+    /// \b Override: This function \b may be redefined and made public in Derived class.
+    /// \param variable Variable which runtime type will be stored in type_index.
+    /// \return type_index with runtime type of variable.
+    template <class T>
+    static Derived type_id_runtime(const T& variablel) BOOST_NOEXCEPT;
+
+#endif
+
 };
 
 /// @cond
