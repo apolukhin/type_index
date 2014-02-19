@@ -202,6 +202,15 @@ expands to nothing.
 
 [xinclude autodoc.xml]
 
+[section Making own type_index]
+[import ../examples/user_defined_typeinfo.cpp]
+[type_index_userdefined_usertypes]
+[type_index_userdefined_enum]
+[type_index_my_type_index]
+[type_index_my_type_index_usage]
+[endsect]
+
+
 [section Space and Performance]
 
 * `ctti_type_info` uses macro for getting full text representation of function name which could lead to code bloat,
