@@ -9,16 +9,18 @@
     The following example shows that `boost::type_info` is able to store the real type, successfully getting through
     all the inheritances.
 
-    Example works with RTTI only. Without RTTI support it won't compile, producing a compile-time error with message:
-    "boost::type_id_rtti_only(T&) requires RTTI"
+    Example works with and without RTTI."
 */
 
 #include <boost/type_index.hpp>
 #include <iostream>
 
-struct A { virtual ~A(){} };
-struct B: public A {};
-struct C: public B {};
+struct A {
+    BOOST_TYPE_INDEX_REGISTER_CLASS
+    virtual ~A(){}
+};
+struct B: public A { BOOST_TYPE_INDEX_REGISTER_CLASS };
+struct C: public B { BOOST_TYPE_INDEX_REGISTER_CLASS };
 
 void print_real_type(const A& a) {
     std::cout << boost::typeind::type_id_runtime(a).pretty_name() << '\n';

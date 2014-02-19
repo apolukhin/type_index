@@ -39,13 +39,14 @@ struct ctti_data {
     const char* typename_;
 };
 
+} // namespace detail
+
+/// Helper method for getting detail::ctti_data of a tempalte patameter T.
 template <class T>
-inline const ctti_data& ctti_construct() BOOST_NOEXCEPT {
-    static const ctti_data result = { boost::detail::ctti<T>::n() };
+inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
+    static const detail::ctti_data result = { boost::detail::ctti<T>::n() };
     return result;
 }
-
-} // namespace detail
 
 /// \class ctti_type_index
 /// This class is a wrapper that pretends to work exactly like stl_type_info, but does 
@@ -60,7 +61,7 @@ public:
     typedef detail::ctti_data type_info_t;
 
     inline ctti_type_index() BOOST_NOEXCEPT
-        : data_(&detail::ctti_construct<void>())
+        : data_(&ctti_construct<void>())
     {}
 
     inline ctti_type_index(const type_info_t& data) BOOST_NOEXCEPT
@@ -79,9 +80,6 @@ public:
     inline static ctti_type_index type_id_with_cvr() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index type_id_runtime(const T* variable) BOOST_NOEXCEPT;
-
-    template <class T>
     inline static ctti_type_index type_id_runtime(const T& variable) BOOST_NOEXCEPT;
 };
 
@@ -90,31 +88,20 @@ template <class T>
 inline ctti_type_index ctti_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
-    return detail::ctti_construct<no_cvr_t>();
+    return ctti_construct<no_cvr_t>();
 }
 
 
 
 template <class T>
 inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
-    return detail::ctti_construct<T>();
+    return ctti_construct<T>();
 }
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::type_id_runtime(const T* rtti_val) BOOST_NOEXCEPT {
-    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
-        "type_id_runtime(const T*) and type_index::construct_runtime(const T*) require RTTI");
-
-    return detail::ctti_construct<T>();
-}
-
-template <class T>
-inline ctti_type_index ctti_type_index::type_id_runtime(const T& rtti_val) BOOST_NOEXCEPT {
-    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
-        "type_id_runtime(const T&) and type_index::construct_runtime(const T&) require RTTI");
-
-    return detail::ctti_construct<T>();
+inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST_NOEXCEPT {
+    return variable.type_id_ref();
 }
 
 
@@ -137,6 +124,5 @@ inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
 
 }} // namespace boost::typeind
 
-
-#endif // BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_IPP
+#endif // BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_HPP
 

@@ -21,12 +21,13 @@
 
 #include <boost/config.hpp>
 
-#if defined(BOOST_TYPE_INDEX_USER_TYPEINDEX) && defined(BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME) 
+#if defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
 #   include BOOST_TYPE_INDEX_USER_TYPEINDEX
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.hpp>
-#else 
+#else
 #   include <boost/type_index/ctti_type_index.hpp>
+#   include <boost/type_index/ctti_register_class.hpp>
 #endif
 
 namespace boost { namespace typeind {
@@ -38,12 +39,14 @@ namespace boost { namespace typeind {
     /// Could be a boost::typeind::stl_type_index, boost::typeind::ctti_type_index or 
     /// user defined type_index class.
     typedef platform-specific type_index;
-#elif defined(BOOST_TYPE_INDEX_USER_TYPEINDEX) && defined(BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME) 
-    typedef BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME type_index;
+#elif defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
+    // Nothing to do
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
     typedef boost::typeind::stl_type_index type_index;
+#   define BOOST_TYPE_INDEX_REGISTER_CLASS
 #else 
     typedef boost::typeind::ctti_type_index type_index;
+#   define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS
 #endif
 
 /// Depending on a compiler flags, optimal implementation of type_info will be used 
@@ -58,17 +61,35 @@ typedef type_index::type_info_t type_info;
 /// \def BOOST_TYPE_INDEX_USER_TYPEINFO
 /// BOOST_TYPE_INDEX_USER_TYPEINFO can be defined to the path to header file
 /// with user provided implementation of type_index.
-///
-/// BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME must be also defined!
 #define BOOST_TYPE_INDEX_USER_TYPEINDEX <full/absolute/path/to/header/with/type_index>
 
 
-/// \def BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME
-/// BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME can be defined to the fullty 
-/// qualified name of the user's type_index implementation.
+/// \def BOOST_TYPE_INDEX_REGISTER_CLASS
+/// BOOST_TYPE_INDEX_REGISTER_CLASS is a helper macro that is used to help to emulate RTTI.
+/// Put this macro into the public section of polymorphic class to allow runtime type detection.
+/// \b Example:
+/// \code
+/// class A {
+/// public:
+///     BOOST_TYPE_INDEX_REGISTER_CLASS
+///     virtual ~A(){}
+/// };
 ///
-/// BOOST_TYPE_INDEX_USER_TYPEINDEX must be also defined!
-#define BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME my_namespace::my_type_index
+/// struct B: public A {
+///     BOOST_TYPE_INDEX_REGISTER_CLASS
+/// };
+///
+/// struct C: public B {
+///     BOOST_TYPE_INDEX_REGISTER_CLASS
+/// };
+///
+/// ...
+///
+/// C c1;
+/// A* pc1 = &c1;
+/// assert(boost::typeind::type_id<C>() == boost::typeind::type_id_runtime(*pc1));
+/// \endcode
+#define BOOST_TYPE_INDEX_REGISTER_CLASS nothing-or-some-virtual-functions
 
 #endif // defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
@@ -133,31 +154,6 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 /// \return boost::typeind::type_index with information about the specified variable.
 template <class T>
 inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
-    return type_index::type_id_runtime(runtime_val);
-}
-
-/// Function that works exactly like C++ typeid(rtti_val) call, but returns boost::type_index.
-///
-/// Retunrs runtime information about specified type.
-///
-/// \b Requirements: RTTI available or specially designed user type_info class must be provided
-/// via BOOST_TYPE_INDEX_USER_TYPEINDEX and BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME macro.
-///
-/// \b Example:
-/// \code
-/// struct Base { virtual ~Base(){} };
-/// struct Derived: public Base  {};
-/// ...
-/// Base* b = new Derived();
-/// type_index ti = type_id_runtime(b);
-/// std::cout << ti.pretty_name();  // Outputs 'Derived*'
-/// \endcode
-///
-/// \param runtime_val Varaible which runtime type must be returned.
-/// \throw Nothing.
-/// \return boost::typeind::type_index with information about the specified variable.
-template <class T>
-inline type_index type_id_runtime(const T* runtime_val) {
     return type_index::type_id_runtime(runtime_val);
 }
 

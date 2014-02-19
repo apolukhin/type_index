@@ -111,9 +111,6 @@ public:
     inline static stl_type_index type_id_with_cvr() BOOST_NOEXCEPT;
 
     template <class T>
-    inline static stl_type_index type_id_runtime(const T* variable);
-
-    template <class T>
     inline static stl_type_index type_id_runtime(const T& value) BOOST_NOEXCEPT;
 };
 
@@ -248,20 +245,12 @@ inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
     return typeid(type);
 }
 
-template <class T>
-inline stl_type_index stl_type_index::type_id_runtime(const T* rtti_val) {
-#ifdef BOOST_NO_RTTI 
-    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
-        "type_id_runtime(const T*) and type_index::construct_runtime(const T*) require RTTI");
-#endif
-    return typeid(rtti_val);
-}
 
 template <class T>
 inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
     BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
-        "type_id_runtime(const T&) and type_index::construct_runtime(const T&) require RTTI");
+        "stl_type_index::type_id_runtime(const T&) require RTTI");
 #endif
     return typeid(value);
 }

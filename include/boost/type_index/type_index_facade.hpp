@@ -130,15 +130,6 @@ protected:
     static Derived type_id_with_cvr() BOOST_NOEXCEPT;
 
     /// This is a factory method that is used to create instances of Derived classes.
-    /// boost::typeind::type_id_runtime(const T*) will call this method, if Derived has same type as boost::typeind::type_index.
-    ///
-    /// \b Override: This function \b may be redefined and made public in Derived class.
-    /// \param variable Variable which runtime type will be stored in type_index.
-    /// \return type_index with runtime type of variable.
-    template <class T>
-    static Derived type_id_runtime(const T* variable);
-
-    /// This is a factory method that is used to create instances of Derived classes.
     /// boost::typeind::type_id_runtime(const T&) will call this method, if Derived has same type as boost::typeind::type_index.
     ///
     /// \b Override: This function \b may be redefined and made public in Derived class.

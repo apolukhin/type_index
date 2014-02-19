@@ -245,11 +245,19 @@ BOOST_AUTO_TEST_CASE(type_index_user_defined_class_test)
 }
 
 
-#ifndef BOOST_NO_RTTI
+struct A {
+public:
+    BOOST_TYPE_INDEX_REGISTER_CLASS
+    virtual ~A(){}
+};
 
-class A { public: virtual ~A(){} };
-class B: public A{};
-class C: public B {};
+struct B: public A {
+    BOOST_TYPE_INDEX_REGISTER_CLASS
+};
+
+struct C: public B {
+    BOOST_TYPE_INDEX_REGISTER_CLASS
+};
 
 BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
 {
@@ -259,6 +267,8 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
     A& rc1 = c1;
     A* pb1 = &b1;
     A& rb1 = b1;
+
+#ifndef BOOST_NO_RTTI
     BOOST_CHECK(typeid(rc1) == typeid(*pc1));
     BOOST_CHECK(typeid(rb1) == typeid(*pb1));
 
@@ -267,12 +277,19 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
 
     BOOST_CHECK(typeid(&rc1) == typeid(pb1));
     BOOST_CHECK(typeid(&rb1) == typeid(pc1));
+#else
+    BOOST_CHECK(boost::typeind::type_index(pc1->type_id_ref()).raw_name());
+#endif
 
     BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pc1));
+    BOOST_CHECK_EQUAL(boost::typeind::type_id<C>(), boost::typeind::type_id_runtime(*pc1));
     BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pb1));
+    BOOST_CHECK_EQUAL(boost::typeind::type_id<B>(), boost::typeind::type_id_runtime(*pb1));
 
     BOOST_CHECK_NE(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pb1));
     BOOST_CHECK_NE(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pc1));
+
+#ifndef BOOST_NO_RTTI
     BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rc1), boost::typeind::type_id_runtime(pb1));
     BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rb1), boost::typeind::type_id_runtime(pc1));
 
@@ -283,8 +300,11 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
     BOOST_CHECK(boost::typeind::type_id_runtime(rb1) != typeid(*pc1));
     BOOST_CHECK(boost::typeind::type_id_runtime(&rc1) == typeid(pb1));
     BOOST_CHECK(boost::typeind::type_id_runtime(&rb1) == typeid(pc1));
+#endif
 }
 
+
+#ifndef BOOST_NO_RTTI
 
 BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
 {
