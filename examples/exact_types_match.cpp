@@ -18,7 +18,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-using bti = boost::typeind;
+namespace bti = boost::typeind;
 
 class type_erased_unary_function {
     void*               function_ptr_;

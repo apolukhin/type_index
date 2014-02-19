@@ -14,7 +14,7 @@
 
 #include <boost/type_index.hpp>
 #include <iostream>
-using bti = boost::typeind;
+namespace bti = boost::typeind;
 
 template <class T>
 void foo(T) {

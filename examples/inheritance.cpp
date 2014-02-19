@@ -14,7 +14,7 @@
 
 #include <boost/type_index.hpp>
 #include <iostream>
-using bti = boost::typeind;
+namespace bti = boost::typeind;
 
 struct A {
     BOOST_TYPE_INDEX_REGISTER_CLASS

@@ -14,7 +14,7 @@
 #include <boost/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
 #include <cassert>
-using bti = boost::typeind;
+namespace bti = boost::typeind;
 
 int main() {
     boost::unordered_set<bti::type_index> types;

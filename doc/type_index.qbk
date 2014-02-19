@@ -38,7 +38,7 @@ is a drop-in replacement for `std::type_index`. Unlike Standard Library versions
 operators, so it can be used with any container class.
 
 Through all the examples, we'll assume that the following namespace alias is in effect:
-``using bti = boost::typeind;``
+``namespace bti = boost::typeind;``
 
 [section How to use]
 
