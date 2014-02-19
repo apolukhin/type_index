@@ -6,7 +6,7 @@
 
 //[type_index_derived_example
 /*`
-    The following example shows that `boost::type_info` is able to store the real type, successfully getting through
+    The following example shows that `type_info` is able to store the real type, successfully getting through
     all the inheritances.
 
     Example works with and without RTTI."
@@ -14,6 +14,7 @@
 
 #include <boost/type_index.hpp>
 #include <iostream>
+using bti = boost::typeind;
 
 struct A {
     BOOST_TYPE_INDEX_REGISTER_CLASS
@@ -23,7 +24,7 @@ struct B: public A { BOOST_TYPE_INDEX_REGISTER_CLASS };
 struct C: public B { BOOST_TYPE_INDEX_REGISTER_CLASS };
 
 void print_real_type(const A& a) {
-    std::cout << boost::typeind::type_id_runtime(a).pretty_name() << '\n';
+    std::cout << bti::type_id_runtime(a).pretty_name() << '\n';
 }
 
 int main() {
