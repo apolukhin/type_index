@@ -28,7 +28,12 @@ inline const ctti_data& ctti_construct_typeid_ref(const T*) BOOST_NOEXCEPT {
 
 }}} // namespace boost::typeind::detail
 
-
+/// \def BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS
+/// BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS is used by BOOST_TYPE_INDEX_REGISTER_CLASS when RTTI is off
+/// and `typeid()` does not work.
+///
+/// BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS macro expands to declaration and implementation of
+/// `virtual const detail::ctti_data& type_id_runtime() const` method.
 #define BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS                                                    \
     virtual const boost::typeind::detail::ctti_data& type_id_runtime() const BOOST_NOEXCEPT {   \
         return boost::typeind::detail::ctti_construct_typeid_ref(this);                         \

@@ -25,6 +25,9 @@
 #   include BOOST_TYPE_INDEX_USER_TYPEINDEX
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.hpp>
+#   ifdef BOOST_NO_RTTI
+#       inlcude <boost/type_index/stl_register_class.hpp>
+#   endif
 #else
 #   include <boost/type_index/ctti_type_index.hpp>
 #   include <boost/type_index/ctti_register_class.hpp>
@@ -43,7 +46,11 @@ namespace boost { namespace typeind {
     // Nothing to do
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
     typedef boost::typeind::stl_type_index type_index;
-#   define BOOST_TYPE_INDEX_REGISTER_CLASS
+#   ifdef BOOST_NO_RTTI
+#       define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_STL_CLASS
+#   else
+#       define BOOST_TYPE_INDEX_REGISTER_CLASS
+#   endif
 #else 
     typedef boost::typeind::ctti_type_index type_index;
 #   define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS
@@ -58,10 +65,12 @@ typedef type_index::type_info_t type_info;
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
-/// \def BOOST_TYPE_INDEX_USER_TYPEINFO
-/// BOOST_TYPE_INDEX_USER_TYPEINFO can be defined to the path to header file
+/// \def BOOST_TYPE_INDEX_USER_TYPEINDEX
+/// BOOST_TYPE_INDEX_USER_TYPEINDEX can be defined to the path to header file
 /// with user provided implementation of type_index.
-#define BOOST_TYPE_INDEX_USER_TYPEINDEX <full/absolute/path/to/header/with/type_index>
+///
+/// See "Making own type_index" section of documentation for usage example.
+#define BOOST_TYPE_INDEX_USER_TYPEINDEX <full/absolute/path/to/header/with/type_index.hpp>
 
 
 /// \def BOOST_TYPE_INDEX_REGISTER_CLASS
@@ -139,8 +148,7 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 ///
 /// Retunrs runtime information about specified type.
 ///
-/// \b Requirements: RTTI available or specially designed user type_info class must be provided
-/// via BOOST_TYPE_INDEX_USER_TYPEINDEX and BOOST_TYPE_INDEX_USER_TYPEINDEX_NAME macro.
+/// \b Requirements: RTTI available or Base and Derived classes must be marked with BOOST_TYPE_INDEX_REGISTER_CLASS.
 ///
 /// \b Example:
 /// \code

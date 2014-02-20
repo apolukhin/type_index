@@ -249,8 +249,7 @@ inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
 template <class T>
 inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
-    BOOST_STATIC_ASSERT_MSG(sizeof(T) && false, 
-        "stl_type_index::type_id_runtime(const T&) require RTTI");
+    return value.type_id_runtime();
 #endif
     return typeid(value);
 }
