@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
     BOOST_CHECK(typeid(&rc1) == typeid(pb1));
     BOOST_CHECK(typeid(&rb1) == typeid(pc1));
 #else
-    BOOST_CHECK(boost::typeind::type_index(pc1->type_id_ref()).raw_name());
+    BOOST_CHECK(boost::typeind::type_index(pc1->type_id_runtime()).raw_name());
 #endif
 
     BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pc1));

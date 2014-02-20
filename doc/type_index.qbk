@@ -203,11 +203,32 @@ expands to nothing.
 [xinclude autodoc.xml]
 
 [section Making own type_index]
+
+Sometimes there may be a need to create your own type info system. This may be usefull if you wish to store some more info about types (PODness, size of a type, pointers to common functions...) or if you have an idea of a more compact types representations.
+
+[import ../examples/user_defined_typeinfo.hpp]
 [import ../examples/user_defined_typeinfo.cpp]
+
+[section Basics]
 [type_index_userdefined_usertypes]
 [type_index_userdefined_enum]
 [type_index_my_type_index]
 [type_index_my_type_index_usage]
+[endsect]
+
+[section Getting type infos at runtime]
+[type_index_my_type_index_register_class]
+[type_index_my_type_index_type_id_runtime_implmentation]
+[type_index_my_type_index_type_id_runtime_classes]
+[type_index_my_type_index_type_id_runtime_test]
+[endsect]
+
+[section Using new type infos all around the code]
+[type_index_my_type_index_worldwide_macro]
+[type_index_my_type_index_worldwide_typedefs]
+[type_index_my_type_index_worldwide_usage]
+[endsect]
+
 [endsect]
 
 

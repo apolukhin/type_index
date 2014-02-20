@@ -101,7 +101,7 @@ inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
 
 template <class T>
 inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST_NOEXCEPT {
-    return variable.type_id_ref();
+    return variable.type_id_runtime();
 }
 
 

@@ -67,6 +67,10 @@ typedef type_index::type_info_t type_info;
 /// \def BOOST_TYPE_INDEX_REGISTER_CLASS
 /// BOOST_TYPE_INDEX_REGISTER_CLASS is a helper macro that is used to help to emulate RTTI.
 /// Put this macro into the public section of polymorphic class to allow runtime type detection.
+///
+/// Depending on the typeid() availability this macro will expand to nothing or to virtual helper function
+/// `virtual const type_info& type_id_runtime() const`.
+///
 /// \b Example:
 /// \code
 /// class A {

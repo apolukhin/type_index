@@ -29,10 +29,10 @@ inline const ctti_data& ctti_construct_typeid_ref(const T*) BOOST_NOEXCEPT {
 }}} // namespace boost::typeind::detail
 
 
-#define BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS                                                \
-    virtual const boost::typeind::detail::ctti_data& type_id_ref() const BOOST_NOEXCEPT {   \
-        return boost::typeind::detail::ctti_construct_typeid_ref(this);                     \
-    }                                                                                       \
+#define BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS                                                    \
+    virtual const boost::typeind::detail::ctti_data& type_id_runtime() const BOOST_NOEXCEPT {   \
+        return boost::typeind::detail::ctti_construct_typeid_ref(this);                         \
+    }                                                                                           \
 /**/
 
 #endif // BOOST_TYPE_INDEX_CTTI_REGISTER_CLASS_HPP
