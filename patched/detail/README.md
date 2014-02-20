@@ -1,1 +1,0 @@
-To be honest sp_typeinfo.hpp won't be required with Boost.TypeIndex, because Boost.TypeIndex is more functional then sp_typeinfo and requires much less macro for usage. sp_typeinfo.patch contains a temporary solution for easy migration. Later sp_typeinfo may be removed and BOOST_SP_TYPEID(T) macro deprecated.

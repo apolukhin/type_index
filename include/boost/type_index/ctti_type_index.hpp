@@ -84,6 +84,11 @@ public:
 };
 
 
+inline const ctti_type_index::type_info_t& ctti_type_index::type_info() const BOOST_NOEXCEPT {
+    return *data_;
+}
+
+
 template <class T>
 inline ctti_type_index ctti_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;

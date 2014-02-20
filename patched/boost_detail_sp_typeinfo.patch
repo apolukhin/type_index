@@ -1,29 +1,45 @@
-Index: .
-===================================================================
---- .	(revision 86532)
-+++ .	(working copy)
-@@ -15,121 +15,15 @@
+From b77c0af6af8bc4797defc3627878acc3cf7a6f39 Mon Sep 17 00:00:00 2001
+From: Antony Polukhin <antoshkka@gmail.com>
+Date: Thu, 20 Feb 2014 17:57:24 +0400
+Subject: [PATCH] detail/sp_typeinfo.hpp now uses TypeIndex
+
+---
+ include/boost/detail/sp_typeinfo.hpp | 123 +++--------------------------------
+ 1 file changed, 8 insertions(+), 115 deletions(-)
+
+diff --git a/include/boost/detail/sp_typeinfo.hpp b/include/boost/detail/sp_typeinfo.hpp
+index 43fae78..fbdf86d 100644
+--- a/include/boost/detail/sp_typeinfo.hpp
++++ b/include/boost/detail/sp_typeinfo.hpp
+@@ -10,126 +10,19 @@
+ //  detail/sp_typeinfo.hpp
+ //
+ //  Copyright 2007 Peter Dimov
++//  Copyright 2014 Antony Polukhin
+ //
+ // Distributed under the Boost Software License, Version 1.0.
  // See accompanying file LICENSE_1_0.txt or copy at
  // http://www.boost.org/LICENSE_1_0.txt)
  
 -#include <boost/config.hpp>
-+#include <boost/type_index/type_info.hpp>
- 
--#if defined( BOOST_NO_TYPEID )
++#include <boost/type_index.hpp>
 +namespace boost { namespace detail {
- 
--#include <boost/current_function.hpp>
--#include <functional>
-+typedef boost::type_info sp_typeinfo;
- 
--namespace boost
--{
++ 
++typedef boost::typeind::type_info sp_typeinfo;
++ 
 +}} // namespace boost::detail
  
+-#if defined( BOOST_NO_TYPEID )
+-
+-#include <boost/current_function.hpp>
+-#include <functional>
+-
+-namespace boost
+-{
+-
 -namespace detail
 -{
-+#define BOOST_SP_TYPEID(T) (boost::type_id<T>())
- 
+-
 -class sp_typeinfo
 -{
 -private:
@@ -127,6 +143,9 @@ Index: .
 -#define BOOST_SP_TYPEID(T) typeid(T)
 -
 -#endif
--
++#define BOOST_SP_TYPEID(T) (boost::typeind::type_id<T>().type_info())
+ 
  #endif  // #ifndef BOOST_DETAIL_SP_TYPEINFO_HPP_INCLUDED
-+
+-- 
+1.8.5.3
+
