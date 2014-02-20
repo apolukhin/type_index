@@ -26,7 +26,7 @@
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.hpp>
 #   ifdef BOOST_NO_RTTI
-#       inlcude <boost/type_index/stl_register_class.hpp>
+#       include <boost/type_index/stl_register_class.hpp>
 #   endif
 #else
 #   include <boost/type_index/ctti_type_index.hpp>
