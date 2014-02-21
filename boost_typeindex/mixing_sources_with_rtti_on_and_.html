@@ -4,8 +4,8 @@
 <title>Mixing sources with RTTI on and RTTI off</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
 <link rel="prev" href="compiler_support.html" title="Compiler support">
 <link rel="next" href="acknowledgements.html" title="Acknowledgements">
 </head>
@@ -32,9 +32,8 @@
       is not a very good idea and may lead to a lot of surprises. However if there
       is a very strong need, TypeIndex library provides a solution for mixing sources:
       just define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
-      macro. This would lead to usage of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span></code>
-      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span></code> class and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_info</span></code>
-      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code> class.
+      macro. This would lead to usage of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span></code>
+      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_info</span></code> class.
     </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -76,12 +75,12 @@
 <tbody><tr>
 <td>
               <p>
-                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_index</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_info</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
               </p>
             </td>
 <td>
               <p>
-                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_index</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
               </p>
             </td>
 </tr></tbody>
@@ -104,7 +103,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2012, 2013 Antony Polukhin<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012-2014 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

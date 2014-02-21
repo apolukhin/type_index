@@ -4,8 +4,8 @@
 <title>Compiler support</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
 <link rel="prev" href="code_bloat.html" title="Code bloat">
 <link rel="next" href="mixing_sources_with_rtti_on_and_.html" title="Mixing sources with RTTI on and RTTI off">
 </head>
@@ -27,7 +27,7 @@
 <a name="boost_typeindex.compiler_support"></a><a class="link" href="compiler_support.html" title="Compiler support">Compiler support</a>
 </h2></div></div></div>
 <p>
-      TypeIndex has been tested and successfully work on MSVC2010, GCC-4.5, Clang-2.9.
+      TypeIndex has been tested and successfully work on MSVC2010, GCC-4.6, Clang-2.9.
       If your compiler is not in a list of tested compilers, you must correctly define
       <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FUNCTION_SIGNATURE</span></code>,
       <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP</span></code>
@@ -77,18 +77,18 @@
 <p>
       With <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP</span></code>
       and <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_END_SKIP</span></code>
-      set to <code class="computeroutput"><span class="number">0</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_id</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;().</span><span class="identifier">name</span><span class="special">()</span></code> returns
-      "const char *__cdecl boost::detail::ctti&lt;int&gt;::n(void)". Then
-      you shall set <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP</span></code>
+      set to <code class="computeroutput"><span class="number">0</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span><span class="special">::</span><span class="identifier">construct</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;().</span><span class="identifier">raw_name</span><span class="special">()</span></code>
+      returns "const char *__cdecl boost::detail::ctti&lt;int&gt;::n(void)".
+      Then you shall set <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP</span></code>
       to <code class="computeroutput"><span class="keyword">sizeof</span><span class="special">(</span><span class="string">"const char *__cdecl boost::detail::ctti&lt;"</span><span class="special">)</span> <span class="special">-</span> <span class="number">1</span></code>
       and <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_CTTI_END_SKIP</span></code>
       to <code class="computeroutput"><span class="keyword">sizeof</span><span class="special">(</span><span class="string">"&gt;::n(void)"</span><span class="special">)</span>
-      <span class="special">-</span> <span class="number">1</span></code>
+      <span class="special">-</span> <span class="number">1</span></code>.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2012, 2013 Antony Polukhin<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012-2014 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

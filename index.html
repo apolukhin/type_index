@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;1.&#160;Boost.TypeIndex 2.1</title>
+<title>Chapter&#160;1.&#160;Boost.TypeIndex 3.0</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
 <link rel="next" href="boost_typeindex/getting_started.html" title="Getting started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -21,8 +21,8 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="boost_typeindex"></a>Chapter&#160;1.&#160;Boost.TypeIndex 2.1</h2></div>
-<div><p class="copyright">Copyright &#169; 2012, 2013 Antony Polukhin</p></div>
+<a name="boost_typeindex"></a>Chapter&#160;1.&#160;Boost.TypeIndex 3.0</h2></div>
+<div><p class="copyright">Copyright &#169; 2012-2014 Antony Polukhin</p></div>
 <div><div class="legalnotice">
 <a name="boost_typeindex.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -35,6 +35,14 @@
 <dl>
 <dt><span class="section"><a href="index.html#boost_typeindex.motivation">Motivation</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/getting_started.html">Getting started</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_typeindex/getting_started.html#boost_typeindex.getting_started.how_to_use">How to use</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex/getting_started.html#boost_typeindex.getting_started.example_with_boost_any">Example
+      with Boost.Any</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex/getting_started.html#boost_typeindex.getting_started.example_with_boost_variant">Example
+      with Boost.Variant</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_typeindex/how_it_works.html">How it works</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/examples.html">Examples</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="boost_typeindex/examples.html#boost_typeindex.examples.getting_human_readable_and_mangl">Getting
@@ -49,10 +57,19 @@
 <dt><span class="section"><a href="boost_typeindex_header_reference.html">Boost.TypeIndex Header Reference</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index_hpp">Header &lt;boost/type_index.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_hpp">Header &lt;boost/type_index/type_index.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_index_hpp">Header &lt;boost/type_index/template_index.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.template_info_hpp">Header &lt;boost/type_index/template_info.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_info_hpp">Header &lt;boost/type_index/type_info.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.ctti_register_class_hpp">Header &lt;boost/type_index/ctti_register_class.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.ctti_type_index_hpp">Header &lt;boost/type_index/ctti_type_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.stl_register_class_hpp">Header &lt;boost/type_index/stl_register_class.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.stl_type_index_hpp">Header &lt;boost/type_index/stl_type_index.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex_header_reference.html#header.boost.type_index.type_index_facade_hpp">Header &lt;boost/type_index/type_index_facade.hpp&gt;</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_typeindex/making_own_type_index.html">Making own type_index</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_typeindex/making_own_type_index.html#boost_typeindex.making_own_type_index.basics">Basics</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex/making_own_type_index.html#boost_typeindex.making_own_type_index.getting_type_infos_at_runtime">Getting
+      type infos at runtime</a></span></dt>
+<dt><span class="section"><a href="boost_typeindex/making_own_type_index.html#boost_typeindex.making_own_type_index.using_new_type_infos_all_around_">Using
+      new type infos all around the code</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="boost_typeindex/space_and_performance.html">Space and Performance</a></span></dt>
 <dt><span class="section"><a href="boost_typeindex/code_bloat.html">Code bloat</a></span></dt>
@@ -94,6 +111,9 @@
 <li class="listitem">
           no nice and portable way to get human readable type names
         </li>
+<li class="listitem">
+          no way to easily make your own type info class
+        </li>
 </ul></div>
 <p>
       Boost.TypeIndex library was designed to work around all those issues.
@@ -114,15 +134,13 @@
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        During the Boost review was decided, that it is better to use interface close
-        to v1.0 of this library. Version 3.0 will attempt to fix all the issues found
-        during the review.
+        Version 3.0 of this library is waitning for Boost mini-review.
       </p></td></tr>
 </table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: January 11, 2014 at 14:36:03 GMT</small></p></td>
+<td align="left"><p><small>Last revised: February 21, 2014 at 08:59:15 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

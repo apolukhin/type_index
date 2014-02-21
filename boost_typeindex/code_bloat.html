@@ -4,8 +4,8 @@
 <title>Code bloat</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/1_53_0/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 2.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.TypeIndex 3.0">
 <link rel="prev" href="space_and_performance.html" title="Space and Performance">
 <link rel="next" href="compiler_support.html" title="Compiler support">
 </head>
@@ -27,8 +27,8 @@
 <a name="boost_typeindex.code_bloat"></a><a class="link" href="code_bloat.html" title="Code bloat">Code bloat</a>
 </h2></div></div></div>
 <p>
-      Without RTTI TypeIndex library will switch from using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_info</span></code>
-      class to <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_info</span></code>. <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">template_info</span></code>
+      Without RTTI TypeIndex library will switch from using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_info</span></code>
+      class to <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span></code>. <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span></code>
       uses macro for getting full text representation of function name for each type
       that is passed to <code class="computeroutput"><span class="identifier">type_id</span><span class="special">()</span></code>
       and <code class="computeroutput"><span class="identifier">type_id_with_cvr</span><span class="special">()</span></code>
@@ -50,7 +50,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2012, 2013 Antony Polukhin<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012-2014 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
