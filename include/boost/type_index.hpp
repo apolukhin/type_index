@@ -76,7 +76,7 @@ typedef type_index::type_info_t type_info;
 
 
 /// \def BOOST_TYPE_INDEX_REGISTER_CLASS
-/// BOOST_TYPE_INDEX_REGISTER_CLASS is a helper macro that is used to help to emulate RTTI.
+/// \def BOOST_TYPE_INDEX_REGISTER_CLASSis used to help to emulate RTTI.
 /// Put this macro into the public section of polymorphic class to allow runtime type detection.
 ///
 /// Depending on the typeid() availability this macro will expand to nothing or to virtual helper function
@@ -105,6 +105,12 @@ typedef type_index::type_info_t type_info;
 /// assert(boost::typeind::type_id<C>() == boost::typeind::type_id_runtime(*pc1));
 /// \endcode
 #define BOOST_TYPE_INDEX_REGISTER_CLASS nothing-or-some-virtual-functions
+
+/// \def BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
+/// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY is a helper macro that must be defined if mixing
+/// RTTI on/off modules. See "Mixing sources with RTTI on and RTTI off" section of documentation
+/// for more info.
+#define BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
 
 #endif // defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
