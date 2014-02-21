@@ -61,6 +61,8 @@ namespace boost { namespace typeind {
 ///
 /// Could be a std::type_info, boost::typeind::detail::ctti_data or 
 /// some user defined class.
+///
+/// type_info \b is \b not copyable or default constructible. It is \b not assignable too!
 typedef type_index::type_info_t type_info;
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)

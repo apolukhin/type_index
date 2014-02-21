@@ -49,15 +49,16 @@ namespace my_namespace { namespace detail {
 
     // my_typeinfo structure is used to save type number
     struct my_typeinfo {
-        // type_[0] will hold a type number
-        // type_[1] will be '\0', to have a zero terminated raw type name
-        char type_[2];
+        const char* const type_;
+    };
+
+    const my_typeinfo infos[5] = {
+        {"void"}, {"my_class"}, {"my_struct"}, {"my_classes"}, {"my_string"}
     };
 
     template <class T>
     inline const my_typeinfo& my_typeinfo_construct() {
-        static const my_typeinfo ret = {{ static_cast<char>(typenum<T>::value), '\0' }};
-        return ret;
+        return infos[typenum<T>::value];
     }
 }} // my_namespace::detail
 
@@ -97,13 +98,7 @@ public:
     }
 
     inline std::string  pretty_name() const {
-        // Must be in sync with detail::typenum<T>::value
-        static const char* names[] = {
-            "void", "my_class", "my_struct", "my_classes", "my_string"
-        };
-
-        const std::size_t indx = static_cast<std::size_t>(data_->type_[0]);
-        return names[indx];
+        return data_->type_;
     }
 
     template <class T>

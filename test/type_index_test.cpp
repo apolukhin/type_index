@@ -100,11 +100,30 @@ static void test_with_modofiers() {
     type_index t2 = type_id_with_cvr<T2>();
 
     BOOST_CHECK_NE(t2, t1);
+    BOOST_CHECK(t2 != t1.type_info());
+    BOOST_CHECK(t2.type_info() != t1);
+
     BOOST_CHECK(t1 < t2 || t2 < t1);
     BOOST_CHECK(t1 > t2 || t2 > t1);
+    BOOST_CHECK(t1.type_info() < t2 || t2.type_info() < t1);
+    BOOST_CHECK(t1.type_info() > t2 || t2.type_info() > t1);
+    BOOST_CHECK(t1 < t2.type_info() || t2 < t1.type_info());
+    BOOST_CHECK(t1 > t2.type_info() || t2 > t1.type_info());
+
+    // Chaecking that comparisom operators overloads compile
+    BOOST_CHECK(t1 <= t2 || t2 <= t1);
+    BOOST_CHECK(t1 >= t2 || t2 >= t1);
+    BOOST_CHECK(t1.type_info() <= t2 || t2.type_info() <= t1);
+    BOOST_CHECK(t1.type_info() >= t2 || t2.type_info() >= t1);
+    BOOST_CHECK(t1 <= t2.type_info() || t2 <= t1.type_info());
+    BOOST_CHECK(t1 >= t2.type_info() || t2 >= t1.type_info());
 
     BOOST_CHECK_EQUAL(t1, type_id_with_cvr<T1>());
     BOOST_CHECK_EQUAL(t2, type_id_with_cvr<T2>());
+    BOOST_CHECK(t1 == type_id_with_cvr<T1>().type_info());
+    BOOST_CHECK(t2 == type_id_with_cvr<T2>().type_info());
+    BOOST_CHECK(t1.type_info() == type_id_with_cvr<T1>());
+    BOOST_CHECK(t2.type_info() == type_id_with_cvr<T2>());
 
     BOOST_CHECK_EQUAL(t1.hash_code(), type_id_with_cvr<T1>().hash_code());
     BOOST_CHECK_EQUAL(t2.hash_code(), type_id_with_cvr<T2>().hash_code());

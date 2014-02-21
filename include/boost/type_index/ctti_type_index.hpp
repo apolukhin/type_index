@@ -35,17 +35,25 @@ namespace boost { namespace typeind {
 
 namespace detail {
 
-struct ctti_data {
-    const char* typename_;
-};
+// That's the most trickiest part of the TypeIndex library:
+//      1) we do not whant to give user ability to manually construct and compare `struct-that-represents-type`
+//      2) we need to distinguish beteween `struct-that-represents-type` and `const char*`
+//      3) we need a thread-safe way to have references to instances `struct-that-represents-type`
+//      4) we need a compile-time control to make shure that user does not copy or 
+// default construct `struct-that-represents-type`
+//
+// Solution would be a forward declared structure.
+struct ctti_data;
 
 } // namespace detail
 
 /// Helper method for getting detail::ctti_data of a tempalte patameter T.
 template <class T>
 inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
-    static const detail::ctti_data result = { boost::detail::ctti<T>::n() };
-    return result;
+    // Standard C++11, 5.2.10 Reinterpret cast: Converting a prvalue of type “pointer to T1” to the
+    // type “pointer to T2” (where T1 and T2 are object types and where the alignment requirements of T2 are no
+    // stricter than those of T1) and back to its original type yields the original pointer value.
+    return *reinterpret_cast<const detail::ctti_data*>(boost::detail::ctti<T>::n());
 }
 
 /// \class ctti_type_index
@@ -111,7 +119,7 @@ inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST
 
 
 inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
-    return data_->typename_;
+    return reinterpret_cast<const char*>(data_);
 }
 
 
