@@ -10,6 +10,7 @@ boost/typeind/type_id_with_cvr.html
 boost/typeind/type_id_runtime.html
 BOOST_TYPE_INDEX_USER_TYPEINDEX.html
 BOOST_TYPE_INDEX_REGISTER_CLASS.html
+BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY.html
 BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS.html
 boost/typeind/ctti_type_index.html
 BOOST_TYPE_INDEX_REGISTER_STL_CLASS.html

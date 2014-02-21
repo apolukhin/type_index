@@ -32,8 +32,8 @@
       is not a very good idea and may lead to a lot of surprises. However if there
       is a very strong need, TypeIndex library provides a solution for mixing sources:
       just define <code class="computeroutput"><span class="identifier">BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY</span></code>
-      macro. This would lead to usage of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span></code>
-      instead of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_info</span></code> class.
+      macro. This would lead to usage of same type_index class (<code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_index</span></code>
+      or <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_index</span></code>) all around the project.
     </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -75,12 +75,12 @@
 <tbody><tr>
 <td>
               <p>
-                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_info</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">stl_type_index</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
               </p>
             </td>
 <td>
               <p>
-                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_info</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
+                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">typeind</span><span class="special">::</span><span class="identifier">ctti_type_index</span> <span class="identifier">get_integer</span><span class="special">();</span></code>
               </p>
             </td>
 </tr></tbody>

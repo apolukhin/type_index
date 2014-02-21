@@ -98,17 +98,6 @@
 </tr>
 <tr>
 <td>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span>
-</pre>
-              </td>
-<td>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">const</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span>   <span class="comment">// when reference to `std::type_info` is required</span>
-<span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_index</span>         <span class="comment">// other cases</span>
-</pre>
-              </td>
-</tr>
-<tr>
-<td>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span>
 <span class="keyword">typeid</span><span class="special">(</span><span class="identifier">please_save_modifiers</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;)</span>
 <span class="keyword">typeid</span><span class="special">(</span><span class="identifier">T</span><span class="special">).</span><span class="identifier">name</span><span class="special">()</span> <span class="comment">// not human readable</span>
@@ -120,6 +109,18 @@
 <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id_with_cvr</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span>
 <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;().</span><span class="identifier">pretty_name</span><span class="special">()</span> <span class="comment">// human readable</span>
 <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id_runtime</span><span class="special">(</span><span class="identifier">variable</span><span class="special">)</span>
+</pre>
+              </td>
+</tr>
+<tr>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span> <span class="identifier">v1</span> <span class="special">=</span> <span class="keyword">typeid</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>  <span class="comment">// when reference to `std::type_info` is required</span>
+<span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">*</span> <span class="identifier">v2</span> <span class="special">=</span> <span class="special">&amp;</span><span class="keyword">typeid</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span> <span class="comment">// other cases</span>
+</pre>
+              </td>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">const</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span> <span class="identifier">v1</span> <span class="special">=</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;().</span><span class="identifier">type_info</span><span class="special">();</span>
+<span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_index</span> <span class="identifier">v2</span> <span class="special">=</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;();</span>
 </pre>
               </td>
 </tr>
@@ -180,7 +181,7 @@
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">virtual</span> <span class="keyword">const</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_info</span> <span class="special">&amp;</span> <span class="identifier">type</span><span class="special">()</span> <span class="keyword">const</span> <span class="identifier">BOOST_NOEXCEPT</span>
 <span class="special">{</span>
     <span class="comment">// now works even with RTTI disabled</span>
-    <span class="keyword">return</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;()-&gt;</span><span class="identifier">type_info</span><span class="special">();</span>
+    <span class="keyword">return</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;().</span><span class="identifier">type_info</span><span class="special">();</span>
 <span class="special">}</span>
 </pre>
               </td>
@@ -257,7 +258,7 @@
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
     <span class="keyword">const</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="keyword">const</span> <span class="identifier">BOOST_NOEXCEPT</span>
     <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()-&gt;</span><span class="identifier">type_info</span><span class="special">();</span>
+        <span class="keyword">return</span> <span class="identifier">bti</span><span class="special">::</span><span class="identifier">type_id</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;().</span><span class="identifier">type_info</span><span class="special">();</span>
     <span class="special">}</span>
 
 <span class="special">};</span>

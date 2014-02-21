@@ -37,22 +37,22 @@
   <span class="comment">// types</span>
   <span class="keyword">typedef</span> <span class="identifier">TypeInfo</span> <a name="boost.typeind.type_index_facade.type_info_t"></a><span class="identifier">type_info_t</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="type_index_facade.html#idp6179760-bb">public member functions</a></span>
-  <span class="keyword">const</span> <span class="identifier">type_info_t</span> <span class="special">&amp;</span> <a class="link" href="type_index_facade.html#idp6180256-bb"><span class="identifier">type_info</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index_facade.html#idp6183760-bb"><span class="identifier">raw_name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="type_index_facade.html#idp6187264-bb"><span class="identifier">pretty_name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index_facade.html#idp6190144-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="type_index_facade.html#idp6193648-bb"><span class="identifier">equal</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">bool</span> <a class="link" href="type_index_facade.html#idp6197856-bb"><span class="identifier">before</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="type_index_facade.html#idp6202080-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="type_index_facade.html#idp6485008-bb">public member functions</a></span>
+  <span class="keyword">const</span> <span class="identifier">type_info_t</span> <span class="special">&amp;</span> <a class="link" href="type_index_facade.html#idp6485504-bb"><span class="identifier">type_info</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index_facade.html#idp6489008-bb"><span class="identifier">raw_name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="type_index_facade.html#idp6492512-bb"><span class="identifier">pretty_name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a class="link" href="type_index_facade.html#idp6495392-bb"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="type_index_facade.html#idp6498896-bb"><span class="identifier">equal</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="type_index_facade.html#idp6503104-bb"><span class="identifier">before</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="type_index_facade.html#idp6507328-bb"><span class="identifier">hash_code</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="type_index_facade.html#idp6205792-bb">protected static functions</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6206288-bb"><span class="identifier">type_id</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6212320-bb"><span class="identifier">type_id_with_cvr</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6218992-bb"><span class="identifier">type_id_runtime</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="type_index_facade.html#idp6511040-bb">protected static functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6511536-bb"><span class="identifier">type_id</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6517568-bb"><span class="identifier">type_id_with_cvr</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a class="link" href="type_index_facade.html#idp6524240-bb"><span class="identifier">type_id_runtime</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp6229104"></a><h2>Description</h2>
+<a name="idp6217968"></a><h2>Description</h2>
 <p>This class takes care about the comparison operators, hash functions and ostream operators. Use this class as a public base class for defining new type_info-conforming classes.</p>
 <p><span class="bold"><strong>Example:</strong></span> </p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">stl_type_index</span><span class="special">:</span> <span class="keyword">public</span> <span class="identifier">type_index_facade</span><span class="special">&lt;</span><span class="identifier">stl_type_index</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">type_info</span><span class="special">&gt;</span> 
@@ -72,7 +72,7 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idp6261248"></a><h3>Template Parameters</h3>
+<a name="idp6250112"></a><h3>Template Parameters</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">typename</span> Derived</pre>
@@ -85,11 +85,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp6267776"></a><h3>
-<a name="idp6179760-bb"></a><code class="computeroutput">type_index_facade</code> public member functions</h3>
+<a name="idp6256640"></a><h3>
+<a name="idp6485008-bb"></a><code class="computeroutput">type_index_facade</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">type_info_t</span> <span class="special">&amp;</span> <a name="idp6180256-bb"></a><span class="identifier">type_info</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">type_info_t</span> <span class="special">&amp;</span> <a name="idp6485504-bb"></a><span class="identifier">type_info</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>must</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -101,7 +101,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp6183760-bb"></a><span class="identifier">raw_name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp6489008-bb"></a><span class="identifier">raw_name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>must</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -113,7 +113,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idp6187264-bb"></a><span class="identifier">pretty_name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="idp6492512-bb"></a><span class="identifier">pretty_name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>must</strong></span> be redefined in Derived class. Overrides may throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -125,7 +125,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp6190144-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span> <a name="idp6495392-bb"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -137,7 +137,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6193648-bb"></a><span class="identifier">equal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6498896-bb"></a><span class="identifier">equal</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -149,7 +149,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6197856-bb"></a><span class="identifier">before</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="idp6503104-bb"></a><span class="identifier">before</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Derived</span> <span class="special">&amp;</span> rhs<span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -161,7 +161,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idp6202080-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="idp6507328-bb"></a><span class="identifier">hash_code</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. 
 </p>
 <div class="variablelist"><table border="0">
@@ -175,11 +175,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp6344800"></a><h3>
-<a name="idp6205792-bb"></a><code class="computeroutput">type_index_facade</code> protected static functions</h3>
+<a name="idp6333584"></a><h3>
+<a name="idp6511040-bb"></a><code class="computeroutput">type_index_facade</code> protected static functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6206288-bb"></a><span class="identifier">type_id</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6511536-bb"></a><span class="identifier">type_id</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p>This is a factory method that is used to create instances of Derived classes. boost::typeind::type_id() will call this method, if Derived has same type as boost::typeind::type_index.</p>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined and made public in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. Overrides <span class="bold"><strong>must</strong></span> remove const, volatile &amp;&amp; and &amp; modifiers from T. 
 
@@ -205,7 +205,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6212320-bb"></a><span class="identifier">type_id_with_cvr</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6517568-bb"></a><span class="identifier">type_id_with_cvr</span><span class="special">(</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p>This is a factory method that is used to create instances of Derived classes. boost::typeind::type_id_with_cvr() will call this method, if Derived has same type as boost::typeind::type_index.</p>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined and made public in Derived class. Overrides <span class="bold"><strong>must</strong></span> not throw. Overrides <span class="bold"><strong>must</strong></span> <span class="bold"><strong>not</strong></span> remove const, volatile &amp;&amp; and &amp; modifiers from T. 
 
@@ -232,7 +232,7 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
-  <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6218992-bb"></a><span class="identifier">type_id_runtime</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> variable<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
+  <span class="keyword">static</span> <span class="identifier">Derived</span> <a name="idp6524240-bb"></a><span class="identifier">type_id_runtime</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> variable<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>
 <p>This is a factory method that is used to create instances of Derived classes. boost::typeind::type_id_runtime(const T&amp;) will call this method, if Derived has same type as boost::typeind::type_index.</p>
 <p><span class="bold"><strong>Override:</strong></span> This function <span class="bold"><strong>may</strong></span> be redefined and made public in Derived class. 
 
