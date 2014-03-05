@@ -45,7 +45,7 @@ int main() {
 
 //[type_index_my_type_index_type_id_runtime_test
 /*`
-    Now the follwoing example will compile and work.
+    Now the following example will compile and work.
 */
     my_struct str;
     my_class& reference = str;
