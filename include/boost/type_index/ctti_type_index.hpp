@@ -63,6 +63,8 @@ inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
     // “pointer to T1” to the type “pointer to T2” (where T1 and T2 are object types and where the alignment
     // requirements of T2 are no stricter than those of T1) and back to its original type yields the original pointer
     // value.
+    //
+    // Alignments are checked in `type_index_test_ctti_alignment.cpp` test.
     return *reinterpret_cast<const detail::ctti_data*>(boost::detail::ctti<T>::n());
 }
 

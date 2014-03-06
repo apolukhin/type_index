@@ -40,6 +40,7 @@ test-suite type_index
     [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
     [ compile-fail type_index_test_ctti_construct_fail.cpp ]
+    [ compile type_index_test_ctti_alignment.cpp ]
 
     # Mixing RTTI on and off
     [ link-fail testing_crossmodule.cpp $(tlib) test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
