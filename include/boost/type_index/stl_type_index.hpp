@@ -250,8 +250,9 @@ template <class T>
 inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
     return value.type_id_runtime();
-#endif
+#else
     return typeid(value);
+#endif
 }
 
 }} // namespace boost::typeind
