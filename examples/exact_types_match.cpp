@@ -18,22 +18,21 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-namespace bti = boost::typeind;
 
 class type_erased_unary_function {
-    void*               function_ptr_;
-    bti::type_index     exact_param_t_;
+    void*                       function_ptr_;
+    boost::typeind::type_index  exact_param_t_;
 
 public:
     template <class ParamT>
     type_erased_unary_function(void(*ptr)(ParamT)) 
         : function_ptr_(reinterpret_cast<void*>(ptr)) // ptr - is a pointer to function returning `void` and accepting parameter of type `ParamT`
-        , exact_param_t_(bti::type_id_with_cvr<ParamT>())
+        , exact_param_t_(boost::typeind::type_id_with_cvr<ParamT>())
     {}
 
     template <class ParamT>
     void call(ParamT v) {
-        if (exact_param_t_ != bti::type_id_with_cvr<ParamT>()) {
+        if (exact_param_t_ != boost::typeind::type_id_with_cvr<ParamT>()) {
             throw std::runtime_error("Incorrect `ParamT`");
         }
 

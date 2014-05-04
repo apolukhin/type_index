@@ -37,9 +37,6 @@ is a drop-in replacement for `std::type_index`. Unlike Standard Library versions
 `type_index` provides the full set of comparison operators, hashing functions and ostream
 operators, so it can be used with any container class.
 
-Through all the examples, we'll assume that the following namespace alias is in effect:
-``namespace bti = boost::typeind;``
-
 [section How to use]
 
 To start using Boost.TypeIndex:
@@ -56,7 +53,7 @@ To start using Boost.TypeIndex:
 [[``
     std::type_index
 ``][``
-    bti::type_index
+    boost::typeind::type_index
 ``]]
 
 [[``
@@ -65,18 +62,18 @@ To start using Boost.TypeIndex:
     typeid(T).name() // not human readable
     typeid(variable)
 ``][``
-    bti::type_id<T>()
-    bti::type_id_with_cvr<T>()
-    bti::type_id<T>().pretty_name() // human readable
-    bti::type_id_runtime(variable)
+    boost::typeind::type_id<T>()
+    boost::typeind::type_id_with_cvr<T>()
+    boost::typeind::type_id<T>().pretty_name() // human readable
+    boost::typeind::type_id_runtime(variable)
 ``]]
 
 [[``
     const std::type_info& v1 = typeid(int);  // when reference to `std::type_info` is required
     const std::type_info* v2 = &typeid(int); // other cases
 ``][``
-    const bti::type_info& v1 = bti::type_id<int>().type_info();
-    bti::type_index v2 = bti::type_id<int>();
+    const boost::typeind::type_info& v1 = boost::typeind::type_id<int>().type_info();
+    boost::typeind::type_index v2 = boost::typeind::type_id<int>();
 ``]]
 ]
 
@@ -98,10 +95,10 @@ Here is how TypeIndex could be used in `boost/any.hpp`:
         return typeid(ValueType);
     }
 ``] [``
-    virtual const bti::type_info & type() const BOOST_NOEXCEPT
+    virtual const boost::typeind::type_info & type() const BOOST_NOEXCEPT
     {
         // now works even with RTTI disabled
-        return bti::type_id<ValueType>().type_info();
+        return boost::typeind::type_id<ValueType>().type_info();
     }
 ``]]
 ]
@@ -141,14 +138,14 @@ public: // visitor interfaces
 #endif // BOOST_NO_TYPEID
 ``][``
 class reflect
-    : public static_visitor<const bti::type_info&>
+    : public static_visitor<const boost::typeind::type_info&>
 {
 public: // visitor interfaces
 
     template <typename T>
-    const bti::type_info& operator()(const T&) const BOOST_NOEXCEPT
+    const boost::typeind::type_info& operator()(const T&) const BOOST_NOEXCEPT
     {
-        return bti::type_id<T>().type_info();
+        return boost::typeind::type_id<T>().type_info();
     }
 
 };
@@ -162,7 +159,7 @@ public: // visitor interfaces
     }
 #endif
 ``] [``
-    const bti::type_info& type() const
+    const boost::typeind::type_info& type() const
     {
         detail::variant::reflect visitor;
         return this->apply_visitor(visitor);
