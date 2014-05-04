@@ -14,12 +14,11 @@
 
 #include <boost/type_index.hpp>
 #include <iostream>
-namespace bti = boost::typeind;
 
 template <class T>
 void foo(T) {
-    std::cout << "\n Short name: " << boost::typeind::type_id<T>().raw_name();
-    std::cout << "\n Readable name: " << boost::typeind::type_id<T>().pretty_name();
+    std::cout << "\n Short name: " << boost::typeindex::type_id<T>().raw_name();
+    std::cout << "\n Readable name: " << boost::typeindex::type_id<T>().pretty_name();
 }
 
 struct user_defined_type{};

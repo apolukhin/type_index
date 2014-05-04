@@ -27,7 +27,7 @@
 #endif
 #endif
 
-namespace boost { namespace typeind {
+namespace boost { namespace typeindex {
 
 /// \class type_index_facade
 ///
@@ -110,7 +110,7 @@ public:
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 protected:
     /// This is a factory method that is used to create instances of Derived classes.
-    /// boost::typeind::type_id() will call this method, if Derived has same type as boost::typeind::type_index.
+    /// boost::typeindex::type_id() will call this method, if Derived has same type as boost::typeindex::type_index.
     ///
     /// \b Override: This function \b may be redefined and made public in Derived class. Overrides \b must not throw. 
     /// Overrides \b must remove const, volatile && and & modifiers from T.
@@ -120,7 +120,7 @@ protected:
     static Derived type_id() BOOST_NOEXCEPT;
 
     /// This is a factory method that is used to create instances of Derived classes.
-    /// boost::typeind::type_id_with_cvr() will call this method, if Derived has same type as boost::typeind::type_index.
+    /// boost::typeindex::type_id_with_cvr() will call this method, if Derived has same type as boost::typeindex::type_index.
     ///
     /// \b Override: This function \b may be redefined and made public in Derived class. Overrides \b must not throw. 
     /// Overrides \b must \b not remove const, volatile && and & modifiers from T.
@@ -130,7 +130,7 @@ protected:
     static Derived type_id_with_cvr() BOOST_NOEXCEPT;
 
     /// This is a factory method that is used to create instances of Derived classes.
-    /// boost::typeind::type_id_runtime(const T&) will call this method, if Derived has same type as boost::typeind::type_index.
+    /// boost::typeindex::type_id_runtime(const T&) will call this method, if Derived has same type as boost::typeindex::type_index.
     ///
     /// \b Override: This function \b may be redefined and made public in Derived class.
     /// \param variable Variable which runtime type will be stored in type_index.
@@ -283,7 +283,7 @@ inline std::size_t hash_value(const type_index_facade<Derived, TypeInfo>& lhs) B
     return static_cast<Derived const&>(lhs).hash_code();
 }
 
-}} // namespace boost::typeind
+}} // namespace boost::typeindex
 
 #endif // BOOST_TYPE_INDEX_TYPE_INDEX_FACADE_HPP
 

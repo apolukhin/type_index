@@ -19,14 +19,14 @@
 
 #include <boost/type_index/stl_type_index.hpp>
 
-namespace boost { namespace typeind { namespace detail {
+namespace boost { namespace typeindex { namespace detail {
 
 template <class T>
 inline const stl_type_index::type_info_t& stl_construct_typeid_ref(const T*) BOOST_NOEXCEPT {
     return typeid(T);
 }
 
-}}} // namespace boost::typeind::detail
+}}} // namespace boost::typeindex::detail
 
 
 /// \def BOOST_TYPE_INDEX_REGISTER_STL_CLASS
@@ -36,8 +36,8 @@ inline const stl_type_index::type_info_t& stl_construct_typeid_ref(const T*) BOO
 /// BOOST_TYPE_INDEX_REGISTER_STL_CLASS macro expands to declaration and implementation of
 /// `virtual const std::type_info& type_id_runtime() const` method.
 #define BOOST_TYPE_INDEX_REGISTER_STL_CLASS                                                             \
-    virtual const boost::typeind::stl_type_index::type_info_t& type_id_runtime() const BOOST_NOEXCEPT { \
-        return boost::typeind::detail::stl_construct_typeid_ref(this);                                  \
+    virtual const boost::typeindex::stl_type_index::type_info_t& type_id_runtime() const BOOST_NOEXCEPT { \
+        return boost::typeindex::detail::stl_construct_typeid_ref(this);                                  \
     }                                                                                                   \
 /**/
 

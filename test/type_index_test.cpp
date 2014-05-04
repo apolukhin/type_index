@@ -25,7 +25,7 @@ namespace my_namespace2 {
 
 BOOST_AUTO_TEST_CASE(names_matches_type_id)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     BOOST_CHECK_EQUAL(type_id<int>().pretty_name(), "int");
     BOOST_CHECK_EQUAL(type_id<double>().pretty_name(), "double");
 
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(names_matches_type_id)
 
 BOOST_AUTO_TEST_CASE(default_construction)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     type_index ti1, ti2;
     BOOST_CHECK_EQUAL(ti1, ti2);
     BOOST_CHECK_EQUAL(type_id<void>(), ti1);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(default_construction)
 
 BOOST_AUTO_TEST_CASE(copy_construction)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     type_index ti1, ti2 = type_id<int>();
     BOOST_CHECK_NE(ti1, ti2);
     ti1 = ti2;    
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(copy_construction)
 
 BOOST_AUTO_TEST_CASE(comparators_type_id)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     type_index t_int = type_id<int>();
     type_index t_double = type_id<double>();
 
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(comparators_type_id)
 
 BOOST_AUTO_TEST_CASE(hash_code_type_id)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     std::size_t t_int1 = type_id<int>().hash_code();
     std::size_t t_double1 = type_id<double>().hash_code();
 
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(hash_code_type_id)
 
 template <class T1, class T2>
 static void test_with_modofiers() {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
 
     type_index t1 = type_id_with_cvr<T1>();
     type_index t2 = type_id_with_cvr<T2>();
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(type_id_storing_modifiers)
 
 template <class T>
 static void test_storing_nonstoring_modifiers_templ() {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
 
     type_index t1 = type_id_with_cvr<T>();
     type_index t2 = type_id<T>();
@@ -203,15 +203,15 @@ BOOST_AUTO_TEST_CASE(type_id_storing_modifiers_vs_nonstoring)
     test_storing_nonstoring_modifiers_templ<my_namespace1::my_class>();
     test_storing_nonstoring_modifiers_templ<my_namespace2::my_class>();
 
-    boost::typeind::type_index t1 = boost::typeind::type_id_with_cvr<const int>();
-    boost::typeind::type_index t2 = boost::typeind::type_id<int>();
+    boost::typeindex::type_index t1 = boost::typeindex::type_id_with_cvr<const int>();
+    boost::typeindex::type_index t2 = boost::typeindex::type_id<int>();
     BOOST_CHECK_NE(t2, t1);
     BOOST_CHECK(t1.pretty_name() == "const int" || t1.pretty_name() == "int const");
 }
 
 BOOST_AUTO_TEST_CASE(type_index_stream_operator_via_lexical_cast_testing)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
 
     std::string s_int2 = boost::lexical_cast<std::string>(type_id<int>());
     BOOST_CHECK_EQUAL(s_int2, "int");
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(type_index_stream_operator_via_lexical_cast_testing)
 
 BOOST_AUTO_TEST_CASE(type_index_stripping_cvr_test)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
 
     BOOST_CHECK_EQUAL(type_id<int>(), type_id<const int>());
     BOOST_CHECK_EQUAL(type_id<int>(), type_id<const volatile int>());
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(type_index_stripping_cvr_test)
 
 BOOST_AUTO_TEST_CASE(type_index_user_defined_class_test)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
 
     BOOST_CHECK_EQUAL(type_id<my_namespace1::my_class>(), type_id<my_namespace1::my_class>());
     BOOST_CHECK_EQUAL(type_id<my_namespace2::my_class>(), type_id<my_namespace2::my_class>());
@@ -297,28 +297,28 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
     BOOST_CHECK(typeid(&rc1) == typeid(pb1));
     BOOST_CHECK(typeid(&rb1) == typeid(pc1));
 #else
-    BOOST_CHECK(boost::typeind::type_index(pc1->type_id_runtime()).raw_name());
+    BOOST_CHECK(boost::typeindex::type_index(pc1->type_id_runtime()).raw_name());
 #endif
 
-    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pc1));
-    BOOST_CHECK_EQUAL(boost::typeind::type_id<C>(), boost::typeind::type_id_runtime(*pc1));
-    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pb1));
-    BOOST_CHECK_EQUAL(boost::typeind::type_id<B>(), boost::typeind::type_id_runtime(*pb1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id_runtime(rc1), boost::typeindex::type_id_runtime(*pc1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id<C>(), boost::typeindex::type_id_runtime(*pc1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id_runtime(rb1), boost::typeindex::type_id_runtime(*pb1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id<B>(), boost::typeindex::type_id_runtime(*pb1));
 
-    BOOST_CHECK_NE(boost::typeind::type_id_runtime(rc1), boost::typeind::type_id_runtime(*pb1));
-    BOOST_CHECK_NE(boost::typeind::type_id_runtime(rb1), boost::typeind::type_id_runtime(*pc1));
+    BOOST_CHECK_NE(boost::typeindex::type_id_runtime(rc1), boost::typeindex::type_id_runtime(*pb1));
+    BOOST_CHECK_NE(boost::typeindex::type_id_runtime(rb1), boost::typeindex::type_id_runtime(*pc1));
 
 #ifndef BOOST_NO_RTTI
-    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rc1), boost::typeind::type_id_runtime(pb1));
-    BOOST_CHECK_EQUAL(boost::typeind::type_id_runtime(&rb1), boost::typeind::type_id_runtime(pc1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id_runtime(&rc1), boost::typeindex::type_id_runtime(pb1));
+    BOOST_CHECK_EQUAL(boost::typeindex::type_id_runtime(&rb1), boost::typeindex::type_id_runtime(pc1));
 
-    BOOST_CHECK(boost::typeind::type_id_runtime(rc1) == typeid(*pc1));
-    BOOST_CHECK(boost::typeind::type_id_runtime(rb1) == typeid(*pb1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(rc1) == typeid(*pc1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(rb1) == typeid(*pb1));
 
-    BOOST_CHECK(boost::typeind::type_id_runtime(rc1) != typeid(*pb1));
-    BOOST_CHECK(boost::typeind::type_id_runtime(rb1) != typeid(*pc1));
-    BOOST_CHECK(boost::typeind::type_id_runtime(&rc1) == typeid(pb1));
-    BOOST_CHECK(boost::typeind::type_id_runtime(&rb1) == typeid(pc1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(rc1) != typeid(*pb1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(rb1) != typeid(*pc1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(&rc1) == typeid(pb1));
+    BOOST_CHECK(boost::typeindex::type_id_runtime(&rb1) == typeid(pc1));
 #endif
 }
 
@@ -327,7 +327,7 @@ BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
 
 BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
 {
-    using namespace boost::typeind;
+    using namespace boost::typeindex;
     type_index t_int = type_id<int>();
 
     BOOST_CHECK(t_int == typeid(int));

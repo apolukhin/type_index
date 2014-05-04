@@ -22,7 +22,7 @@
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 
-namespace boost { namespace typeind { namespace detail { 
+namespace boost { namespace typeindex { namespace detail { 
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
@@ -89,7 +89,7 @@ namespace boost { namespace typeind { namespace detail {
     BOOST_STATIC_CONSTANT(std::size_t, ctti_skip_size_at_end = 0);     // skip nothing
 #endif
 
-}}} // namespace boost::typeind::detail
+}}} // namespace boost::typeindex::detail
 
 namespace boost { namespace detail {
 
@@ -104,9 +104,9 @@ struct ctti {
     /// Returns raw name. Must be as short, as possible, to avoid code bloat
     static const char* n() BOOST_NOEXCEPT {
         #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
-            return BOOST_TYPE_INDEX_FUNCTION_SIGNATURE + boost::typeind::detail::ctti_skip_size_at_begin;
+            return BOOST_TYPE_INDEX_FUNCTION_SIGNATURE + boost::typeindex::detail::ctti_skip_size_at_begin;
         #elif defined(__FUNCSIG__)
-            return __FUNCSIG__ + boost::typeind::detail::ctti_skip_size_at_begin;
+            return __FUNCSIG__ + boost::typeindex::detail::ctti_skip_size_at_begin;
         #elif defined(__PRETTY_FUNCTION__) \
                     || defined(__GNUC__) \
                     || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
@@ -114,7 +114,7 @@ struct ctti {
                     || defined(__ghs__) \
                     || defined(__DMC__)
 
-            return __PRETTY_FUNCTION__ + boost::typeind::detail::ctti_skip_size_at_begin;
+            return __PRETTY_FUNCTION__ + boost::typeindex::detail::ctti_skip_size_at_begin;
         #else
                 BOOST_STATIC_ASSERT_MSG(
                     sizeof(T) && false,

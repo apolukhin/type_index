@@ -7,7 +7,7 @@
 
 //[type_index_my_type_index_worldwide_macro
 /*`
-    There is an easy way to force `boost::typeind::type_id` to use your own type_index class.
+    There is an easy way to force `boost::typeindex::type_id` to use your own type_index class.
 
     All we need to do is just define `BOOST_TYPE_INDEX_USER_TYPEINDEX` to the full path to header file
     of your type index class:
@@ -56,7 +56,7 @@ int main() {
 /*`
     That's it! Now all TypeIndex global methods and typedefs will be using your class:
 */
-    boost::typeind::type_index worldwide = boost::typeind::type_id<my_classes>();
+    boost::typeindex::type_index worldwide = boost::typeindex::type_id<my_classes>();
     assert(worldwide.pretty_name() == "my_classes");
     assert(worldwide == my_type_index::type_id<my_classes>());
 //][/type_index_my_type_index_worldwide_usage]

@@ -16,22 +16,22 @@
 #include <cassert>
 
 int main() {
-    boost::unordered_set<boost::typeind::type_index> types;
+    boost::unordered_set<boost::typeindex::type_index> types;
     
     // Storing some `boost::type_info`s
-    types.insert(boost::typeind::type_id<int>());
-    types.insert(boost::typeind::type_id<float>());
+    types.insert(boost::typeindex::type_id<int>());
+    types.insert(boost::typeindex::type_id<float>());
     
     // `types` variable contains two `boost::type_index`es:
     assert(types.size() == 2);
 
     // Const, volatile and reference will be striped from the type:
-    bool is_inserted = types.insert(boost::typeind::type_id<const int>()).second;
+    bool is_inserted = types.insert(boost::typeindex::type_id<const int>()).second;
     assert(!is_inserted);
-    assert(types.erase(boost::typeind::type_id<float&>()) == 1);
+    assert(types.erase(boost::typeindex::type_id<float&>()) == 1);
     
     // We have erased the `float` type, only `int` remains
-    assert(*types.begin() == boost::typeind::type_id<int>());
+    assert(*types.begin() == boost::typeindex::type_id<int>());
 }
 
 //] [/type_index_registry_example]

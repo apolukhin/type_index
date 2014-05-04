@@ -15,9 +15,9 @@
 #endif
 
 /// \file ctti_type_index.hpp
-/// \brief Contains boost::typeind::ctti_type_index class.
+/// \brief Contains boost::typeindex::ctti_type_index class.
 ///
-/// boost::typeind::ctti_type_index class can be used as a drop-in replacement 
+/// boost::typeindex::ctti_type_index class can be used as a drop-in replacement 
 /// for std::type_index.
 ///
 /// It is used in situations when typeid() method is not available or 
@@ -31,7 +31,7 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 
-namespace boost { namespace typeind {
+namespace boost { namespace typeindex {
 
 namespace detail {
 
@@ -147,7 +147,7 @@ inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
 }
 
 
-}} // namespace boost::typeind
+}} // namespace boost::typeindex
 
 #endif // BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_HPP
 

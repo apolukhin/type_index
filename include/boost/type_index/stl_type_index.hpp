@@ -15,14 +15,14 @@
 #endif
 
 /// \file stl_type_index.hpp
-/// \brief Contains boost::typeind::stl_type_index class.
+/// \brief Contains boost::typeindex::stl_type_index class.
 ///
-/// boost::typeind::stl_type_index class can be used as a drop-in replacement 
+/// boost::typeindex::stl_type_index class can be used as a drop-in replacement 
 /// for std::type_index.
 ///
 /// It is used in situations when RTTI is enabled or typeid() method is available.
 /// When typeid() is disabled or BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro
-/// is defined boost::typeind::ctti is usually used instead of boost::typeind::stl_type_index.
+/// is defined boost::typeindex::ctti is usually used instead of boost::typeindex::stl_type_index.
 
 #include <boost/type_index/type_index_facade.hpp>
 
@@ -58,7 +58,7 @@
 #   include <boost/type_traits/is_arithmetic.hpp>
 #endif
 
-namespace boost { namespace typeind {
+namespace boost { namespace typeindex {
 
 /// \class stl_type_index
 /// This class is a wrapper around std::type_info, that workarounds issues and provides
@@ -150,12 +150,12 @@ inline std::string stl_type_index::pretty_name() const {
     free(demang);
 #endif
 
-    std::string::size_type pos = ret.find("boost::typeind::detail::cvr_saver<");
+    std::string::size_type pos = ret.find("boost::typeindex::detail::cvr_saver<");
     if (pos == std::string::npos) {
         return ret;
     }
 
-    pos += sizeof("boost::typeind::detail::cvr_saver<") - 1;
+    pos += sizeof("boost::typeindex::detail::cvr_saver<") - 1;
     while (ret[pos] == ' ') {
         ++ pos;
     }
@@ -255,7 +255,7 @@ inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEX
 #endif
 }
 
-}} // namespace boost::typeind
+}} // namespace boost::typeindex
 
 
 #endif // BOOST_TYPE_INDEX_STL_TYPE_INDEX_HPP

@@ -10,8 +10,8 @@
 
 int main() {
     BOOST_STATIC_ASSERT_MSG(
-        boost::alignment_of<boost::typeind::detail::ctti_data>::value == boost::alignment_of<char>::value,
-        "Alignments of boost::typeind::detail::ctti_data and char differ. "
+        boost::alignment_of<boost::typeindex::detail::ctti_data>::value == boost::alignment_of<char>::value,
+        "Alignments of boost::typeindex::detail::ctti_data and char differ. "
         "It is unsafe to reinterpret_cast between them."
     );
 }

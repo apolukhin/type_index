@@ -75,7 +75,7 @@ namespace my_namespace { namespace detail {
 */
 namespace my_namespace {
 
-class my_type_index: public boost::typeind::type_index_facade<my_type_index, detail::my_typeinfo> {
+class my_type_index: public boost::typeindex::type_index_facade<my_type_index, detail::my_typeinfo> {
     const detail::my_typeinfo* data_;
 
 public:
@@ -118,7 +118,7 @@ public:
 } // namespace my_namespace
 
 /*`
-    Note that we have used the boost::typeind::type_index_facade class as base.
+    Note that we have used the boost::typeindex::type_index_facade class as base.
     That class took care about all the helper function and operators (comparison, hashing, ostreaming and others).
 */
 
@@ -186,7 +186,7 @@ struct my_struct: public my_class {
     You'll also need to add some typedefs and macro to your "user_defined_typeinfo.hpp" header file:
 */
 #define BOOST_TYPE_INDEX_REGISTER_CLASS MY_TYPEINDEX_REGISTER_CLASS
-namespace boost { namespace typeind {
+namespace boost { namespace typeindex {
     typedef my_namespace::my_type_index type_index;
 }}
 //] [/type_index_my_type_index_worldwide_typedefs]

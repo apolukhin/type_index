@@ -12,7 +12,7 @@
 /// \brief Includes minimal set of headers required to use the Boost.TypeIndex library.
 ///
 /// By inclusion of this file most optimal type index classes will be included and used 
-/// as a boost::typeind::type_index and boost::typeind::type_info.
+/// as a boost::typeindex::type_index and boost::typeindex::type_info.
 
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
@@ -33,33 +33,33 @@
 #   include <boost/type_index/ctti_register_class.hpp>
 #endif
 
-namespace boost { namespace typeind {
+namespace boost { namespace typeindex {
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
     /// Depending on a compiler flags, optimal implementation of type_index will be used 
-    /// as a default boost::typeind::type_index.
+    /// as a default boost::typeindex::type_index.
     ///
-    /// Could be a boost::typeind::stl_type_index, boost::typeind::ctti_type_index or 
+    /// Could be a boost::typeindex::stl_type_index, boost::typeindex::ctti_type_index or 
     /// user defined type_index class.
     typedef platform-specific type_index;
 #elif defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
     // Nothing to do
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
-    typedef boost::typeind::stl_type_index type_index;
+    typedef boost::typeindex::stl_type_index type_index;
 #   ifdef BOOST_NO_RTTI
 #       define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_STL_CLASS
 #   else
 #       define BOOST_TYPE_INDEX_REGISTER_CLASS
 #   endif
 #else 
-    typedef boost::typeind::ctti_type_index type_index;
+    typedef boost::typeindex::ctti_type_index type_index;
 #   define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS
 #endif
 
 /// Depending on a compiler flags, optimal implementation of type_info will be used 
-/// as a default boost::typeind::type_info.
+/// as a default boost::typeindex::type_info.
 ///
-/// Could be a std::type_info, boost::typeind::detail::ctti_data or 
+/// Could be a std::type_info, boost::typeindex::detail::ctti_data or 
 /// some user defined class.
 ///
 /// type_info \b is \b not copyable or default constructible. It is \b not assignable too!
@@ -102,7 +102,7 @@ typedef type_index::type_info_t type_info;
 ///
 /// C c1;
 /// A* pc1 = &c1;
-/// assert(boost::typeind::type_id<C>() == boost::typeind::type_id_runtime(*pc1));
+/// assert(boost::typeindex::type_id<C>() == boost::typeindex::type_id_runtime(*pc1));
 /// \endcode
 #define BOOST_TYPE_INDEX_REGISTER_CLASS nothing-or-some-virtual-functions
 
@@ -126,7 +126,7 @@ typedef type_index::type_info_t type_info;
 ///
 /// \tparam T Type for which type_index must be created.
 /// \throw Nothing.
-/// \return boost::typeind::type_index with information about the specified type T.
+/// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
 inline type_index type_id() BOOST_NOEXCEPT {
     return type_index::type_id<T>();
@@ -146,7 +146,7 @@ inline type_index type_id() BOOST_NOEXCEPT {
 ///
 /// \tparam T Type for which type_index must be created.
 /// \throw Nothing.
-/// \return boost::typeind::type_index with information about the specified type T.
+/// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
 inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
     return type_index::type_id_with_cvr<T>();
@@ -171,13 +171,13 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 ///
 /// \param runtime_val Varaible which runtime type must be returned.
 /// \throw Nothing.
-/// \return boost::typeind::type_index with information about the specified variable.
+/// \return boost::typeindex::type_index with information about the specified variable.
 template <class T>
 inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
     return type_index::type_id_runtime(runtime_val);
 }
 
-}} // namespace boost::typeind
+}} // namespace boost::typeindex
 
 
 
