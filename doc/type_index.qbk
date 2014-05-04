@@ -180,6 +180,9 @@ will be used.
 `BOOST_TYPE_INDEX_REGISTER_CLASS` macro is a helper macro that places some virtual helper functions or
 expands to nothing.
 
+Issues with cross module type comparison on a bugged compilers are bypassed by directly comparing strings with type 
+(latest versions of those compilers resolved that issue using exactly the same approach).
+
 [endsect]
 
 [section Examples]
@@ -262,19 +265,23 @@ i
 
 [endsect]
 
-[section Compiler support]
+[section RTTI emulation limitations]
 
-TypeIndex has been tested and successfully work on MSVC2010, GCC-4.6, Clang-2.9. If your compiler is not
-in a list of tested compilers, you must correctly define `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`,
-`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` macroses:
+TypeIndex has been tested and successfully work on many compilers. 
+
+If `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` macro is not defined or 
+`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP`
+are defined to zero then you are using a compiler that was not tested with this library. 
+In that case if you wish to use this library with RTTI off, you must correctly define 
+`BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`, `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and 
+`BOOST_TYPE_INDEX_CTTI_END_SKIP` macros:
 
 # define `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` to a compiler specific macro, that outputs the *whole*
 function signature, including template parameters
-# define `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `0`
-# get the output of `boost::template_id<int>().name()`
+# get the output of `boost::typeindex::ctti_type_index::type_id<int>().name()`
 # set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` equal to characters count before last occurrence of `int` in output
 # set `BOOST_TYPE_INDEX_CTTI_END_SKIP`  equal to characters count after last occurrence of `int` in output
-# check that `boost::template_id<int>().name_demangled()` returns "int"
+# check that `boost::typeindex::ctti_type_index::type_id<int>().name_demangled()` returns "int"
 # (optional, but highly recomended) [@http://www.boost.org/support/bugs.html create ticket] with
 feature request to add your compiler to supported compilers list. Include
 `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`, `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and
@@ -287,6 +294,25 @@ With `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` set
 "const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set
 `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1`
 and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`.
+
+[warning 
+    With RTTI off classes with exactly the same names defined in different modules in anonymous namespaces may collapse: 
+    ``` 
+    // In A.cpp
+    namespace { struct user_defined{}; }
+    type_index foo_a() { return type_id<user_defined>(); }
+    
+    // In B.cpp
+    namespace { struct user_defined{}; }
+    type_index foo_b() { return type_id<user_defined>(); }
+       
+    // In main.cpp
+    assert(foo_a() != foo_b()); // will fail on some compilers
+    ```
+    
+    *Compilers that have that limitation:* GCC, CLANG. 
+]
+
 
 [endsect]
 

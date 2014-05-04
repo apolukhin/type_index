@@ -70,7 +70,7 @@ inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
 
 /// \class ctti_type_index
 /// This class is a wrapper that pretends to work exactly like stl_type_index, but does 
-/// not require RTTI support. For description of functions see type_index_facade.
+/// not require RTTI support. \b For \b description \b of \b functions \b see type_index_facade.
 ///
 /// This class produces slightly longer type names, so consider using stl_type_index 
 /// in situations when typeid() is working.

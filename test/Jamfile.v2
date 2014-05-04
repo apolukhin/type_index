@@ -20,10 +20,14 @@ nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <to
 
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
 obj test_lib_nortti-obj : test_lib.cpp : <link>shared <rtti>off ;
+obj test_lib_anonymous_nortti-obj : test_lib_anonymous.cpp : <link>shared <rtti>off ;
 lib test_lib_nortti : test_lib_nortti-obj : <link>shared <rtti>off ;
+lib test_lib_anonymous_nortti : test_lib_anonymous_nortti-obj : <link>shared <rtti>off ;
 
 obj test_lib_rtti-obj : test_lib.cpp : <link>shared ;
+obj test_lib_anonymous_rtti-obj : test_lib_anonymous.cpp : <link>shared ;
 lib test_lib_rtti : test_lib_rtti-obj : <link>shared ;
+lib test_lib_anonymous_rtti : test_lib_anonymous_rtti-obj : <link>shared ;
 
 # Making libraries that can work between rtti-on/rtti-off modules
 obj test_lib_nortti_compat-obj : test_lib.cpp : <link>shared $(nortti) $(compat) ;
@@ -38,6 +42,8 @@ test-suite type_index
     [ run type_index_test.cpp $(tlib) : : : <rtti>off : type_index_test_no_rtti ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
     [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti $(tlib) ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti $(tlib) : : : <rtti>off : testing_crossmodule_anonymous_no_rtti ]
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
     [ compile-fail type_index_test_ctti_construct_fail.cpp ]
     [ compile type_index_test_ctti_alignment.cpp ]

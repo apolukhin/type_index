@@ -62,7 +62,7 @@ namespace boost { namespace typeindex {
 
 /// \class stl_type_index
 /// This class is a wrapper around std::type_info, that workarounds issues and provides
-/// much more rich interface. For description of functions see type_index_facade.
+/// much more rich interface. \b For \b description \b of \b functions \b see type_index_facade.
 ///
 /// This class requires typeid() to work. For cases when RTTI is disabled see ctti_type_index.
 class stl_type_index
