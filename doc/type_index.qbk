@@ -199,6 +199,9 @@ Issues with cross module type comparison on a bugged compilers are bypassed by d
 [import ../examples/exact_types_match.cpp]
 [section Exact type match: storing type with const, volatile and reference ] [type_index_exact_type_match_example] [endsect]
 
+[import ../examples/table_of_names.cpp]
+[section Table of raw_name() and pretty_name() outputs with and without RTTI ] [type_index_names_table] [endsect]
+
 [endsect]
 
 [xinclude autodoc.xml]
