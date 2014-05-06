@@ -244,13 +244,13 @@ inline bool operator != (const type_index_facade<Derived, TypeInfo>& lhs, const 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
 /// noexcept comparison operators for type_index_facade classes.
-bool operator ? (const type_index_facade& lhs, const type_index_facade& rhs) noexcept;
+bool operator ==, !=, <, ... (const type_index_facade& lhs, const type_index_facade& rhs) noexcept;
 
 /// noexcept comparison operators for type_index_facade and it's TypeInfo classes.
-bool operator ? (const type_index_facade& lhs, const TypeInfo& rhs) noexcept;
+bool operator ==, !=, <, ... (const type_index_facade& lhs, const TypeInfo& rhs) noexcept;
 
 /// noexcept comparison operators for type_index_facade's TypeInfo and type_index_facade classes.
-bool operator ? (const TypeInfo& lhs, const type_index_facade& rhs) noexcept;
+bool operator ==, !=, <, ... (const TypeInfo& lhs, const type_index_facade& rhs) noexcept;
 
 #endif
 

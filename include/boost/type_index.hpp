@@ -41,7 +41,9 @@ namespace boost { namespace typeindex {
     ///
     /// Could be a boost::typeindex::stl_type_index, boost::typeindex::ctti_type_index or 
     /// user defined type_index class.
-    typedef platform-specific type_index;
+    ///
+    /// \b See boost::typeindex::type_index_facade for a full description of type_index functions.
+    typedef platform_specific type_index;
 #elif defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
     // Nothing to do
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
@@ -115,7 +117,7 @@ typedef type_index::type_info_t type_info;
 #endif // defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
 
-/// Function to get boost::type_index for a type T.
+/// Function to get boost::typeindex::type_index for a type T.
 /// Removes const, volatile && and & modifiers from T.
 ///
 /// \b Example:
@@ -132,7 +134,7 @@ inline type_index type_id() BOOST_NOEXCEPT {
     return type_index::type_id<T>();
 }
 
-/// Function for constructing boost::type_index instance for type T. 
+/// Function for constructing boost::typeindex::type_index instance for type T. 
 /// Does not remove const, volatile, & and && modifiers from T.
 ///
 /// If T has no const, volatile, & and && modifiers, then returns exactly 
