@@ -9,9 +9,9 @@
     The following example shows that `type_index` (and `type_info`) is able to store the exact type, 
     without stripping const, volatile and references. Example works with and without RTTI.
 
-    In this example we'll create a class, that stores pointer to function and remembers the exact type of a 
-    parameter that function accepts. When an attempt to call the stored function will be made, type of input 
-    parameter will be checked for exact match with initially erased type of function.
+    In this example we'll create a class that stores a pointer to function and remembers the exact type of the 
+    parameter the function accepts. When the call to the bound function is made, he actual input parameter 
+    type is checked against the stored parameter type and an exception is thrown in case of mismatch.
 */
 
 #include <boost/type_index.hpp>
@@ -20,8 +20,8 @@
 #include <cassert>
 
 class type_erased_unary_function {
-    void*                       function_ptr_;
-    boost::typeindex::type_index  exact_param_t_;
+    void*                           function_ptr_;
+    boost::typeindex::type_index    exact_param_t_;
 
 public:
     template <class ParamT>

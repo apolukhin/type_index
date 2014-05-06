@@ -33,7 +33,7 @@ Boost.TypeIndex library was designed to work around all those issues.
 
 [classref boost::typeindex::type_info boost::typeindex::type_info] is a drop-in replacement for `std::type_info` and
 [classref boost::typeindex::type_index boost::typeindex::type_index]
-is a drop-in replacement for `std::type_index`. Unlike Standard Library versions those classes may work without RTTI.
+is a drop-in replacement for `std::type_index`. Unlike Standard Library versions those classes can work without RTTI.
 
 `type_index` provides the full set of comparison operators, hashing functions and ostream
 operators, so it can be used with any container class.
@@ -228,7 +228,7 @@ Issues with cross module type comparison on a bugged compilers are bypassed by d
 [section Getting through the inheritance to receive a real type name ] [type_index_derived_example] [endsect]
 
 [import ../examples/exact_types_match.cpp]
-[section Exact type match: storing type with const, volatile and reference ] [type_index_exact_type_match_example] [endsect]
+[section Exact type matching: storing type with const, volatile and reference qualifiers] [type_index_exact_type_match_example] [endsect]
 
 [import ../examples/table_of_names.cpp]
 [section Table of raw_name() and pretty_name() outputs with and without RTTI ] [type_index_names_table] [endsect]
@@ -354,7 +354,7 @@ and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`.
 
 Linking a binary from source files that were compiled with different RTTI flags is not a very good
 idea and may lead to a lot of surprises. However if there is a very strong need, TypeIndex library
-provides a solution for mixing sources: just define `BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY`
+provides a solution for mixing sources: just define [macroref BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY]
 macro. This would lead to usage of same type_index class (`boost::typeindex::ctti_type_index` or
 `boost::typeindex::stl_type_index`) all around the project.
 

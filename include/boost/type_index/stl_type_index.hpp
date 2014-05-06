@@ -9,11 +9,6 @@
 #ifndef BOOST_TYPE_INDEX_STL_TYPE_INDEX_HPP
 #define BOOST_TYPE_INDEX_STL_TYPE_INDEX_HPP
 
-// MS compatible compilers support #pragma once
-#if defined(_MSC_VER)
-# pragma once
-#endif
-
 /// \file stl_type_index.hpp
 /// \brief Contains boost::typeindex::stl_type_index class.
 ///
@@ -25,7 +20,6 @@
 /// is defined boost::typeindex::ctti is usually used instead of boost::typeindex::stl_type_index.
 
 #include <boost/type_index/type_index_facade.hpp>
-
 
 // MSVC is capable of calling typeid(T) even when RTTI is off
 #if defined(BOOST_NO_RTTI) && !defined(BOOST_MSVC)
@@ -41,6 +35,7 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/mpl/if.hpp>
+#include <boost/mpl/or.hpp>
 #include <boost/functional/hash_fwd.hpp>
 
 
@@ -51,11 +46,16 @@
 #if !defined(BOOST_MSVC)
 #   include <boost/assert.hpp>
 #   include <boost/detail/no_exceptions_support.hpp>
+#   include <cstdlib> // std::free
 #endif
 
 #if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
 #   include <boost/type_traits/is_arithmetic.hpp>
+#endif
+
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
 #endif
 
 namespace boost { namespace typeindex {
@@ -143,11 +143,11 @@ inline std::string stl_type_index::pretty_name() const {
     BOOST_TRY {
         ret = demang; // may throw out of memory exception
     } BOOST_CATCH (...) {
-        free(demang);
+        std::free(demang);
         BOOST_RETHROW;
     } BOOST_CATCH_END
 
-    free(demang);
+    std::free(demang);
 #endif
 
     std::string::size_type pos = ret.find("boost::typeindex::detail::cvr_saver<");
@@ -234,10 +234,8 @@ namespace detail {
 
 template <class T>
 inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
-    typedef typename boost::mpl::if_c<
-        boost::is_reference<T>::value
-            || boost::is_const<T>::value
-            || boost::is_volatile<T>::value,
+    typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_<
+        boost::mpl::or_<boost::is_reference<T>, boost::is_const<T>, boost::is_volatile<T> >,
         detail::cvr_saver<T>,
         T
     >::type type;
@@ -249,7 +247,7 @@ inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
 template <class T>
 inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
 #ifdef BOOST_NO_RTTI 
-    return value.type_id_runtime();
+    return value.boost_type_index_type_id_runtime_();
 #else
     return typeid(value);
 #endif

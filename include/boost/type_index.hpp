@@ -14,11 +14,6 @@
 /// By inclusion of this file most optimal type index classes will be included and used 
 /// as a boost::typeindex::type_index and boost::typeindex::type_info.
 
-// MS compatible compilers support #pragma once
-#if defined(_MSC_VER)
-# pragma once
-#endif
-
 #include <boost/config.hpp>
 
 #if defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
@@ -31,6 +26,10 @@
 #else
 #   include <boost/type_index/ctti_type_index.hpp>
 #   include <boost/type_index/ctti_register_class.hpp>
+#endif
+
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
 #endif
 
 namespace boost { namespace typeindex {
@@ -82,7 +81,7 @@ typedef type_index::type_info_t type_info;
 /// Put this macro into the public section of polymorphic class to allow runtime type detection.
 ///
 /// Depending on the typeid() availability this macro will expand to nothing or to virtual helper function
-/// `virtual const type_info& type_id_runtime() const`.
+/// `virtual const type_info& boost_type_info_type_id_runtime_() const noexcept`.
 ///
 /// \b Example:
 /// \code

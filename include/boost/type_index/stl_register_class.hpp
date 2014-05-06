@@ -9,15 +9,14 @@
 #ifndef BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
 #define BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
 
-// MS compatible compilers support #pragma once
-#if defined(_MSC_VER)
-# pragma once
-#endif
-
 /// \file stl_register_class.hpp
 /// \brief Contains BOOST_TYPE_INDEX_REGISTER_STL_CLASS macro.
 
 #include <boost/type_index/stl_type_index.hpp>
+
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
+#endif
 
 namespace boost { namespace typeindex { namespace detail {
 
@@ -34,11 +33,11 @@ inline const stl_type_index::type_info_t& stl_construct_typeid_ref(const T*) BOO
 /// and `typeid()` does work.
 ///
 /// BOOST_TYPE_INDEX_REGISTER_STL_CLASS macro expands to declaration and implementation of
-/// `virtual const std::type_info& type_id_runtime() const` method.
-#define BOOST_TYPE_INDEX_REGISTER_STL_CLASS                                                             \
-    virtual const boost::typeindex::stl_type_index::type_info_t& type_id_runtime() const BOOST_NOEXCEPT { \
-        return boost::typeindex::detail::stl_construct_typeid_ref(this);                                  \
-    }                                                                                                   \
+/// `virtual const type_info& boost_type_info_type_id_runtime_() const noexcept` method.
+#define BOOST_TYPE_INDEX_REGISTER_STL_CLASS                                                                                 \
+    virtual const boost::typeindex::stl_type_index::type_info_t& boost_type_index_type_id_runtime_() const BOOST_NOEXCEPT { \
+        return boost::typeindex::detail::stl_construct_typeid_ref(this);                                                    \
+    }                                                                                                                       \
 /**/
 
 #endif // BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP

@@ -9,11 +9,6 @@
 #ifndef BOOST_TYPE_INDEX_TYPE_INDEX_FACADE_HPP
 #define BOOST_TYPE_INDEX_TYPE_INDEX_FACADE_HPP
 
-// MS compatible compilers support #pragma once
-#if defined(_MSC_VER)
-# pragma once
-#endif
-
 #include <boost/config.hpp>
 #include <boost/functional/hash_fwd.hpp>
 #include <string>
@@ -25,6 +20,10 @@
 #else
 #include <ostream>
 #endif
+#endif
+
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
 #endif
 
 namespace boost { namespace typeindex {
@@ -65,46 +64,50 @@ private:
 public:
     typedef TypeInfo                                type_info_t;
 
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
     /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
     /// \return Const reference to underlying low level type_info_t.
-    inline const type_info_t& type_info() const BOOST_NOEXCEPT {
-        return derived().type_info();
-    }
+    inline const type_info_t& type_info() const BOOST_NOEXCEPT;
 
     /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
     /// \return Pointer to unredable/raw type name.
-    inline const char* raw_name() const BOOST_NOEXCEPT {
+    inline const char* raw_name() const BOOST_NOEXCEPT;
+#endif
+
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return Name of a type. By default retuns Derived::raw_name().
+    inline const char* name() const BOOST_NOEXCEPT {
         return derived().raw_name();
     }
 
-    /// \b Override: This function \b must be redefined in Derived class. Overrides may throw.
-    /// \return Human redable type name.
+    /// \b Override: This function \b may be redefined in Derived class. Overrides may throw.
+    /// \return Human redable type name. By default retuns Derived::name().
     inline std::string pretty_name() const {
-        return derived().pretty_name();
-    }
-
-    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
-    /// \return Name of a type. By default retuns raw_name().
-    inline const char* name() const BOOST_NOEXCEPT {
-        return raw_name();
+        return derived().name();
     }
 
     /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
     /// \return True if two types are equal. By default compares types by raw_name().
     inline bool equal(const Derived& rhs) const BOOST_NOEXCEPT {
-        return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
+        const char* const left = derived().raw_name();
+        const char* const right = rhs.raw_name();
+        return left == right || !std::strcmp(left, right);
     }
 
     /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
     /// \return True if rhs is greater than this. By default compares types by raw_name().
     inline bool before(const Derived& rhs) const BOOST_NOEXCEPT {
-        return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
+        const char* const left = derived().raw_name();
+        const char* const right = rhs.raw_name();
+        return left != right && std::strcmp(left, right) < 0;
     }
 
     /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
     /// \return Hash code of a type. By default hashes types by raw_name().
+    /// \note <boost/functional/hash.hpp> has to be included if this function is used.
     inline std::size_t hash_code() const BOOST_NOEXCEPT {
-        return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
+        const char* const name = derived().raw_name();
+        return boost::hash_range(name, name + std::strlen(name));
     }
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
@@ -260,7 +263,7 @@ bool operator ==, !=, <, ... (const TypeInfo& lhs, const type_index_facade& rhs)
 /// Ostream operator that will output demangled name
 template <class Derived, class TypeInfo>
 inline std::ostream& operator<<(std::ostream& ostr, const type_index_facade<Derived, TypeInfo>& ind) {
-    ostr << ind.pretty_name();
+    ostr << static_cast<Derived const&>(ind).pretty_name();
     return ostr;
 }
 /// @endcond
@@ -271,13 +274,14 @@ inline std::basic_ostream<CharT, TriatT>& operator<<(
     std::basic_ostream<CharT, TriatT>& ostr, 
     const type_index_facade<Derived, TypeInfo>& ind) 
 {
-    ostr << ind.pretty_name();
+    ostr << static_cast<Derived const&>(ind).pretty_name();
     return ostr;
 }
 #endif // BOOST_NO_TEMPLATED_IOSTREAMS
 #endif // BOOST_NO_IOSTREAM
 
 /// This free function is used by Boost's unordered containers.
+/// \note <boost/functional/hash.hpp> has to be included if this function is used.
 template <class Derived, class TypeInfo>
 inline std::size_t hash_value(const type_index_facade<Derived, TypeInfo>& lhs) BOOST_NOEXCEPT {
     return static_cast<Derived const&>(lhs).hash_code();

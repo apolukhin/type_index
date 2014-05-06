@@ -9,11 +9,6 @@
 #ifndef BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_HPP
 #define BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_HPP
 
-// MS compatible compilers support #pragma once
-#if defined(_MSC_VER)
-# pragma once
-#endif
-
 /// \file ctti_type_index.hpp
 /// \brief Contains boost::typeindex::ctti_type_index class.
 ///
@@ -31,6 +26,10 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
+#endif
+
 namespace boost { namespace typeindex {
 
 namespace detail {
@@ -42,12 +41,33 @@ namespace detail {
 //      4) we need a compile-time control to make shure that user does not copy or 
 // default construct `struct-that-represents-type`
 //
-// Solution would be a standard-layout class with private constructors and assignment operators.
+// Solution would be the following:
+
+/// \class ctti_data
+/// Standard-layout class with private constructors and assignment operators.
+///
+/// You can not work with this class directly. The  purpose of this class is to hold type info 
+/// \b when \b RTTI \b is \b off and allow ctti_type_index construction from itself.
+///
+/// \b Example:
+/// \code
+/// const detail::ctti_data& foo();
+/// ...
+/// type_index ti = type_index(foo());
+/// std::cout << ti.pretty_name();
+/// \endcode
 class ctti_data {
+#ifndef BOOST_NO_CXX11_DELETED_FUNCTIONS
+public:
+    ctti_data() = delete;
+    ctti_data(const ctti_data&) = delete;
+    ctti_data& operator=(const ctti_data&) = delete;
+#else
 private:
     ctti_data();
     ctti_data(const ctti_data&);
     ctti_data& operator=(const ctti_data&);
+#endif
 };
 
 } // namespace detail
@@ -76,6 +96,10 @@ inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
 /// in situations when typeid() is working.
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
     const detail::ctti_data* data_;
+
+    inline std::size_t get_raw_name_length() const BOOST_NOEXCEPT {
+        return std::strlen(raw_name() + detail::ctti_skip_size_at_end);
+    }
 
 public:
     typedef detail::ctti_data type_info_t;
@@ -126,7 +150,7 @@ inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
 
 template <class T>
 inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST_NOEXCEPT {
-    return variable.type_id_runtime();
+    return variable.boost_type_index_type_id_runtime_();
 }
 
 
@@ -136,14 +160,14 @@ inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
 
 
 inline std::string ctti_type_index::pretty_name() const {
-    std::size_t len = std::strlen(raw_name() + detail::ctti_skip_size_at_end);
+    std::size_t len = get_raw_name_length();
     while (raw_name()[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
     return std::string(raw_name(), len);
 }
 
 
 inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
-    return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name() + detail::ctti_skip_size_at_end));
+    return boost::hash_range(raw_name(), raw_name() + get_raw_name_length());
 }
 
 
