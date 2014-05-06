@@ -53,6 +53,11 @@ namespace boost { namespace typeindex {
 ///
 /// \tparam Derived Class derived from type_index_facade.
 /// \tparam TypeInfo Class that will be used as a base type_info class.
+/// \note Take a look at the protected methods. They are \b not \b defined in type_index_facade. 
+/// Protected member functions raw_name() \b must be defined in Derived class. All the other 
+/// methods are mandatory.
+/// \see 'Making a custom type_index' section for more information about 
+/// creating your own type_index using type_index_facade.
 template <class Derived, class TypeInfo>
 class type_index_facade {
 private:
@@ -63,16 +68,6 @@ private:
     /// @endcond
 public:
     typedef TypeInfo                                type_info_t;
-
-#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
-    /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
-    /// \return Const reference to underlying low level type_info_t.
-    inline const type_info_t& type_info() const BOOST_NOEXCEPT;
-
-    /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
-    /// \return Pointer to unredable/raw type name.
-    inline const char* raw_name() const BOOST_NOEXCEPT;
-#endif
 
     /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
     /// \return Name of a type. By default retuns Derived::raw_name().
@@ -112,6 +107,14 @@ public:
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 protected:
+    /// \b Override: This function \b must be redefined in Derived class. Overrides \b must not throw.
+    /// \return Pointer to unredable/raw type name.
+    inline const char* raw_name() const BOOST_NOEXCEPT;
+
+    /// \b Override: This function \b may be redefined in Derived class. Overrides \b must not throw.
+    /// \return Const reference to underlying low level type_info_t.
+    inline const type_info_t& type_info() const BOOST_NOEXCEPT;
+
     /// This is a factory method that is used to create instances of Derived classes.
     /// boost::typeindex::type_id() will call this method, if Derived has same type as boost::typeindex::type_index.
     ///

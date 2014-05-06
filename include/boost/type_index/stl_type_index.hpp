@@ -45,13 +45,15 @@
 
 #if !defined(BOOST_MSVC)
 #   include <boost/assert.hpp>
-#   include <boost/detail/no_exceptions_support.hpp>
-#   include <cstdlib> // std::free
+#   include <cstdlib>                           // std::free
+#   include <algorithm>                         // std::find, std::search
 #endif
 
 #if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
-#   include <boost/type_traits/is_arithmetic.hpp>
+#   include <boost/type_traits/is_signed.hpp>
+#   include <boost/type_traits/make_signed.hpp>
+#   include <boost/mpl/identity.hpp>
 #endif
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
@@ -131,41 +133,69 @@ inline const char* stl_type_index::name() const BOOST_NOEXCEPT {
     return data_->name();
 }
 
+namespace detail {
+    class free_at_scope_exit {
+        char* to_free_;
+
+    public:
+        explicit free_at_scope_exit(char* to_free) BOOST_NOEXCEPT
+            : to_free_(to_free)
+        {}
+
+        ~free_at_scope_exit() BOOST_NOEXCEPT {
+            std::free(to_free_);
+        }
+    };
+}
+
 inline std::string stl_type_index::pretty_name() const {
+    static const char cvr_saver_name[] = "boost::typeindex::detail::cvr_saver<";
+
 #if defined(_MSC_VER)
     std::string ret = data_->name();
-#else
-    std::string ret;
-    int status = 0;
-    char* demang = abi::__cxa_demangle(raw_name(), NULL, 0, &status);
-    BOOST_ASSERT(!status);
-
-    BOOST_TRY {
-        ret = demang; // may throw out of memory exception
-    } BOOST_CATCH (...) {
-        std::free(demang);
-        BOOST_RETHROW;
-    } BOOST_CATCH_END
-
-    std::free(demang);
-#endif
-
-    std::string::size_type pos = ret.find("boost::typeindex::detail::cvr_saver<");
-    if (pos == std::string::npos) {
+    std::string::size_type pos_beg = ret.find(cvr_saver_name);
+    if (pos_beg == std::string::npos) {
         return ret;
     }
 
-    pos += sizeof("boost::typeindex::detail::cvr_saver<") - 1;
-    while (ret[pos] == ' ') {
-        ++ pos;
+    const char* begin = ret.c_str() + pos_beg + sizeof(cvr_saver_name) - 1;
+    const char* end = ret.c_str() + ret.size() - 1;
+#else
+    int status = 0;
+    char* demang = abi::__cxa_demangle(raw_name(), NULL, 0, &status);
+    detail::free_at_scope_exit scope(demang);
+    BOOST_ASSERT(!status);
+    const std::size_t length = std::strlen(demang);
+    const char* begin = std::search(
+        demang, demang + length,
+        cvr_saver_name, cvr_saver_name + sizeof(cvr_saver_name) - 1
+    );
+
+    if (begin == demang + length) {
+        return std::string(demang, demang + length);
+    }
+    begin += sizeof(cvr_saver_name) - 1;
+    const char* end = demang + length - 1;
+#endif
+    while (*begin == ' ') {         // begin is zero terminated
+        ++ begin;
     }
 
-    std::string::size_type end = ret.rfind(">");
-    while (ret[end - 1] == ' ') {
+    while (end != begin && *end != '>') {
         -- end;
     }
 
-    return ret.substr(pos, end - pos);
+    // we have cvr_saver_name somewhere at the start of the end
+    while (end != begin && *(end - 1) == ' ') {
+        -- end;
+    }
+
+    if (begin >= end) {
+        // Some strange error in demangled name parsing
+        return begin;
+    }
+
+    return std::string(begin, end);
 }
 
 
@@ -217,12 +247,22 @@ inline bool stl_type_index::before(const stl_type_index& rhs) const BOOST_NOEXCE
 template <class T>
 inline stl_type_index stl_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
-    typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
+    typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_prefinal_t;
 
     #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
-            BOOST_STATIC_ASSERT_MSG( !boost::is_arithmetic<no_cvr_t>::type::value
-                , "Your EDG-based compiler seems to mistakenly distinguish 'int' from 'signed int', in typeid() expressions.");
+
+        // Old EDG-based compilers seem to mistakenly distinguish 'integral' from 'signed integral'
+        // in typeid() expressions. Full temaplte specialization for 'integral' fixes that issue:
+        typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_<
+            boost::is_signed<no_cvr_prefinal_t>,
+            boost::make_signed<no_cvr_prefinal_t>,
+            boost::mpl::identity<no_cvr_prefinal_t>
+        >::type no_cvr_prefinal_lazy_t;
+
+        typedef BOOST_DEDUCED_TYPENAME no_cvr_prefinal_t::type no_cvr_t;
+    #else
+        typedef no_cvr_prefinal_t no_cvr_t;
     #endif
 
     return typeid(no_cvr_t);
