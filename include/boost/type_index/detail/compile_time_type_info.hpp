@@ -11,6 +11,7 @@
 
 /// \file compile_time_type_info.hpp
 /// \brief Contains helper macros and implementation details of boost::typeindex::ctti_type_index.
+/// Not intended for inclusion from user's code. 
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>

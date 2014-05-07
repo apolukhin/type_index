@@ -16,20 +16,24 @@
 
 #include <boost/config.hpp>
 
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
+#endif
+
 #if defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
 #   include BOOST_TYPE_INDEX_USER_TYPEINDEX
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
 #   include <boost/type_index/stl_type_index.hpp>
 #   ifdef BOOST_NO_RTTI
-#       include <boost/type_index/stl_register_class.hpp>
+#       include <boost/type_index/detail/stl_register_class.hpp>
 #   endif
 #else
 #   include <boost/type_index/ctti_type_index.hpp>
-#   include <boost/type_index/ctti_register_class.hpp>
+#   include <boost/type_index/detail/ctti_register_class.hpp>
 #endif
 
-#ifdef BOOST_HAS_PRAGMA_ONCE
-# pragma once
+#ifndef BOOST_TYPE_INDEX_REGISTER_CLASS
+#define BOOST_TYPE_INDEX_REGISTER_CLASS
 #endif
 
 namespace boost { namespace typeindex {
@@ -47,14 +51,8 @@ namespace boost { namespace typeindex {
     // Nothing to do
 #elif (!defined(BOOST_NO_RTTI) && !defined(BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)) || defined(BOOST_MSVC)
     typedef boost::typeindex::stl_type_index type_index;
-#   ifdef BOOST_NO_RTTI
-#       define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_STL_CLASS
-#   else
-#       define BOOST_TYPE_INDEX_REGISTER_CLASS
-#   endif
 #else 
     typedef boost::typeindex::ctti_type_index type_index;
-#   define BOOST_TYPE_INDEX_REGISTER_CLASS BOOST_TYPE_INDEX_REGISTER_CTTI_CLASS
 #endif
 
 /// Depending on a compiler flags, optimal implementation of type_info will be used 
@@ -77,7 +75,7 @@ typedef type_index::type_info_t type_info;
 
 
 /// \def BOOST_TYPE_INDEX_REGISTER_CLASS
-/// \def BOOST_TYPE_INDEX_REGISTER_CLASSis used to help to emulate RTTI.
+/// BOOST_TYPE_INDEX_REGISTER_CLASS is used to help to emulate RTTI.
 /// Put this macro into the public section of polymorphic class to allow runtime type detection.
 ///
 /// Depending on the typeid() availability this macro will expand to nothing or to virtual helper function

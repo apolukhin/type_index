@@ -269,9 +269,9 @@ Sometimes there may be a need to create your own type info system. This may be u
 
 * `ctti_type_index` uses macro for getting full text representation of function name which could lead to code bloat,
 so prefer using `stl_type_index` type when possible.
-* `type_index` class hold a single pointer, so it is easy and fast to copy.
+* All the type_index classes hold a single pointer and are fast to copy.
 * Calls to `const char* raw_name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image.
-* Comparison operators are optimized as much as possible, and will at worst execute a single `std::strcmp`.
+* Comparison operators are optimized as much as possible and execute a single `std::strcmp` in worst case.
 * Calls to `std::string pretty_name()` usually require dynamic memory allocation and some computations, so they are not recommended for usage in performance critical sections.
 
 [endsect]

@@ -10,7 +10,8 @@
 #define BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
 
 /// \file stl_register_class.hpp
-/// \brief Contains BOOST_TYPE_INDEX_REGISTER_STL_CLASS macro.
+/// \brief Contains BOOST_TYPE_INDEX_REGISTER_CLASS macro implementation that uses boost::typeindex::stl_type_index.
+/// Not intended for inclusion from user's code.
 
 #include <boost/type_index/stl_type_index.hpp>
 
@@ -27,18 +28,13 @@ inline const stl_type_index::type_info_t& stl_construct_typeid_ref(const T*) BOO
 
 }}} // namespace boost::typeindex::detail
 
-
-/// \def BOOST_TYPE_INDEX_REGISTER_STL_CLASS
-/// BOOST_TYPE_INDEX_REGISTER_STL_CLASS is used by BOOST_TYPE_INDEX_REGISTER_CLASS when RTTI is off
-/// and `typeid()` does work.
-///
-/// BOOST_TYPE_INDEX_REGISTER_STL_CLASS macro expands to declaration and implementation of
-/// `virtual const type_info& boost_type_info_type_id_runtime_() const noexcept` method.
-#define BOOST_TYPE_INDEX_REGISTER_STL_CLASS                                                                                 \
+/// @cond
+#define BOOST_TYPE_INDEX_REGISTER_CLASS                                                                                     \
     virtual const boost::typeindex::stl_type_index::type_info_t& boost_type_index_type_id_runtime_() const BOOST_NOEXCEPT { \
         return boost::typeindex::detail::stl_construct_typeid_ref(this);                                                    \
     }                                                                                                                       \
 /**/
+/// @endcond
 
 #endif // BOOST_TYPE_INDEX_STL_REGISTER_CLASS_HPP
 
