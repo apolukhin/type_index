@@ -301,33 +301,6 @@ i
 
 TypeIndex has been tested and successfully work on many compilers. 
 
-[\ -DB_TYPE_INDEX_CTTI_USER_DEFINED_PARSING='BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(1, 1, false, "")' ]
-If `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` macro is not defined or 
-`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP`
-are defined to zero then you are using a compiler that was not tested with this library. 
-In that case if you wish to use this library with RTTI off, you must correctly define 
-`BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`, `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and 
-`BOOST_TYPE_INDEX_CTTI_END_SKIP` macros:
-
-# define `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` to a compiler specific macro, that outputs the *whole*
-function signature, including template parameters
-# get the output of `boost::typeindex::ctti_type_index::type_id<int>().name()`
-# set `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` equal to characters count before last occurrence of `int` in output
-# set `BOOST_TYPE_INDEX_CTTI_END_SKIP`  equal to characters count after last occurrence of `int` in output
-# check that `boost::typeindex::ctti_type_index::type_id<int>().name_demangled()` returns "int"
-# (optional, but highly recomended) [@http://www.boost.org/support/bugs.html create ticket] with
-feature request to add your compiler to supported compilers list. Include
-`BOOST_TYPE_INDEX_FUNCTION_SIGNATURE`, `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and
-`BOOST_TYPE_INDEX_CTTI_END_SKIP` values.
-
-Consider the following example:
-
-With `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP` set to `0`,
-`boost::typeindex::ctti_type_index::type_id<int>().raw_name()` returns
-"const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set
-`BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1`
-and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`.
-
 [warning 
     With RTTI off classes with exactly the same names defined in different modules in anonymous namespaces may collapse: 
     ``` 
@@ -346,6 +319,72 @@ and `BOOST_TYPE_INDEX_CTTI_END_SKIP` to `sizeof(">::n(void)") - 1`.
     *Compilers that have that limitation:* GCC, CLANG. 
 ]
 
+[section Define the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro]
+
+If you get the following error during compilation
+``
+            TypeIndex library could not detect your compiler.
+            Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use
+            correct compiler macro for getting the whole function name.
+            Define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct value after that.
+``
+then you are using a compiler that was not tested with this library. 
+
+[macroref BOOST_TYPE_INDEX_FUNCTION_SIGNATURE] must be defined to a compiler specific macro, that outputs the *whole*
+function signature including template parameters.
+
+
+[endsect]
+
+[section Fixing pretty_name() output]
+
+If the output of `boost::typeindex::ctti_type_index::type_id<int>().name()` 
+* returns not just `int` but also a lot of text around the `int` 
+* or does not return type at all
+then you are usng a compiler that was not tested with this library and you need to setup the 
+[macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] macro using [macroref BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS].
+
+Here is a short instruction:
+
+# get the output of `boost::typeindex::ctti_type_index::type_id<int>().name()`
+# define [macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] to 
+`BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(skip_at_begin, skip_at_end, false, "")`, where
+    * `skip_at_begin` is equal to characters count before the first occurrence of `int` in output 
+    * `skip_at_end` is equal to characters count after last occurrence of `int` in output
+# check that `boost::typeindex::ctti_type_index::type_id<int>().name_demangled()` returns "int"
+# if it does not return `int`, then define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to
+`BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(skip_at_begin, skip_at_end, true, "T = ")`, where
+    * `skip_at_begin` is equal to `skip_at_begin` at step 2
+    * `skip_at_end` is equal to `skip_at_end` at step 2
+    * `"T = "` is equal to characters that are right before the `int` in output
+# (optional, but highly recomended) [@http://www.boost.org/support/bugs.html create ticket] with
+feature request to add your compiler to supported compilers list. Include
+parameters provided to `BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS` macro.
+
+
+Consider the following example:
+
+`boost::typeindex::ctti_type_index::type_id<int>().raw_name()` returns
+"const char *__cdecl boost::detail::ctti<int>::n(void)". Then you shall set
+`skip_at_begin` to `sizeof("const char *__cdecl boost::detail::ctti<") - 1`
+and `skip_at_end` to `sizeof(">::n(void)") - 1`.
+
+``
+#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "")
+``
+
+Another example:
+
+`boost::typeindex::ctti_type_index::type_id<int>().raw_name()` returns
+"static const char *boost::detail::ctti<int>::n() [T = int]"". Then you shall set
+`skip_at_begin` to `sizeof("static const char *boost::detail::ctti<") - 1`
+and `skip_at_end` to `sizeof("]") - 1` and last parameter of macto to "T = ".
+
+``
+#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
+``
+
+[endsect]
 
 [endsect]
 
