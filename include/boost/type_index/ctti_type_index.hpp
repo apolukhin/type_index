@@ -97,9 +97,7 @@ inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
     const detail::ctti_data* data_;
 
-    inline std::size_t get_raw_name_length() const BOOST_NOEXCEPT {
-        return std::strlen(raw_name() + detail::ctti_skip_size_at_end);
-    }
+    inline std::size_t get_raw_name_length() const BOOST_NOEXCEPT;
 
 public:
     typedef detail::ctti_data type_info_t;
@@ -156,6 +154,10 @@ inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST
 
 inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
     return reinterpret_cast<const char*>(data_);
+}
+
+inline std::size_t ctti_type_index::get_raw_name_length() const BOOST_NOEXCEPT {
+    return std::strlen(raw_name() + detail::ctti_skip_size_at_end);
 }
 
 

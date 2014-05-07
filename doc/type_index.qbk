@@ -301,6 +301,7 @@ i
 
 TypeIndex has been tested and successfully work on many compilers. 
 
+[\ -DB_TYPE_INDEX_CTTI_USER_DEFINED_PARSING='BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(1, 1, false, "")' ]
 If `BOOST_TYPE_INDEX_FUNCTION_SIGNATURE` macro is not defined or 
 `BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP` and `BOOST_TYPE_INDEX_CTTI_END_SKIP`
 are defined to zero then you are using a compiler that was not tested with this library. 
