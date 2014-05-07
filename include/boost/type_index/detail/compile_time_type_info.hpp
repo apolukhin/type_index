@@ -103,11 +103,13 @@
 #elif defined(_MSC_VER)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "");
-#elif defined(__clang__) && (__clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ < 4))
+#elif defined(__clang__) && (__clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ == 0))
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof(">::n()") - 1
+    // note: checked on 3.0
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "");
-#elif defined(__clang__) && __clang_major__ == 3 && __clang_minor__ >= 4
+#elif defined(__clang__) && __clang_major__ == 3 && __clang_minor__ > 0
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "int>::n() [T = int"
+    // note: checked on 3.1, 3.4
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ");
 #elif defined(__GNUC__)
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
