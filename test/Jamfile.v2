@@ -62,7 +62,7 @@ for local p in [ glob ../examples/*.cpp ]
     # RTTI on
     type_index += [ run $(p) ] ;
 
-    if $(p) != ../examples/table_of_names.cpp
+    if $(p) != "../examples/table_of_names.cpp"
     {
         # RTTI off
         local target_name = $(p[1]:B)_no_rtti ;
