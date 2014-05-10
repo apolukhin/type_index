@@ -342,24 +342,24 @@ If the output of `boost::typeindex::ctti_type_index::type_id<int>().name()`
 * returns not just `int` but also a lot of text around the `int` 
 * or does not return type at all
 then you are usng a compiler that was not tested with this library and you need to setup the 
-[macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] macro using [macroref BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS].
+[macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] macro.
 
 Here is a short instruction:
 
 # get the output of `boost::typeindex::ctti_type_index::type_id<int>().name()`
 # define [macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] to 
-`BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(skip_at_begin, skip_at_end, false, "")`, where
+`(skip_at_begin, skip_at_end, false, "")`, where
     * `skip_at_begin` is equal to characters count before the first occurrence of `int` in output 
     * `skip_at_end` is equal to characters count after last occurrence of `int` in output
 # check that `boost::typeindex::ctti_type_index::type_id<int>().name_demangled()` returns "int"
 # if it does not return `int`, then define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to
-`BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(skip_at_begin, skip_at_end, true, "T = ")`, where
+`(skip_at_begin, skip_at_end, true, "T = ")`, where
     * `skip_at_begin` is equal to `skip_at_begin` at step 2
     * `skip_at_end` is equal to `skip_at_end` at step 2
     * `"T = "` is equal to characters that are right before the `int` in output
 # (optional, but highly recomended) [@http://www.boost.org/support/bugs.html create ticket] with
 feature request to add your compiler to supported compilers list. Include
-parameters provided to `BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS` macro.
+parameters provided to `BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING` macro.
 
 
 Consider the following example:
@@ -370,7 +370,7 @@ Consider the following example:
 and `skip_at_end` to `sizeof(">::n(void)") - 1`.
 
 ``
-#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "")
+#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING (39, 6, false, "")
 ``
 
 Another example:
@@ -381,7 +381,7 @@ Another example:
 and `skip_at_end` to `sizeof("]") - 1` and last parameter of macto to "T = ".
 
 ``
-#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
+#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING (39, 1, true, "T = ")
 ``
 
 [endsect]

@@ -22,46 +22,7 @@
 # pragma once
 #endif
 
-/// \def BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until)
-/// This is a helper macro for making correct pretty_names() with RTTI off.
-/// 
-/// \b Example:
-/// 
-/// Imagine the situation when 
-/// \code boost::typeindex::ctti_type_index::type_id<int>().pretty_name() \endcode 
-/// returns the following string:
-/// \code "static const char *boost::detail::ctti<int>::n() [T = int]" \endcode
-/// and \code boost::typeindex::ctti_type_index::type_id<short>().pretty_name() \endcode returns the following:
-/// \code "static const char *boost::detail::ctti<short>::n() [T = short]" \endcode
-///
-/// As we may see first 39 characters are "static const char *boost::detail::ctti<" and they do not depend on 
-/// the type T. After first 39 characters we have a human readable type name which is duplicated at the end 
-/// of a string. String always ends on ']', which consumes 1 character.
-///
-/// Now if we define `BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING` to 
-/// `BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING(39, 1, false, "")` we'll be getting \code "int>::n() [T = int" \endcode 
-/// for `boost::typeindex::ctti_type_index::type_id<int>().pretty_name()` and \code "short>::n() [T = short" \endcode 
-/// for `boost::typeindex::ctti_type_index::type_id<short>().pretty_name()`.
-///
-/// Now we need to take additional care of the characters that go before the last mention of our type. We'll 
-/// do that by telling the macro that we need to cut off everything that goes before the "T = " including the "T = "
-/// itself:
-///
-/// \code BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING(39, 1, true, "T = ") \endcode 
-///
-/// In case of GCC or Clang command line we need to add the following line while compiling al lthe sources:
-///
-/// \code
-/// -DBOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING='BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING(39, 1, true, "T = ")'
-/// \endcode
-/// \param begin_skip How many characters must be skipped at the beginning of the type holding string. 
-/// Must be a compile time constant.
-/// \param end_skip How many characters must be skipped at the end of the type holding string. 
-/// Must be a compile time constant.
-/// \param runtime_skip Do we need additional checks at runtime to cut off the more characters.
-/// Must be `true` or `false`.l
-/// \param runtime_skip_until Skip all the characters before the following string (including the string itself).
-/// Must be a compile time array of characters.
+/// @cond
 #define BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until)   \
     namespace boost { namespace typeindex { namespace detail {                                                  \
         BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_begin  = begin_skip;                               \
@@ -70,37 +31,15 @@
         BOOST_STATIC_CONSTEXPR char ctti_skip_until_runtime[]       = runtime_skip_until;                       \
     }}} /* namespace boost::typeindex::detail */                                                                \
     /**/  
-
+/// @endcond
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
-
-/// \def BOOST_TYPE_INDEX_FUNCTION_SIGNATURE
-/// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is used by boost::typeindex::ctti_type_index class to
-/// deduce the name of a type. If your compiler is not recognized 
-/// by the TypeIndex library and you wish to work with boost::typeindex::ctti_type_index, you may 
-/// define this macro by yourself.
-///
-/// BOOST_TYPE_INDEX_FUNCTION_SIGNATURE must be defined to a compiler specific macro
-/// that outputs the \b whole function signature \b including \b template \b parameters.
-///
-/// If your compiler is not recognised and BOOST_TYPE_INDEX_FUNCTION_SIGNATURE is not defined,
-/// then a compile-time error will arise at any attempt to use boost::typeindex::ctti_type_index classes.
-/// 
-/// See BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS and BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING 
-/// for an information of how to tune the implementation to make a nice retty_name() output.
-#define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE BOOST_CURRENT_FUNCTION
-
-/// \def BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING
-///
-/// BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING macro may be defined to 
-/// BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until) with parameters for adding a 
-/// support for compilers, that by default are not recognized by TypeIndex library.
-///
-/// See 'RTTI emulation limitations' for more info
-#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(0, 0, false, "");
-
+    /* Nothing to document. All the macro docs are moved to <boost/type_index.hpp> */
 #elif defined(BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING)
-    BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING
+
+#   include <boost/preprocessor/facilities/expand.hpp>
+    BOOST_PP_EXPAND( BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING )
+
 #elif defined(_MSC_VER)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "");
@@ -128,9 +67,8 @@ namespace boost { namespace typeindex { namespace detail {
         BOOST_STATIC_ASSERT_MSG(
             Condition,
             "TypeIndex library is misconfigured for your compiler. "
-            "Please define BOOST_TYPE_INDEX_CTTI_BEGIN_SKIP and "
-            "BOOST_TYPE_INDEX_CTTI_END_SKIP to correct values. See section "
-            "'RTTI emulation limitations' of the documentation."
+            "Please define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct values. See section "
+            "'RTTI emulation limitations' of the documentation for more information."
         );
     }
     
