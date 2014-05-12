@@ -15,7 +15,7 @@ tlib = /boost/test//boost_unit_test_framework/<link>static ;
 compat = <define>BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY ;
 
 # Making own `nortti` that is link compatible
-nortti = <toolset>gcc:<cxxflags>-fno-rtti <toolset>clang:<cxxflags>-fno-rtti <toolset>msvc:<cxxflags>/GR- ;
+nortti = <toolset>gcc:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI" <toolset>clang:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI" <toolset>msvc:<cxxflags>/GR- ;
 
 
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
