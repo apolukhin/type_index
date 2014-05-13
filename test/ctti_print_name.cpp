@@ -5,9 +5,6 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#define BOOST_TEST_MODULE type_index_ctti_test_module
-#include <boost/test/unit_test.hpp>
-
 #include <iostream>
 
 // This cpp file:
@@ -20,13 +17,20 @@ namespace user_defined_namespace {
     class user_defined_class {};
 }
 
-BOOST_AUTO_TEST_CASE(ctti_print_full_string_helper_test)
+int main()
 {
     using namespace boost::typeindex;
-    std::cerr << "int: " << ctti_type_index::type_id<int>() << '\n';
-    std::cerr << "double: " << ctti_type_index::type_id<double>() << '\n';
-    std::cerr << "user_defined_namespace::user_defined_class: " << ctti_type_index::type_id<user_defined_namespace::user_defined_class>() << '\n';
 
-    BOOST_CHECK(true);
+    std::cout << "int: "
+        << ctti_type_index::type_id<int>() << '\n';
+
+    std::cout << "double: "
+        << ctti_type_index::type_id<double>() << '\n';
+
+    std::cout << "user_defined_namespace::user_defined_class: "
+        << ctti_type_index::type_id<user_defined_namespace::user_defined_class>() << '\n';
+
+
+    return 0;
 }
 
