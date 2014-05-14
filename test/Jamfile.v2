@@ -41,7 +41,7 @@ test-suite type_index
   : 
     [ run type_index_test.cpp $(tlib) ]
     [ run type_index_test.cpp $(tlib) : : : <rtti>off : type_index_test_no_rtti ]
-    [ run ctti_print_name.cpp ]
+    [ run ctti_print_name.cpp  : : : <test-info>always_show_run_output ]
     [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
     [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
     [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti $(tlib) ]
