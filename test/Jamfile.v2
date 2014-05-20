@@ -17,10 +17,10 @@ nortti = <toolset>gcc:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI" <toolset>clang:"<cxx
 
 
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
-obj test_lib_nortti-obj : test_lib.cpp : <link>shared <rtti>off ;
-obj test_lib_anonymous_nortti-obj : test_lib_anonymous.cpp : <link>shared <rtti>off ;
-lib test_lib_nortti : test_lib_nortti-obj : <link>shared <rtti>off ;
-lib test_lib_anonymous_nortti : test_lib_anonymous_nortti-obj : <link>shared <rtti>off ;
+obj test_lib_nortti-obj : test_lib.cpp : <link>shared <rtti>off <cxxflags>-DBOOST_NO_RTTI ;
+obj test_lib_anonymous_nortti-obj : test_lib_anonymous.cpp : <link>shared <rtti>off <cxxflags>-DBOOST_NO_RTTI ;
+lib test_lib_nortti : test_lib_nortti-obj : <link>shared <rtti>off <cxxflags>-DBOOST_NO_RTTI ;
+lib test_lib_anonymous_nortti : test_lib_anonymous_nortti-obj : <link>shared <rtti>off <cxxflags>-DBOOST_NO_RTTI ;
 
 obj test_lib_rtti-obj : test_lib.cpp : <link>shared ;
 obj test_lib_anonymous_rtti-obj : test_lib_anonymous.cpp : <link>shared ;
@@ -37,12 +37,12 @@ lib test_lib_rtti_compat : test_lib_rtti_compat-obj : <link>shared $(nortti) $(c
 test-suite type_index
   : 
     [ run type_index_test.cpp ]
-    [ run type_index_test.cpp : : : <rtti>off : type_index_test_no_rtti ]
+    [ run type_index_test.cpp : : : <rtti>off <cxxflags>-DBOOST_NO_RTTI : type_index_test_no_rtti ]
     [ run ctti_print_name.cpp : : : <test-info>always_show_run_output ]
     [ run testing_crossmodule.cpp test_lib_rtti ]
-    [ run testing_crossmodule.cpp test_lib_nortti : : : <rtti>off : testing_crossmodule_no_rtti ]
+    [ run testing_crossmodule.cpp test_lib_nortti : : : <rtti>off <cxxflags>-DBOOST_NO_RTTI : testing_crossmodule_no_rtti ]
     [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti ]
-    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : : : <rtti>off : testing_crossmodule_anonymous_no_rtti ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : : : <rtti>off <cxxflags>-DBOOST_NO_RTTI : testing_crossmodule_anonymous_no_rtti ]
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
     [ compile-fail type_index_test_ctti_construct_fail.cpp ]
     [ compile type_index_test_ctti_alignment.cpp ]
@@ -65,7 +65,7 @@ for local p in [ glob ../examples/*.cpp ]
     local target_name = $(p[1]:B)_no_rtti ;
     if $(target_name) != "table_of_names_no_rtti"
     {
-        type_index += [ run $(p) : : : <rtti>off : $(target_name) ] ;
+        type_index += [ run $(p) : : : <rtti>off <cxxflags>-DBOOST_NO_RTTI : $(target_name) ] ;
     }
 }
 
