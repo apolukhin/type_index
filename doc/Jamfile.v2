@@ -24,7 +24,7 @@ doxygen autodoc
         <xsl:param>"boost.doxygen.reftitle=Boost.TypeIndex Header Reference"
    ;
 
-xml type_index : type_index.qbk ;
+xml type_index : type_index.qbk : <dependency>autodoc ;
 boostbook standalone
     :
         type_index
@@ -32,6 +32,5 @@ boostbook standalone
         <xsl:param>boost.root=http://www.boost.org/doc/libs/1_53_0
 #        <xsl:param>boost.root=../../../..
         <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/doc/html
-        <dependency>autodoc
     ;
 
