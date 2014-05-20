@@ -8,9 +8,6 @@ import testing ;
 import feature ;
 import os ;
 
-# Variable that contains all the stuff required for linking against -lboost_unit_test
-tlib = /boost/test//boost_unit_test_framework/<link>static ;
-
 # Variable that contains all the stuff required for linking together <rtti>on and <rtti>off
 compat = <define>BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY ;
 
@@ -39,23 +36,23 @@ lib test_lib_rtti_compat : test_lib_rtti_compat-obj : <link>shared $(nortti) $(c
 
 test-suite type_index
   : 
-    [ run type_index_test.cpp $(tlib) ]
-    [ run type_index_test.cpp $(tlib) : : : <rtti>off : type_index_test_no_rtti ]
-    [ run ctti_print_name.cpp  : : : <test-info>always_show_run_output ]
-    [ run testing_crossmodule.cpp test_lib_rtti $(tlib) ]
-    [ run testing_crossmodule.cpp test_lib_nortti $(tlib) : : : <rtti>off : testing_crossmodule_no_rtti ]
-    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti $(tlib) ]
-    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti $(tlib) : : : <rtti>off : testing_crossmodule_anonymous_no_rtti ]
+    [ run type_index_test.cpp ]
+    [ run type_index_test.cpp : : : <rtti>off : type_index_test_no_rtti ]
+    [ run ctti_print_name.cpp : : : <test-info>always_show_run_output ]
+    [ run testing_crossmodule.cpp test_lib_rtti ]
+    [ run testing_crossmodule.cpp test_lib_nortti : : : <rtti>off : testing_crossmodule_no_rtti ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : : : <rtti>off : testing_crossmodule_anonymous_no_rtti ]
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
     [ compile-fail type_index_test_ctti_construct_fail.cpp ]
     [ compile type_index_test_ctti_alignment.cpp ]
 
     # Mixing RTTI on and off
-    [ link-fail testing_crossmodule.cpp $(tlib) test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
+    [ link-fail testing_crossmodule.cpp test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
     # MSVC sometimes overrides the /GR-, that's why the following tests is disabled
-    #[ link-fail testing_crossmodule.cpp $(tlib) test_lib_nortti : : link_fail_rtti_nortti ]
-    [ run testing_crossmodule.cpp $(tlib) test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
-    [ run testing_crossmodule.cpp $(tlib) test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
+    #[ link-fail testing_crossmodule.cpp test_lib_nortti : : link_fail_rtti_nortti ]
+    [ run testing_crossmodule.cpp test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
+    [ run testing_crossmodule.cpp test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
   ;
   
 # Assuring that examples compile and run. Adding sources from `examples` directory to the `type_index` test suite. 
