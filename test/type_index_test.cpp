@@ -5,18 +5,13 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/test/minimal.hpp>
+#define BOOST_TEST_MODULE type_index_test_module
+#include "test.hpp"
 
 #include <boost/type_index.hpp>
 
 #include <boost/functional/hash.hpp>
 #include <boost/lexical_cast.hpp>
-
-#define BOOST_CHECK_EQUAL(x, y) BOOST_CHECK(x == y)
-#define BOOST_CHECK_NE(x, y) BOOST_CHECK(x != y)
-#define BOOST_CHECK_LE(x, y) BOOST_CHECK(x <= y)
-#define BOOST_CHECK_GE(x, y) BOOST_CHECK(x >= y)
-
 
 namespace my_namespace1 {
     class my_class{};
@@ -28,19 +23,19 @@ namespace my_namespace2 {
 }
 
 
-void names_matches_type_id()
+BOOST_AUTO_TEST_CASE(names_matches_type_id)
 {
     using namespace boost::typeindex;
     BOOST_CHECK_EQUAL(type_id<int>().pretty_name(), "int");
     BOOST_CHECK_EQUAL(type_id<double>().pretty_name(), "double");
 
-    BOOST_CHECK_EQUAL(type_id<int>().name(),    type_id<int>().name());
+    BOOST_CHECK_NE(type_id<int>().name(),    type_id<int>().name());
     BOOST_CHECK_NE(type_id<int>().name(),       type_id<double>().name());
     BOOST_CHECK_NE(type_id<double>().name(),    type_id<int>().name());
     BOOST_CHECK_EQUAL(type_id<double>().name(), type_id<double>().name());
 }
 
-void default_construction()
+BOOST_AUTO_TEST_CASE(default_construction)
 {
     using namespace boost::typeindex;
     type_index ti1, ti2;
@@ -52,7 +47,7 @@ void default_construction()
 }
 
 
-void copy_construction()
+BOOST_AUTO_TEST_CASE(copy_construction)
 {
     using namespace boost::typeindex;
     type_index ti1, ti2 = type_id<int>();
@@ -64,7 +59,7 @@ void copy_construction()
     BOOST_CHECK_EQUAL(ti3, ti1);
 }
 
-void comparators_type_id()
+BOOST_AUTO_TEST_CASE(comparators_type_id)
 {
     using namespace boost::typeindex;
     type_index t_int = type_id<int>();
@@ -83,7 +78,7 @@ void comparators_type_id()
     BOOST_CHECK(t_double > t_int || t_int > t_double);
 }
 
-void hash_code_type_id()
+BOOST_AUTO_TEST_CASE(hash_code_type_id)
 {
     using namespace boost::typeindex;
     std::size_t t_int1 = type_id<int>().hash_code();
@@ -96,8 +91,6 @@ void hash_code_type_id()
     BOOST_CHECK_NE(t_int1, t_double2);
     BOOST_CHECK_LE(t_double1, t_double2);
 }
-
-
 
 template <class T1, class T2>
 static void test_with_modofiers() {
@@ -139,7 +132,7 @@ static void test_with_modofiers() {
     BOOST_CHECK_NE(t2.hash_code(), type_id_with_cvr<T1>().hash_code());
 }
 
-void type_id_storing_modifiers()
+BOOST_AUTO_TEST_CASE(type_id_storing_modifiers)
 {
     test_with_modofiers<int, const int>();
     test_with_modofiers<int, const int&>();
@@ -204,7 +197,7 @@ static void test_storing_nonstoring_modifiers_templ() {
     BOOST_CHECK_EQUAL(t2.pretty_name(), t1.pretty_name());
 }
 
-void type_id_storing_modifiers_vs_nonstoring()
+BOOST_AUTO_TEST_CASE(type_id_storing_modifiers_vs_nonstoring)
 {
     test_storing_nonstoring_modifiers_templ<int>();
     test_storing_nonstoring_modifiers_templ<my_namespace1::my_class>();
@@ -216,7 +209,7 @@ void type_id_storing_modifiers_vs_nonstoring()
     BOOST_CHECK(t1.pretty_name() == "const int" || t1.pretty_name() == "int const");
 }
 
-void type_index_stream_operator_via_lexical_cast_testing()
+BOOST_AUTO_TEST_CASE(type_index_stream_operator_via_lexical_cast_testing)
 {
     using namespace boost::typeindex;
 
@@ -227,7 +220,7 @@ void type_index_stream_operator_via_lexical_cast_testing()
     BOOST_CHECK_EQUAL(s_double2, "double");
 }
 
-void type_index_stripping_cvr_test()
+BOOST_AUTO_TEST_CASE(type_index_stripping_cvr_test)
 {
     using namespace boost::typeindex;
 
@@ -250,7 +243,7 @@ void type_index_stripping_cvr_test()
 }
 
 
-void type_index_user_defined_class_test()
+BOOST_AUTO_TEST_CASE(type_index_user_defined_class_test)
 {
     using namespace boost::typeindex;
 
@@ -271,9 +264,6 @@ void type_index_user_defined_class_test()
 }
 
 
-
-
-
 struct A {
 public:
     BOOST_TYPE_INDEX_REGISTER_CLASS
@@ -288,7 +278,7 @@ struct C: public B {
     BOOST_TYPE_INDEX_REGISTER_CLASS
 };
 
-void comparators_type_id_runtime()
+BOOST_AUTO_TEST_CASE(comparators_type_id_runtime)
 {
     C c1;
     B b1;
@@ -335,7 +325,7 @@ void comparators_type_id_runtime()
 
 #ifndef BOOST_NO_RTTI
 
-void comparators_type_id_vs_type_info()
+BOOST_AUTO_TEST_CASE(comparators_type_id_vs_type_info)
 {
     using namespace boost::typeindex;
     type_index t_int = type_id<int>();
@@ -384,24 +374,4 @@ void comparators_type_id_vs_type_info()
 
 #endif // BOOST_NO_RTTI
 
-
-int test_main(int , char* []) {
-    names_matches_type_id();
-    default_construction();
-    copy_construction();
-    comparators_type_id();
-    hash_code_type_id();
-
-    type_id_storing_modifiers();
-    type_id_storing_modifiers_vs_nonstoring();
-    type_index_stream_operator_via_lexical_cast_testing();
-    type_index_stripping_cvr_test();
-    type_index_user_defined_class_test();
-
-    comparators_type_id_runtime();
-#ifndef BOOST_NO_RTTI
-    comparators_type_id_vs_type_info();
-#endif
-    return 0;
-}
 
