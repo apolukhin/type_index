@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(names_matches_type_id)
     BOOST_CHECK_EQUAL(type_id<int>().pretty_name(), "int");
     BOOST_CHECK_EQUAL(type_id<double>().pretty_name(), "double");
 
-    BOOST_CHECK_NE(type_id<int>().name(),    type_id<int>().name());
+    BOOST_CHECK_EQUAL(type_id<int>().name(),    type_id<int>().name());
     BOOST_CHECK_NE(type_id<int>().name(),       type_id<double>().name());
     BOOST_CHECK_NE(type_id<double>().name(),    type_id<int>().name());
     BOOST_CHECK_EQUAL(type_id<double>().name(), type_id<double>().name());
