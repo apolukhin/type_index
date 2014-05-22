@@ -43,6 +43,13 @@
 #elif defined(_MSC_VER)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "");
+#elif defined(__clang__) && defined(__APPLE__)
+    // Someone made __clang_major__ equal to LLVM version rather than compiler version
+    // on APPLE platform.
+    //
+    // Using less efficient solution because there is no good way to detect real version of Clang.
+    // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "???????????>::n() [T = int"
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ");
 #elif defined(__clang__) && (__clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ == 0))
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof(">::n()") - 1
     // note: checked on 3.0
