@@ -13,7 +13,7 @@ compat = <define>BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY ;
 
 # Making own `nortti` that is link compatible.
 # We explicitly define BOOST_NO_RTTI because it sometimes can not be detected by build system.
-nortti = <toolset>gcc:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI" <toolset>clang:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>intel:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI" <toolset>darwin:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>msvc:<cxxflags>/GR- ;
+nortti = <toolset>gcc:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>clang:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>intel:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>darwin:"<cxxflags>-fno-rtti -DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>msvc:<cxxflags>/GR- ;
 
 norttidefines = <toolset>gcc:"<cxxflags>-DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>clang:"<cxxflags>-DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>intel:"<cxxflags>-DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>darwin:"<cxxflags>-DBOOST_NO_RTTI -DBOOST_NO_TYPEID" <toolset>msvc:<cxxflags>-DBOOST_NO_RTTI ;
 
