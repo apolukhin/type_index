@@ -53,7 +53,7 @@ namespace boost { namespace typeindex {
 /// then a compile-time error will arise at any attempt to use boost::typeindex::ctti_type_index classes.
 ///
 /// See BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS and BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING
-/// for an information of how to tune the implementation to make a nice retty_name() output.
+/// for an information of how to tune the implementation to make a nice pretty_name() output.
 #define BOOST_TYPE_INDEX_FUNCTION_SIGNATURE BOOST_CURRENT_FUNCTION
 
 /// \def BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING
@@ -87,7 +87,7 @@ namespace boost { namespace typeindex {
 ///
 /// \code (39, 1, true, "T = ") \endcode
 ///
-/// In case of GCC or Clang command line we need to add the following line while compiling al lthe sources:
+/// In case of GCC or Clang command line we need to add the following line while compiling all the sources:
 ///
 /// \code
 /// -DBOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING='(39, 1, true, "T = ")'
@@ -97,11 +97,11 @@ namespace boost { namespace typeindex {
 /// \param end_skip How many characters must be skipped at the end of the type holding string.
 /// Must be a compile time constant.
 /// \param runtime_skip Do we need additional checks at runtime to cut off the more characters.
-/// Must be `true` or `false`.l
+/// Must be `true` or `false`.
 /// \param runtime_skip_until Skip all the characters before the following string (including the string itself).
 /// Must be a compile time array of characters.
 ///
-/// See 'RTTI emulation limitations' for more info
+/// See [RTTI emulation limitations](boost_typeindex/rtti_emulation_limitations.html) for more info.
 #define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING (0, 0, false, "")
 
 
@@ -136,7 +136,8 @@ typedef type_index::type_info_t type_info;
 /// BOOST_TYPE_INDEX_USER_TYPEINDEX can be defined to the path to header file
 /// with user provided implementation of type_index.
 ///
-/// See "Making own type_index" section of documentation for usage example.
+/// See [Making a custom type_index](boost_typeindex/making_a_custom_type_index.html) section
+/// of documentation for usage example.
 #define BOOST_TYPE_INDEX_USER_TYPEINDEX <full/absolute/path/to/header/with/type_index.hpp>
 
 
@@ -173,8 +174,9 @@ typedef type_index::type_info_t type_info;
 
 /// \def BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
 /// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY is a helper macro that must be defined if mixing
-/// RTTI on/off modules. See "Mixing sources with RTTI on and RTTI off" section of documentation
-/// for more info.
+/// RTTI on/off modules. See
+/// [Mixing sources with RTTI on and RTTI off](boost_typeindex/mixing_sources_with_rtti_on_and_.html)
+/// section of documentation for more info.
 #define BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
 
 #endif // defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)

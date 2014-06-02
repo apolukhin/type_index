@@ -199,6 +199,43 @@ public: // visitor interfaces
 [endsect]
 [endsect]
 
+[section:config Configuring and building the library]
+
+TypeIndex is a header only library and it does not use Boost libraries that require
+building. You just need to `#include <boost/type_index.hpp>` to start using it.
+
+The library supports a number of configuration macros, defining which require full
+rebuild of all the projects that use TypeIndex:
+
+[table Configuration macros
+    [[Macro name]                                               [Short description]]
+    [[[macroref BOOST_TYPE_INDEX_USER_TYPEINDEX]]               [ Macro that allows you to use your
+own implementation of TypeIndex instead of the default all around the projects and libraries.]]
+
+    [[[macroref BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY]]  [ Macro that must be defined
+if you are mixing RTTI-on and RTTI-off.]]
+
+    [[[macroref BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING] and
+[macroref BOOST_TYPE_INDEX_FUNCTION_SIGNATURE]]                 [ Macros that allow you to specify
+parsing options and type name generating macro for RTTI-off cases. ]]
+]
+
+You can define configuration macros in the `bjam` command line using one of the following
+approaches:
+
+[pre
+    b2 variant=release define=BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY stage
+]
+
+[pre
+    b2 variant=release "define=BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING='(39, 1, true, \\"T = \\")'" stage
+]
+
+However, it may be more convenient to define configuration macros in the "boost/config/user.hpp"
+file in order to automatically define them both for the library and user's projects.
+
+[endsect]
+
 [section How it works]
 `type_index` is just a typedef for [classref boost::typeindex::stl_type_index] 
 or [classref boost::typeindex::ctti_type_index].
