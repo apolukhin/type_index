@@ -27,8 +27,10 @@
 #endif
 
 #include <typeinfo>
-#include <cstring>                                  // std::strcmp, std::strlen
+#include <cstring>                                  // std::strcmp, std::strlen, std::strstr
+#include <stdexcept>
 #include <boost/static_assert.hpp>
+#include <boost/throw_exception.hpp>
 #include <boost/core/demangle.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/is_reference.hpp>
@@ -125,34 +127,46 @@ inline const char* stl_type_index::name() const BOOST_NOEXCEPT {
 
 inline std::string stl_type_index::pretty_name() const {
     static const char cvr_saver_name[] = "boost::typeindex::detail::cvr_saver<";
+    static BOOST_CONSTEXPR_OR_CONST std::string::size_type cvr_saver_name_len = sizeof(cvr_saver_name) - 1;
 
     // In case of MSVC demangle() is a no-op, and name() already returns demangled name.
     // In case of GCC and Clang (on non-Windows systems) name() returns mangled name and demangle() undecorates it.
-    std::string ret = core::demangle(data_->name());
-    std::string::size_type pos_beg = ret.find(cvr_saver_name, 0, sizeof(cvr_saver_name) - 1);
-    if (pos_beg == std::string::npos) {
-        return ret;
-    }
+    core::scoped_demangled_name demangled_name(data_->name());
 
-    const char* begin = ret.c_str() + pos_beg + sizeof(cvr_saver_name) - 1;
-    const char* end = ret.c_str() + ret.size() - 1;
+    const char* begin = demangled_name.get();
+    if (!begin)
+        BOOST_THROW_EXCEPTION(std::runtime_error("Type name demangling failed"));
 
-    while (*begin == ' ') {         // begin is zero terminated
-        ++ begin;
-    }
+    std::string::size_type len = std::strlen(begin);
+    const char* end = begin + len;
 
-    while (end > begin && *end != '>') {
-        -- end;
-    }
+    if (len > cvr_saver_name_len) {
+        const char* b = std::strstr(begin, cvr_saver_name);
+        if (b) {
+            b += cvr_saver_name_len;
 
-    // we have cvr_saver_name somewhere at the start of the end
-    while (end > begin && *(end - 1) == ' ') {
-        -- end;
-    }
+            // Trim leading spaces
+            while (*b == ' ') {         // the string is zero terminated, we won't exceed the buffer size
+                ++ b;
+            }
 
-    if (begin >= end) {
-        // Some strange error in demangled name parsing
-        return begin;
+            // Skip the closing angle bracket
+            const char* e = end - 1;
+            while (e > b && *e != '>') {
+                -- e;
+            }
+
+            // Trim trailing spaces
+            while (e > b && *(e - 1) == ' ') {
+                -- e;
+            }
+
+            if (b < e) {
+                // Parsing seems to have succeeded, the type name is not empty
+                begin = b;
+                end = e;
+            }
+        }
     }
 
     return std::string(begin, end);
@@ -162,9 +176,9 @@ inline std::string stl_type_index::pretty_name() const {
 inline std::size_t stl_type_index::hash_code() const BOOST_NOEXCEPT {
 #if _MSC_VER > 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__))
     return data_->hash_code();
-#else 
+#else
     return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
-#endif 
+#endif
 }
 
 
