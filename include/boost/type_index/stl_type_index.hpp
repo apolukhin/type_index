@@ -131,13 +131,14 @@ inline std::string stl_type_index::pretty_name() const {
 
     // In case of MSVC demangle() is a no-op, and name() already returns demangled name.
     // In case of GCC and Clang (on non-Windows systems) name() returns mangled name and demangle() undecorates it.
-    core::scoped_demangled_name demangled_name(data_->name());
+    const boost::core::scoped_demangled_name demangled_name(data_->name());
 
     const char* begin = demangled_name.get();
-    if (!begin)
-        BOOST_THROW_EXCEPTION(std::runtime_error("Type name demangling failed"));
+    if (!begin) {
+        boost::throw_exception(std::runtime_error("Type name demangling failed"));
+    }
 
-    std::string::size_type len = std::strlen(begin);
+    const std::string::size_type len = std::strlen(begin);
     const char* end = begin + len;
 
     if (len > cvr_saver_name_len) {
