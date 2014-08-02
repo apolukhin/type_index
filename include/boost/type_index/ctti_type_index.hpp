@@ -35,10 +35,10 @@ namespace boost { namespace typeindex {
 namespace detail {
 
 // That's the most trickiest part of the TypeIndex library:
-//      1) we do not whant to give user ability to manually construct and compare `struct-that-represents-type`
-//      2) we need to distinguish beteween `struct-that-represents-type` and `const char*`
+//      1) we do not want to give user ability to manually construct and compare `struct-that-represents-type`
+//      2) we need to distinguish between `struct-that-represents-type` and `const char*`
 //      3) we need a thread-safe way to have references to instances `struct-that-represents-type`
-//      4) we need a compile-time control to make shure that user does not copy or 
+//      4) we need a compile-time control to make sure that user does not copy or
 // default construct `struct-that-represents-type`
 //
 // Solution would be the following:
@@ -72,7 +72,7 @@ private:
 
 } // namespace detail
 
-/// Helper method for getting detail::ctti_data of a tempalte patameter T.
+/// Helper method for getting detail::ctti_data of a template parameter T.
 template <class T>
 inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
     // Standard C++11, 5.2.10 Reinterpret cast:

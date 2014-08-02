@@ -228,7 +228,7 @@ inline stl_type_index stl_type_index::type_id() BOOST_NOEXCEPT {
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
 
         // Old EDG-based compilers seem to mistakenly distinguish 'integral' from 'signed integral'
-        // in typeid() expressions. Full temaplte specialization for 'integral' fixes that issue:
+        // in typeid() expressions. Full template specialization for 'integral' fixes that issue:
         typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_<
             boost::is_signed<no_cvr_prefinal_t>,
             boost::make_signed<no_cvr_prefinal_t>,

@@ -107,7 +107,7 @@ namespace boost { namespace detail {
 
 /// Noncopyable type_info that does not require RTTI.
 /// CTTI == Compile Time Type Info.
-/// This name must be as short as posible, to avoid code bloat
+/// This name must be as short as possible, to avoid code bloat
 template <class T>
 struct ctti {
 
