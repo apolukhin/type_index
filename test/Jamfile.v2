@@ -51,8 +51,8 @@ test-suite type_index
 
     # Mixing RTTI on and off
     [ link-fail testing_crossmodule.cpp test_lib_rtti : $(nortti) : link_fail_nortti_rtti ]
-    # MSVC sometimes overrides the /GR-, that's why the following tests is disabled
-    #[ link-fail testing_crossmodule.cpp test_lib_nortti : : link_fail_rtti_nortti ]
+    # MSVC sometimes overrides the /GR-, without `detect_missmatch` this test may link
+    [ link-fail testing_crossmodule.cpp test_lib_nortti : : link_fail_rtti_nortti ]
     [ run testing_crossmodule.cpp test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
     [ run testing_crossmodule.cpp test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
   ;

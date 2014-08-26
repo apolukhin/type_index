@@ -31,9 +31,10 @@ boost::typeindex::type_index get_const_user_defined_class() {
     return boost::typeindex::type_id_with_cvr<const user_defined_namespace::user_defined>();
 }
 
-
+#ifndef BOOST_HAS_PRAGMA_DETECT_MISMATCH
 // Just do nothing
 void accept_typeindex(const boost::typeindex::type_index&) {}
+#endif
 
 }
 

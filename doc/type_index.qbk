@@ -463,5 +463,6 @@ In order of helping and advising:
 * Peter Dimov for writing source codes in late 2007, that gave me an idea of how to emulate RTTI.
 * Agustín Bergé K-ballo for helping with docs and fixing a lot of typos.
 * Niall Douglas for generating a lot of great ideas, reviewing the sources and being the review manager for the library.
+* All the library reviewers, especially Andrey Semashev, for making good notes and proposing improvements to the library.
 
 [endsect]
