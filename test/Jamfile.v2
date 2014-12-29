@@ -35,6 +35,7 @@ obj test_lib_rtti_compat-obj : test_lib.cpp : <link>shared $(nortti) $(compat) ;
 lib test_lib_nortti_compat : test_lib_nortti_compat-obj : <link>shared $(nortti) $(compat) ;
 lib test_lib_rtti_compat : test_lib_rtti_compat-obj : <link>shared $(nortti) $(compat) ;
 
+exe testing_crossmodule_anonymous_no_rtti : testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : <rtti>off $(norttidefines) ;
 
 test-suite type_index
   : 
@@ -44,7 +45,7 @@ test-suite type_index
     [ run testing_crossmodule.cpp test_lib_rtti ]
     [ run testing_crossmodule.cpp test_lib_nortti : : : <rtti>off $(norttidefines) : testing_crossmodule_no_rtti ]
     [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti ]
-    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : : : <rtti>off $(norttidefines) : testing_crossmodule_anonymous_no_rtti ]
+
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
     [ compile-fail type_index_test_ctti_construct_fail.cpp ]
     [ compile type_index_test_ctti_alignment.cpp ]

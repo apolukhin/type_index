@@ -353,7 +353,9 @@ TypeIndex has been tested and successfully work on many compilers.
     assert(foo_a() != foo_b()); // will fail on some compilers
     ```
     
-    *Compilers that have that limitation:* GCC, CLANG. 
+    *Compilers that have that limitation:* GCC, CLANG, Intel.
+
+    *Test:* you can test this issue by runing the `testing_crossmodule_anonymous_no_rtti` that can be build if you run `../../../b2` in `type_index/test/` folder.
 ]
 
 [section Define the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro]
