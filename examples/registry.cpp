@@ -40,6 +40,7 @@ int main() {
 
     // Const, volatile and reference will be striped from the type:
     bool is_inserted = types.insert(boost::typeindex::type_id<const int>()).second;
+	(void)is_inserted;
     assert(!is_inserted);
     assert(types.erase(boost::typeindex::type_id<float&>()) == 1);
     

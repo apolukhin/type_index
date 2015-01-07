@@ -53,6 +53,7 @@ int main() {
 */
     my_struct str;
     my_class& reference = str;
+	(void)reference;
     assert(my_type_index::type_id<my_struct>() == my_type_index::type_id_runtime(reference));
 //][/type_index_my_type_index_type_id_runtime_test]
 

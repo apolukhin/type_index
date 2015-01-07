@@ -54,7 +54,7 @@ constexpr bool in_namespace(const char (&ns)[N]) noexcept {
 namespace my_project {
     struct serializer {
         template <class T>
-        void serialize(const T& value) {
+        void serialize(const T&) {
             static_assert(
                 in_namespace<T>("my_project::types") || in_namespace<T>("my_project::types_ext"),
                 "Only types from namespaces `my_project::types` and `my_project::types_ext` are allowed to be serialized using `my_project::serializer`"

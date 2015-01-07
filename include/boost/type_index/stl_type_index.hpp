@@ -268,6 +268,7 @@ inline stl_type_index stl_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
 
 template <class T>
 inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEXCEPT {
+    (void)value;
 #ifdef BOOST_NO_RTTI
     return value.boost_type_index_type_id_runtime_();
 #else
