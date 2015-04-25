@@ -10,7 +10,6 @@
 #define BOOST_TYPE_INDEX_TYPE_INDEX_FACADE_HPP
 
 #include <boost/config.hpp>
-#include <boost/functional/hash_fwd.hpp>
 #include <string>
 #include <cstring>
 
@@ -25,6 +24,11 @@
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
 #endif
+
+// Forward declaration from #include <boost/functional/hash_fwd.hpp>
+namespace boost {
+    template <class It> std::size_t hash_range(It, It);
+}
 
 namespace boost { namespace typeindex {
 
