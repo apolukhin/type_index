@@ -1,4 +1,4 @@
-// Copyright 2013-2014 Antony Polukhin
+// Copyright 2013-2015 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -21,7 +21,14 @@
 
 
 using namespace my_namespace;
-#include <cassert>
+//<-
+// Using hand-made check
+// instead of `assert`. This is required to verify correct behavior even if NDEBUG
+// is defined and to avoid `unused local variable` warnings with defined NDEBUG.
+#ifdef assert
+#   undef assert
+#endif
+#define assert(X) if (!(X)) std::exit(__LINE__)
 
 int main() {
 //[type_index_my_type_index_usage
