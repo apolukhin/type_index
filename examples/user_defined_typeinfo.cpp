@@ -18,17 +18,14 @@
 #include <boost/type_index.hpp>
 //] [/type_index_my_type_index_worldwide_macro]
 
-
-
-using namespace my_namespace;
-//<-
-// Using hand-made check
-// instead of `assert`. This is required to verify correct behavior even if NDEBUG
-// is defined and to avoid `unused local variable` warnings with defined NDEBUG.
+#include <boost/core/lightweight_test.hpp>
 #ifdef assert
 #   undef assert
 #endif
-#define assert(X) if (!(X)) std::exit(__LINE__)
+#define assert(X) BOOST_TEST(X)
+
+
+using namespace my_namespace;
 
 int main() {
 //[type_index_my_type_index_usage

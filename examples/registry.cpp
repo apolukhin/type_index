@@ -14,13 +14,14 @@
 #include <boost/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
 //<-
-// Making `#include <cassert>` visible in docs, while actually using hand-made check
+// Making `#include <cassert>` visible in docs, while actually using `BOOST_TEST`
 // instead of `assert`. This is required to verify correct behavior even if NDEBUG
 // is defined and to avoid `unused local variable` warnings with defined NDEBUG.
+#include <boost/core/lightweight_test.hpp>
 #ifdef assert
 #   undef assert
 #endif
-#define assert(X) if (!(X)) std::exit(__LINE__)
+#define assert(X) BOOST_TEST(X)
     /* !Comment block is not closed intentionaly!
 //->
 #include <cassert>
