@@ -1,5 +1,5 @@
 //
-// Copyright (c) Antony Polukhin, 2013-2014.
+// Copyright (c) Antony Polukhin, 2013-2015.
 //
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -105,8 +105,8 @@ public:
     /// \return Hash code of a type. By default hashes types by raw_name().
     /// \note <boost/functional/hash.hpp> has to be included if this function is used.
     inline std::size_t hash_code() const BOOST_NOEXCEPT {
-        const char* const name = derived().raw_name();
-        return boost::hash_range(name, name + std::strlen(name));
+        const char* const name_raw = derived().raw_name();
+        return boost::hash_range(name_raw, name_raw + std::strlen(name_raw));
     }
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
