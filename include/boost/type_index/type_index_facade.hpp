@@ -160,7 +160,7 @@ inline bool operator == (const type_index_facade<Derived, TypeInfo>& lhs, const 
 
 template <class Derived, class TypeInfo>
 inline bool operator < (const type_index_facade<Derived, TypeInfo>& lhs, const type_index_facade<Derived, TypeInfo>& rhs) BOOST_NOEXCEPT {
-    return static_cast<Derived const&>(lhs).before(static_cast<Derived const&>(rhs));;
+    return static_cast<Derived const&>(lhs).before(static_cast<Derived const&>(rhs));
 }
 
 

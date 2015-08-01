@@ -1,5 +1,5 @@
 //
-// Copyright (c) Antony Polukhin, 2012-2014.
+// Copyright (c) Antony Polukhin, 2012-2015.
 //
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -16,7 +16,6 @@
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/mpl/bool.hpp>
-#include <algorithm>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
@@ -70,7 +69,7 @@
 
 namespace boost { namespace typeindex { namespace detail { 
     template <bool Condition>
-    inline void assert_compile_time_legths() BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline void assert_compile_time_legths() BOOST_NOEXCEPT {
         BOOST_STATIC_ASSERT_MSG(
             Condition,
             "TypeIndex library is misconfigured for your compiler. "
@@ -78,15 +77,52 @@ namespace boost { namespace typeindex { namespace detail {
             "'RTTI emulation limitations' of the documentation for more information."
         );
     }
-    
+
     template <std::size_t ArrayLength>
-    inline const char* skip_begining_runtime(const char* begin, boost::mpl::false_) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::mpl::false_) BOOST_NOEXCEPT {
         return begin;
     }
 
+    template<class ForwardIterator1, class ForwardIterator2>
+    BOOST_CXX14_CONSTEXPR inline ForwardIterator1 constexpr_search(
+        ForwardIterator1 first1,
+        ForwardIterator1 last1,
+        ForwardIterator2 first2,
+        ForwardIterator2 last2) BOOST_NOEXCEPT
+    {
+        if (first2 == last2) {
+            return first1;  // specified in C++11
+        }
+
+        while (first1 != last1) {
+            ForwardIterator1 it1 = first1;
+            ForwardIterator2 it2 = first2;
+
+            while (*it1 == *it2) {
+                ++it1;
+                ++it2;
+                if (it2 == last2) return first1;
+                if (it1 == last1) return last1;
+            }
+
+            ++first1;
+        }
+
+        return last1;
+    }
+
+    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp(const char *v1, const char *v2) BOOST_NOEXCEPT {
+        while (*v1 != '\0' && *v1 == *v2) {
+            ++v1;
+            ++v2;
+        };
+
+        return static_cast<int>(*v1) - *v2;
+    }
+
     template <std::size_t ArrayLength>
-    inline const char* skip_begining_runtime(const char* begin, boost::mpl::true_) BOOST_NOEXCEPT {
-        const char* const it = std::search(
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::mpl::true_) BOOST_NOEXCEPT {
+        const char* const it = constexpr_search(
             begin, begin + ArrayLength,
             ctti_skip_until_runtime, ctti_skip_until_runtime + sizeof(ctti_skip_until_runtime) - 1
         );
@@ -94,7 +130,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <std::size_t ArrayLength>
-    inline const char* skip_begining(const char* begin) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining(const char* begin) BOOST_NOEXCEPT {
         assert_compile_time_legths<(ArrayLength > ctti_skip_size_at_begin + ctti_skip_size_at_end)>();
         return skip_begining_runtime<ArrayLength - ctti_skip_size_at_begin>(
             begin + ctti_skip_size_at_begin, 
@@ -112,7 +148,7 @@ template <class T>
 struct ctti {
 
     /// Returns raw name. Must be as short, as possible, to avoid code bloat
-    static const char* n() BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR static const char* n() BOOST_NOEXCEPT {
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         return boost::typeindex::detail::skip_begining< sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE >(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
     #elif defined(__FUNCSIG__)

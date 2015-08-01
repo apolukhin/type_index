@@ -1,5 +1,5 @@
 //
-// Copyright (c) Antony Polukhin, 2013-2014.
+// Copyright (c) Antony Polukhin, 2013-2015.
 //
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -92,34 +92,48 @@ inline const detail::ctti_data& ctti_construct() BOOST_NOEXCEPT {
 /// This class is a wrapper that pretends to work exactly like stl_type_index, but does 
 /// not require RTTI support. \b For \b description \b of \b functions \b see type_index_facade.
 ///
+/// This class on C++14 compatible compilers has following functions marked as constexpr:
+///     * default constructor
+///     * copy constructors and assignemnt operations
+///     * class methods: name(), before(const ctti_type_index& rhs), equal(const ctti_type_index& rhs)
+///     * static methods type_id<T>(), type_id_with_cvr<T>()
+///     * comparison operators
+///
 /// This class produces slightly longer type names, so consider using stl_type_index 
 /// in situations when typeid() is working.
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
-    const detail::ctti_data* data_;
+    const char* data_;
 
     inline std::size_t get_raw_name_length() const BOOST_NOEXCEPT;
+
+    BOOST_CXX14_CONSTEXPR inline explicit ctti_type_index(const char* data) BOOST_NOEXCEPT
+        : data_(data)
+    {}
 
 public:
     typedef detail::ctti_data type_info_t;
 
-    inline ctti_type_index() BOOST_NOEXCEPT
-        : data_(&ctti_construct<void>())
+    BOOST_CXX14_CONSTEXPR inline ctti_type_index() BOOST_NOEXCEPT
+        : data_(boost::detail::ctti<void>::n())
     {}
 
     inline ctti_type_index(const type_info_t& data) BOOST_NOEXCEPT
-        : data_(&data)
+        : data_(reinterpret_cast<const char*>(&data))
     {}
 
-    inline const type_info_t&  type_info() const BOOST_NOEXCEPT;
-    inline const char*  raw_name() const BOOST_NOEXCEPT;
+    inline const type_info_t& type_info() const BOOST_NOEXCEPT;
+    BOOST_CXX14_CONSTEXPR inline const char*  raw_name() const BOOST_NOEXCEPT;
     inline std::string  pretty_name() const;
     inline std::size_t  hash_code() const BOOST_NOEXCEPT;
 
-    template <class T>
-    inline static ctti_type_index type_id() BOOST_NOEXCEPT;
+    BOOST_CXX14_CONSTEXPR inline bool equal(const ctti_type_index& rhs) const BOOST_NOEXCEPT;
+    BOOST_CXX14_CONSTEXPR inline bool before(const ctti_type_index& rhs) const BOOST_NOEXCEPT;
 
     template <class T>
-    inline static ctti_type_index type_id_with_cvr() BOOST_NOEXCEPT;
+    BOOST_CXX14_CONSTEXPR inline static ctti_type_index type_id() BOOST_NOEXCEPT;
+
+    template <class T>
+    BOOST_CXX14_CONSTEXPR inline static ctti_type_index type_id_with_cvr() BOOST_NOEXCEPT;
 
     template <class T>
     inline static ctti_type_index type_id_runtime(const T& variable) BOOST_NOEXCEPT;
@@ -127,22 +141,35 @@ public:
 
 
 inline const ctti_type_index::type_info_t& ctti_type_index::type_info() const BOOST_NOEXCEPT {
-    return *data_;
+    return *reinterpret_cast<const detail::ctti_data*>(data_);
+}
+
+
+BOOST_CXX14_CONSTEXPR inline bool ctti_type_index::equal(const ctti_type_index& rhs) const BOOST_NOEXCEPT {
+    const char* const left = raw_name();
+    const char* const right = rhs.raw_name();
+    return left == right || !boost::typeindex::detail::constexpr_strcmp(left, right);
+}
+
+BOOST_CXX14_CONSTEXPR inline bool ctti_type_index::before(const ctti_type_index& rhs) const BOOST_NOEXCEPT {
+    const char* const left = raw_name();
+    const char* const right = rhs.raw_name();
+    return left != right && boost::typeindex::detail::constexpr_strcmp(left, right) < 0;
 }
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::type_id() BOOST_NOEXCEPT {
+BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id() BOOST_NOEXCEPT {
     typedef BOOST_DEDUCED_TYPENAME boost::remove_reference<T>::type no_ref_t;
     typedef BOOST_DEDUCED_TYPENAME boost::remove_cv<no_ref_t>::type no_cvr_t;
-    return ctti_construct<no_cvr_t>();
+    return ctti_type_index(boost::detail::ctti<no_cvr_t>::n());
 }
 
 
 
 template <class T>
-inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
-    return ctti_construct<T>();
+BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id_with_cvr() BOOST_NOEXCEPT {
+    return ctti_type_index(boost::detail::ctti<T>::n());
 }
 
 
@@ -152,8 +179,8 @@ inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) BOOST
 }
 
 
-inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
-    return reinterpret_cast<const char*>(data_);
+BOOST_CXX14_CONSTEXPR inline const char* ctti_type_index::raw_name() const BOOST_NOEXCEPT {
+    return data_;
 }
 
 inline std::size_t ctti_type_index::get_raw_name_length() const BOOST_NOEXCEPT {
@@ -171,6 +198,94 @@ inline std::string ctti_type_index::pretty_name() const {
 inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
     return boost::hash_range(raw_name(), raw_name() + get_raw_name_length());
 }
+
+
+/// @cond
+BOOST_CXX14_CONSTEXPR inline bool operator == (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return lhs.equal(rhs);
+}
+
+BOOST_CXX14_CONSTEXPR inline bool operator < (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return lhs.before(rhs);
+}
+
+
+BOOST_CXX14_CONSTEXPR inline bool operator > (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return rhs < lhs;
+}
+
+BOOST_CXX14_CONSTEXPR inline bool operator <= (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(lhs > rhs);
+}
+
+BOOST_CXX14_CONSTEXPR inline bool operator >= (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(lhs < rhs);
+}
+
+BOOST_CXX14_CONSTEXPR inline bool operator != (const ctti_type_index& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(lhs == rhs);
+}
+
+
+// ######################### COMPARISONS with detail::ctti_data ############################ //
+inline bool operator == (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return ctti_type_index(lhs) == rhs;
+}
+
+inline bool operator < (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return ctti_type_index(lhs) < rhs;
+}
+
+inline bool operator > (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return rhs < ctti_type_index(lhs);
+}
+
+inline bool operator <= (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(ctti_type_index(lhs) > rhs);
+}
+
+inline bool operator >= (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(ctti_type_index(lhs) < rhs);
+}
+
+inline bool operator != (const boost::typeindex::detail::ctti_data& lhs, const ctti_type_index& rhs) BOOST_NOEXCEPT {
+    return !(ctti_type_index(lhs) == rhs);
+}
+
+
+inline bool operator == (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return lhs == ctti_type_index(rhs);
+}
+
+inline bool operator < (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return lhs < ctti_type_index(rhs);
+}
+
+inline bool operator > (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return ctti_type_index(rhs) < lhs;
+}
+
+inline bool operator <= (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return !(lhs > ctti_type_index(rhs));
+}
+
+inline bool operator >= (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return !(lhs < ctti_type_index(rhs));
+}
+
+inline bool operator != (const ctti_type_index& lhs, const boost::typeindex::detail::ctti_data& rhs) BOOST_NOEXCEPT {
+    return !(lhs == ctti_type_index(rhs));
+}
+
+// ######################### COMPARISONS with detail::ctti_data END ############################ //
+
+/// @endcond
+
+#if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
+/// c++14 constexpr noexcept comparison operators for type_index_facade classes.
+constexpr bool operator ==, !=, <, ... (const ctti_type_index& lhs, const ctti_type_index& rhs) noexcept;
+#endif
+
 
 
 }} // namespace boost::typeindex
