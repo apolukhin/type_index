@@ -41,8 +41,14 @@
     BOOST_PP_EXPAND( BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING )
 
 #elif defined(_MSC_VER)
+
+#if defined (BOOST_NO_CXX11_NOEXCEPT)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "")
+#else
+    // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(" >::n(void) noexcept") - 1
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 20, false, "")
+#endif
 #elif defined(__clang__) && defined(__APPLE__)
     // Someone made __clang_major__ equal to LLVM version rather than compiler version
     // on APPLE platform.
