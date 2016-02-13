@@ -46,8 +46,8 @@
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "")
 #else
-    // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(" >::n(void) noexcept") - 1
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 20, false, "")
+    // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void) noexcept") - 1
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 19, false, "")
 #endif
 #elif defined(__clang__) && defined(__APPLE__)
     // Someone made __clang_major__ equal to LLVM version rather than compiler version
