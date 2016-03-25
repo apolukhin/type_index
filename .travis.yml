@@ -37,8 +37,9 @@ env:
         - BOOST_REMOVE=$(basename $TRAVIS_BUILD_DIR)
 
     matrix:
-        - CXX_STANDARD=c++98
-        - CXX_STANDARD=c++0x
+        - CXX_STANDARD=c++98 TOOLSET=gcc
+        - CXX_STANDARD=c++11 TOOLSET=gcc-5
+        - CXX_STANDARD=c++1y TOOLSET=gcc-5
 
 ###############################################################################################################
 # From this point and below code is same for all the Boost libs
@@ -48,10 +49,15 @@ env:
 # Installing additional tools
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
     - valgrind
     - python-yaml
+    - gcc-5
+    - g++-5
     - lcov
+    - clang
 
 before_install:
     # Set this to the name of the library
@@ -81,7 +87,7 @@ before_install:
 
 script:
     # `--coverage` flags required to generate coverage info for Coveralls
-    - ../../../b2 testing.launcher=valgrind address-model=64 architecture=x86 toolset=$CC cxxflags="--coverage -DBOOST_TRAVISCI_BUILD -std=$CXX_STANDARD" linkflags="--coverage"
+    - ../../../b2 testing.launcher=valgrind address-model=64 architecture=x86 toolset=$TOOLSET cxxflags="--coverage -DBOOST_TRAVISCI_BUILD -std=$CXX_STANDARD" linkflags="--coverage"
 
 after_success:
     # Copying Coveralls data to a separate folder
