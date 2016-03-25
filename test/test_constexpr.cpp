@@ -15,7 +15,7 @@
 #include <iostream>
 using namespace std;
 
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR ) && ! defined( BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION )
 
 template<typename ...Args>
 struct my_dummy_tuple {};
