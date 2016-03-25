@@ -58,7 +58,7 @@ test-suite type_index
     [ run testing_crossmodule.cpp test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
     [ run testing_crossmodule.cpp test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
 	# The constexpr meta_type
-    [ run test_constexpr.cpp ]
+    [ run test_constexpr.cpp : : : <toolset>gcc:<cxxflags>-ftemplate-depth=512 ]
 
 	;
   
