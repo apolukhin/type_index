@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <string>
 
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR ) && ! defined( BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION )
 #include <boost/type_index/detail/constexpr_type_info.hpp>
 #endif
 
@@ -143,7 +143,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
 
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR ) && ! defined( BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION )
 
 template<std::size_t ... Idx>
 struct index_seq
@@ -198,7 +198,7 @@ struct ctti {
     static const char* n() BOOST_NOEXCEPT {
         return boost::typeindex::detail::skip_begining< sizeof(BOOST_TYPEINDEX_FUNCTION_NAME) >(BOOST_TYPEINDEX_FUNCTION_NAME);
     }
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR ) && ! defined( BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION )
     //helper functions
 
     template<std::size_t Index>

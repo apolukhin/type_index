@@ -172,7 +172,7 @@ inline std::size_t ctti_type_index::hash_code() const BOOST_NOEXCEPT {
     return boost::hash_range(raw_name(), raw_name() + get_raw_name_length());
 }
 
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR ) && ! defined( BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION )
 template<typename T>
 using ctti_type_index_t = decltype(boost::detail::ctti<T>::m());
 #endif
