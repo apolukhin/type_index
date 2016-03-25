@@ -100,10 +100,11 @@
 #elif defined(__GNUC__)
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "")
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS_TYPE(40);
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS_TYPE(40)
 #else
     // Deafult code for other platforms... Just skip nothing!
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(0, 0, false, "")
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS_TYPE(0)
 #endif
 
 #undef BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS
@@ -230,8 +231,6 @@ struct ctti {
     }
 #endif
 };
-
-#undef BOOST_TYPEINDEX_FUNCTION_NAME
 
 }} // namespace boost::detail
 
