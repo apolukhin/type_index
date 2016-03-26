@@ -41,6 +41,8 @@ env:
         - CXX_STANDARD=c++98 TOOLSET=gcc
         - CXX_STANDARD=c++11 TOOLSET=gcc-5
         - CXX_STANDARD=c++1y TOOLSET=gcc-5
+        - CXX_STANDARD=c++1y TOOLSET=clang
+        - CXX_STANDARD=c++11 TOOLSET=clang
 
 ###############################################################################################################
 # From this point and below code is same for all the Boost libs
