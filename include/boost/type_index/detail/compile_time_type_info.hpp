@@ -198,11 +198,6 @@ namespace boost { namespace typeindex { namespace detail {
     struct make_index_seq<Size, Size, T> {
         typedef T type;
     };
-
-    template<std::size_t Size, std::size_t Start = 0>
-    using make_index_seq_t = typename make_index_seq<Size, Start>::type;
-
-
     
     template <char... C>
     struct cstring {
@@ -287,10 +282,10 @@ struct ctti {
         #endif
         );
         
-        using idx_seq = boost::typeindex::detail::make_index_seq_t<
+        typedef typename boost::typeindex::detail::make_index_seq<
                 size - boost::typeindex::detail::ctti_skip_size_at_end,
                 boost::typeindex::detail::ctti_skip_size_at_constexpr_begin
-        >;
+        >::type idx_seq;
         return impl(idx_seq());
     }
 #else
