@@ -74,16 +74,16 @@ void search_same() {
     );
 }
 
-
+/*
 #ifndef BOOST_NO_CXX14_CONSTEXPR
 template <class T>
 struct is_boost_namespace {
-    constexpr char cb[5] = {'b', 'o', 'o', 's', 't'};
-    constexpr boost::typeindex::ctti_type_index type = boost::typeindex::ctti_type_index::type_id<T>();
-    constexpr bool value = (boost::typeindex::detail::constexpr_search(type.name(), type.name() + 5, cb, cb + 5) != cb + 5);
+    static constexpr char cb[5] = {'b', 'o', 'o', 's', 't'};
+    static constexpr boost::typeindex::ctti_type_index type = boost::typeindex::ctti_type_index::type_id<T>();
+    static constexpr bool value = (boost::typeindex::detail::constexpr_search(type.name(), type.name() + 5, cb, cb + 5) != cb + 5);
 };
 #endif
-
+*/
 
 void constexpr_test() {
     using namespace boost::typeindex;
@@ -123,11 +123,11 @@ void constexpr_test() {
 
 
     BOOST_CXX14_CONSTEXPR const char* int_name = t_int0.name();
-    BOOST_TEST(int_name);
+    BOOST_TEST(*int_name != '\0');
 
     BOOST_CXX14_CONSTEXPR const char* short_name = t_short0.name();
-    BOOST_TEST(short_name);
-
+    BOOST_TEST(*short_name != '\0');
+/*
 #ifndef BOOST_NO_CXX14_CONSTEXPR
     constexpr bool in_namespace = is_boost_namespace<ctti_type_index>::value;
     BOOST_TEST(in_namespace);
@@ -135,7 +135,7 @@ void constexpr_test() {
     constexpr bool not_in_namespace = !is_boost_namespace<std::string>::value;
     BOOST_TEST(not_in_namespace);
 #endif
-
+*/
 }
 
 

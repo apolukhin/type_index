@@ -23,7 +23,8 @@ env:
     global:
         # Autodetect Boost branch by using the following code: - BRANCH_TO_TEST=$TRAVIS_BRANCH
         # or just directly specify it
-        - BRANCH_TO_TEST=$TRAVIS_BRANCH
+        #- BRANCH_TO_TEST=$TRAVIS_BRANCH
+        - BRANCH_TO_TEST=develop
 
         # Files, which coverage results must be ignored (files from other projects).
         # Example: - IGNORE_COVERAGE='*/boost/progress.hpp */filesystem/src/*'
