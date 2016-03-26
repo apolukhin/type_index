@@ -178,22 +178,19 @@ namespace boost { namespace typeindex { namespace detail {
 
     template<std::size_t ...indexes, std::size_t... Append>
     struct append<index_seq<indexes...>, Append...> {
-        using type = index_seq<indexes ..., Append...>;
+        typedef index_seq<indexes ..., Append...> type;
     };
-
-    template<typename T, std::size_t... Append>
-    using append_t = typename append<T, Append...>::type;
 
     template<std::size_t Size, std::size_t Counter = 0, typename T = index_seq<>>
     struct make_index_seq {
         typedef typename switch_<
             Size - Counter - 1,
-            make_index_seq<Size, Counter+1, append_t<T, Counter> >,
-            make_index_seq<Size, Counter+2, append_t<T, Counter, Counter + 1> >,
-            make_index_seq<Size, Counter+3, append_t<T, Counter, Counter + 1, Counter + 2> >,
-            make_index_seq<Size, Counter+4, append_t<T, Counter, Counter + 1, Counter + 2, Counter + 3> >,
-            make_index_seq<Size, Counter+5, append_t<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4> >,
-            make_index_seq<Size, Counter+6, append_t<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4, Counter + 5> >
+            make_index_seq<Size, Counter+1, typename append<T, Counter>::type >,
+            make_index_seq<Size, Counter+2, typename append<T, Counter, Counter + 1>::type >,
+            make_index_seq<Size, Counter+3, typename append<T, Counter, Counter + 1, Counter + 2>::type >,
+            make_index_seq<Size, Counter+4, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3>::type >,
+            make_index_seq<Size, Counter+5, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4>::type >,
+            make_index_seq<Size, Counter+6, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4, Counter + 5>::type >
         >::type type;
     };
 
@@ -264,9 +261,9 @@ struct ctti {
     #endif
     }
     
-    template<std::size_t ...Indexes>
-    constexpr static auto impl(::boost::typeindex::detail::index_seq<Indexes...> ) {
-        return ::boost::typeindex::detail::cstring<s<Indexes>()...>();
+    template <std::size_t ...Indexes>
+    constexpr static const char* impl(::boost::typeindex::detail::index_seq<Indexes...> ) {
+        return ::boost::typeindex::detail::cstring<s<Indexes>()...>::data_;
     }
     
     template <std::size_t Dummy = 0>
@@ -294,7 +291,7 @@ struct ctti {
                 size - boost::typeindex::detail::ctti_skip_size_at_end,
                 boost::typeindex::detail::ctti_skip_size_at_constexpr_begin
         >;
-        return decltype( impl(idx_seq()) )::data_;
+        return impl(idx_seq());
     }
 #else
     /// Returns raw name. Must be as short, as possible, to avoid code bloat
