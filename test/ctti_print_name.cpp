@@ -10,7 +10,7 @@
 // This cpp file:
 // * tests BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING macro
 // * outputs full ctti name so that TypeIndex library could be adjust to new compiler without requesting regression tester's help
-#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING (0,0,false,"",0)
+#define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING (0,0,false,"")
 #include <boost/type_index/ctti_type_index.hpp>
 
 namespace user_defined_namespace {

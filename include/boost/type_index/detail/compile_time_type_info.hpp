@@ -22,13 +22,12 @@
 #endif
 
 /// @cond
-#define BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until, constexpr_begin_skip)     \
+#define BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until)     \
     namespace boost { namespace typeindex { namespace detail {                                                                          \
         BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_begin  = begin_skip;                                                       \
         BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_end    = end_skip;                                                         \
         BOOST_STATIC_CONSTEXPR bool ctti_skip_more_at_runtime       = runtime_skip;                                                     \
         BOOST_STATIC_CONSTEXPR char ctti_skip_until_runtime[]       = runtime_skip_until;                                               \
-        BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_constexpr_begin = constexpr_begin_skip;                                    \
     }}} /* namespace boost::typeindex::detail */                                                                                        \
     /**/
 /// @endcond
@@ -45,10 +44,10 @@
 
 #if defined (BOOST_NO_CXX11_NOEXCEPT)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "")
 #else
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void) noexcept") - 1
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 19, false, "", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 19, false, "")
 #endif
 #elif defined(__clang__) && defined(__APPLE__)
     // Someone made __clang_major__ equal to LLVM version rather than compiler version
@@ -56,21 +55,28 @@
     //
     // Using less efficient solution because there is no good way to detect real version of Clang.
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "???????????>::n() [T = int"
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
 #elif defined(__clang__) && (__clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ == 0))
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof(">::n()") - 1
     // note: checked on 3.0
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "")
 #elif defined(__clang__) && __clang_major__ == 3 && __clang_minor__ > 0
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "int>::n() [T = int"
     // note: checked on 3.1, 3.4
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
 #elif defined(__GNUC__)
+
+#ifndef BOOST_NO_CXX14_CONSTEXPR
+    // sizeof("static contexpr char boost::detail::ctti<T>::s() [with long unsigned int Index = 82ul; T = ") - 1, sizeof("]") - 1
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(91, 1, false, "")
+#else
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "", 91)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "")
+#endif
+
 #else
     // Deafult code for other platforms... Just skip nothing!
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(0, 0, false, "", 0)
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(0, 0, false, "")
 #endif
 
 #undef BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS
@@ -146,9 +152,8 @@ namespace boost { namespace typeindex { namespace detail {
         );
     }
     
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
-
-
+#if !defined(__clang__) && defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
+    // GCC
     template <std::size_t Switch, class T0, class T1, class T2, class T3, class T4, class TDefault>
     struct switch_{
         typedef typename TDefault::type type;
@@ -220,7 +225,7 @@ namespace boost { namespace detail {
 template <class T>
 struct ctti {
    
-#if ! defined( BOOST_NO_CXX11_VARIADIC_TEMPLATES ) && ! defined ( BOOST_NO_CXX11_CONSTEXPR )
+#if !defined(__clang__) && defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
     //helper functions
     template <std::size_t Index>
     constexpr static char s() { // step
@@ -262,7 +267,7 @@ struct ctti {
     }
     
     template <std::size_t Dummy = 0>
-    constexpr static auto n()
+    constexpr static const char* n()
     {
         constexpr std::size_t size = sizeof(
         #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
@@ -283,14 +288,14 @@ struct ctti {
         );
         
         typedef typename boost::typeindex::detail::make_index_seq<
-                size - boost::typeindex::detail::ctti_skip_size_at_end,
-                boost::typeindex::detail::ctti_skip_size_at_constexpr_begin
+                size - boost::typeindex::detail::ctti_skip_size_at_end - 7,
+                boost::typeindex::detail::ctti_skip_size_at_begin
         >::type idx_seq;
         return impl(idx_seq());
     }
 #else
     /// Returns raw name. Must be as short, as possible, to avoid code bloat
-    static const char* n() BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR static const char* n() BOOST_NOEXCEPT {
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         return boost::typeindex::detail::skip_begining< sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE) >(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
     #elif defined(__FUNCSIG__)
