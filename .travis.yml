@@ -38,12 +38,12 @@ env:
         - BOOST_REMOVE=$(basename $TRAVIS_BUILD_DIR)
 
     matrix:
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++98' linkflags=--coverage" TOOLSET=gcc
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++11' linkflags=--coverage" TOOLSET=gcc-5
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++1y' linkflags=--coverage" TOOLSET=gcc-5
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++98 -stdlib=libc++' linkfalgs='--coverage -stdlib=libc++'" TOOLSET=clang
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++11 -stdlib=libc++' linkfalgs='--coverage -stdlib=libc++'" TOOLSET=clang
-        - CXX_FLAGS="cxxflags='--coverage -DBOOST_TRAVISCI_BUILD -std=c++1y -stdlib=libc++' linkfalgs='--coverage -stdlib=libc++'" TOOLSET=clang
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++98\' linkflags=--coverage" TOOLSET=gcc
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++11\' linkflags=--coverage" TOOLSET=gcc-5
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++1y\' linkflags=--coverage" TOOLSET=gcc-5
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++98 -stdlib=libc++\' linkfalgs=\'--coverage -stdlib=libc++\'" TOOLSET=clang
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++11 -stdlib=libc++\' linkfalgs=\'--coverage -stdlib=libc++\'" TOOLSET=clang
+        - CXX_FLAGS="cxxflags=\'--coverage -DBOOST_TRAVISCI_BUILD -std=c++1y -stdlib=libc++\' linkfalgs=\'--coverage -stdlib=libc++\'" TOOLSET=clang
 
 ###############################################################################################################
 # From this point and below code is same for all the Boost libs
