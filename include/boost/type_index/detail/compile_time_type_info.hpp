@@ -67,7 +67,7 @@
 #elif defined(__GNUC__)
 
 #ifndef BOOST_NO_CXX14_CONSTEXPR
-    // sizeof("static contexpr char boost::detail::ctti<T>::s() [with long unsigned int Index = 82ul; T = ") - 1, sizeof("]") - 1
+    // sizeof("static contexpr char boost::detail::ctti<T>::s() [with long unsigned int Index = 0ul; T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(91, 1, false, "")
 #else
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
@@ -89,6 +89,17 @@ namespace boost { namespace typeindex { namespace detail {
             "TypeIndex library is misconfigured for your compiler. "
             "Please define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct values. See section "
             "'RTTI emulation limitations' of the documentation for more information."
+        );
+    }
+
+    template <class T>
+    BOOST_CXX14_CONSTEXPR inline void failed_to_get_function_name() BOOST_NOEXCEPT {
+        BOOST_STATIC_ASSERT_MSG(
+            sizeof(T) && false,
+            "TypeIndex library could not detect your compiler. "
+            "Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use "
+            "correct compiler macro for getting the whole function name. "
+            "Define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct value after that."
         );
     }
 
@@ -153,57 +164,49 @@ namespace boost { namespace typeindex { namespace detail {
     }
     
 #if !defined(__clang__) && defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
-    // GCC
-    template <std::size_t Switch, class T0, class T1, class T2, class T3, class T4, class TDefault>
+
+    template <std::size_t Switch, class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class TDefault>
     struct switch_{
         typedef typename TDefault::type type;
     };
-    
-    template <class T0, class T1, class T2, class T3, class T4, class TDefault>
-    struct switch_<0, T0, T1, T2, T3, T4, TDefault>{ typedef typename T0::type type; };
-    
-    template <class T0, class T1, class T2, class T3, class T4, class TDefault>
-    struct switch_<1, T0, T1, T2, T3, T4, TDefault>{ typedef typename T1::type type; };
-    
-    template <class T0, class T1, class T2, class T3, class T4, class TDefault>
-    struct switch_<2, T0, T1, T2, T3, T4, TDefault>{ typedef typename T2::type type; };
-    
-    template <class T0, class T1, class T2, class T3, class T4, class TDefault>
-    struct switch_<3, T0, T1, T2, T3, T4, TDefault>{ typedef typename T3::type type; };
-    
-    template <class T0, class T1, class T2, class T3, class T4, class TDefault>
-    struct switch_<4, T0, T1, T2, T3, T4, TDefault>{ typedef typename T4::type type; };
 
+#define DEFINE_SWITCH(Index)                                                                                            \
+    template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class TDefault> \
+    struct switch_<Index, T0, T1, T2, T3, T4, T5, T6, T7, T8, TDefault>{ typedef typename T##Index::type type; };       \
+    /**/
 
-    template<std::size_t ... Idx>
+    DEFINE_SWITCH(0)    DEFINE_SWITCH(1)    DEFINE_SWITCH(2)    DEFINE_SWITCH(3)    DEFINE_SWITCH(4)
+    DEFINE_SWITCH(5)    DEFINE_SWITCH(6)    DEFINE_SWITCH(7)    DEFINE_SWITCH(8)
+#undef DEFINE_SWITCH
+
+    template <std::size_t... I>
     struct index_seq {};
 
-    template<typename T, std::size_t... Append>
-    struct append;
-
-    template<std::size_t ...indexes, std::size_t... Append>
-    struct append<index_seq<indexes...>, Append...> {
-        typedef index_seq<indexes ..., Append...> type;
-    };
-
     template<std::size_t Size, std::size_t Counter = 0, typename T = index_seq<>>
-    struct make_index_seq {
+    struct make_index_seq;
+
+    template<std::size_t S, std::size_t C, std::size_t... I>
+    struct make_index_seq<S, C, index_seq<I...> > {
         typedef typename switch_<
-            Size - Counter - 1,
-            make_index_seq<Size, Counter+1, typename append<T, Counter>::type >,
-            make_index_seq<Size, Counter+2, typename append<T, Counter, Counter + 1>::type >,
-            make_index_seq<Size, Counter+3, typename append<T, Counter, Counter + 1, Counter + 2>::type >,
-            make_index_seq<Size, Counter+4, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3>::type >,
-            make_index_seq<Size, Counter+5, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4>::type >,
-            make_index_seq<Size, Counter+6, typename append<T, Counter, Counter + 1, Counter + 2, Counter + 3, Counter + 4, Counter + 5>::type >
+            S - C - 1,
+            make_index_seq<S, C + 1,  index_seq<I..., C> >,
+            make_index_seq<S, C + 2,  index_seq<I..., C, C + 1> >,
+            make_index_seq<S, C + 3,  index_seq<I..., C, C + 1, C + 2> >,
+            make_index_seq<S, C + 4,  index_seq<I..., C, C + 1, C + 2, C + 3> >,
+            make_index_seq<S, C + 5,  index_seq<I..., C, C + 1, C + 2, C + 3, C + 4> >,
+            make_index_seq<S, C + 6,  index_seq<I..., C, C + 1, C + 2, C + 3, C + 4, C + 5> >,
+            make_index_seq<S, C + 7,  index_seq<I..., C, C + 1, C + 2, C + 3, C + 4, C + 5, C + 6> >,
+            make_index_seq<S, C + 8,  index_seq<I..., C, C + 1, C + 2, C + 3, C + 4, C + 5, C + 6, C + 7> >,
+            make_index_seq<S, C + 9,  index_seq<I..., C, C + 1, C + 2, C + 3, C + 4, C + 5, C + 6, C + 7, C + 8> >,
+            make_index_seq<S, C + 10, index_seq<I..., C, C + 1, C + 2, C + 3, C + 4, C + 5, C + 6, C + 7, C + 8, C + 9> >
         >::type type;
     };
 
-    template<std::size_t Size, typename T>
-    struct make_index_seq<Size, Size, T> {
-        typedef T type;
+    template<std::size_t Size, std::size_t... I>
+    struct make_index_seq<Size, Size, index_seq<I...> > {
+        typedef index_seq<I...> type;
     };
-    
+
     template <char... C>
     struct cstring {
         static constexpr std::size_t size_ = sizeof...(C) + 1;
@@ -214,7 +217,6 @@ namespace boost { namespace typeindex { namespace detail {
     constexpr char cstring<C...>::data_[]; 
 #endif
 
-    
 }}} // namespace boost::typeindex::detail
 
 namespace boost { namespace detail {
@@ -237,27 +239,13 @@ struct ctti {
                 + (Index >= 100000u  ? 1u : 0u)
                 + (Index >= 1000000u ? 1u : 0u)
         ;
-        
+
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         return BOOST_TYPE_INDEX_FUNCTION_SIGNATURE[Index + offset];
     #elif defined(__FUNCSIG__)
         return __FUNCSIG__[Index + offset];
-    #elif defined(__PRETTY_FUNCTION__) \
-                || defined(__GNUC__) \
-                || (defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x5130)) \
-                || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
-                || (defined(__ICC) && (__ICC >= 600)) \
-                || defined(__ghs__) \
-                || defined(__DMC__)
-        return __PRETTY_FUNCTION__[Index + offset];
     #else
-        BOOST_STATIC_ASSERT_MSG(
-            sizeof(T) && false,
-            "TypeIndex library could not detect your compiler. "
-            "Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use "
-            "correct compiler macro for getting the whole function name. "
-            "Define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct value after that."
-        );
+        return __PRETTY_FUNCTION__[Index + offset];
     #endif
     }
     
@@ -267,28 +255,30 @@ struct ctti {
     }
     
     template <std::size_t Dummy = 0>
-    constexpr static const char* n()
-    {
-        constexpr std::size_t size = sizeof(
-        #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
-            BOOST_TYPE_INDEX_FUNCTION_SIGNATURE
-        #elif defined(__FUNCSIG__)
-            __FUNCSIG__
-        #elif defined(__PRETTY_FUNCTION__) \
+    constexpr static const char* n() {
+    #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
+        constexpr std::size_t size = sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
+    #elif defined(__FUNCSIG__)
+        constexpr std::size_t size = sizeof(__FUNCSIG__);
+    #elif defined(__PRETTY_FUNCTION__) \
                     || defined(__GNUC__) \
                     || (defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x5130)) \
                     || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
                     || (defined(__ICC) && (__ICC >= 600)) \
                     || defined(__ghs__) \
                     || defined(__DMC__)
-            __PRETTY_FUNCTION__
-        #else
-            int
-        #endif
-        );
-        
+        constexpr std::size_t size = sizeof(__PRETTY_FUNCTION__);
+    #else
+        boost::typeindex::detail::failed_to_get_function_name();
+    #endif
+
+        boost::typeindex::detail::assert_compile_time_legths<
+            (size > boost::typeindex::detail::ctti_skip_size_at_begin + boost::typeindex::detail::ctti_skip_size_at_end + sizeof("const *") - 1)
+        >();
+        static_assert(!boost::typeindex::detail::ctti_skip_more_at_runtime, "Skipping for GCC in C++14 mode is unsupported");
+
         typedef typename boost::typeindex::detail::make_index_seq<
-                size - boost::typeindex::detail::ctti_skip_size_at_end - 7,
+                size - sizeof("const *") + 1,
                 boost::typeindex::detail::ctti_skip_size_at_begin
         >::type idx_seq;
         return impl(idx_seq());
@@ -309,13 +299,8 @@ struct ctti {
                 || defined(__DMC__)
         return boost::typeindex::detail::skip_begining< sizeof(__PRETTY_FUNCTION__) >(__PRETTY_FUNCTION__);
     #else
-        BOOST_STATIC_ASSERT_MSG(
-            sizeof(T) && false,
-            "TypeIndex library could not detect your compiler. "
-            "Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use "
-            "correct compiler macro for getting the whole function name. "
-            "Define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct value after that."
-        );
+        boost::typeindex::detail::failed_to_get_function_name();
+        return "";
     #endif
     }
 #endif
