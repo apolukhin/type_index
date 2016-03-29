@@ -1,4 +1,4 @@
-# Copyright Antony Polukhin 2011-2013. 
+# Copyright Antony Polukhin 2011-2016.
 # Use, modification, and distribution are
 # subject to the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -20,6 +20,7 @@ doxygen autodoc
         <doxygen:param>MACRO_EXPANSION=YES
         <doxygen:param>"PREDEFINED=\"stl_type_info=std::type_info\" \\
                                    \"BOOST_TYPE_INDEX_DOXYGEN_INVOKED\" \\
+                                   \"BOOST_CXX14_CONSTEXPR=constexpr\" \\
                                    \"detail::stl_type_info=std::type_info\""
         <xsl:param>"boost.doxygen.reftitle=Boost.TypeIndex Header Reference"
    ;
