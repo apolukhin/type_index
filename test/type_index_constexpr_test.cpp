@@ -1,5 +1,5 @@
 //
-// Copyright Antony Polukhin, 2015.
+// Copyright Antony Polukhin, 2015-2016.
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -86,7 +86,7 @@ BOOST_CXX14_CONSTEXPR bool in_namespace(const char (&ns)[N]) BOOST_NOEXCEPT {
 
 template <class T>
 BOOST_CXX14_CONSTEXPR bool is_boost_namespace() BOOST_NOEXCEPT {
-    return in_namespace<T>("boost::");
+    return in_namespace<T>("boost::") || in_namespace<T>("class boost::") || in_namespace<T>("struct boost::");
 }
 
 void constexpr_test() {
