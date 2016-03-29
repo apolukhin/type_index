@@ -12,7 +12,7 @@
 
 init:
     #- set BRANCH_TO_TEST=%APPVEYOR_REPO_BRANCH%
-    - set BRANCH_TO_TEST=constexpr14
+    - set BRANCH_TO_TEST=develop
     - set BOOST_REMOVE=type_index
 
 os: Visual Studio 2015
