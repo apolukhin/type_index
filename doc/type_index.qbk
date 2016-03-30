@@ -268,6 +268,12 @@ Issues with cross module type comparison on a bugged compilers are bypassed by d
 [import ../examples/table_of_names.cpp]
 [section Table of raw_name() and pretty_name() outputs with and without RTTI ] [type_index_names_table] [endsect]
 
+[import ../examples/constexpr14_namespace_check.cpp]
+[section C++14: Checking namespace at compile time ] [type_index_constexpr14_namespace_example] [endsect]
+
+[import ../examples/constexpr14_sort_check.cpp]
+[section C++14: Checking lexigraphical order of provided types ] [type_index_constexpr14_sort_check_example] [endsect]
+
 [endsect]
 
 [xinclude autodoc.xml]

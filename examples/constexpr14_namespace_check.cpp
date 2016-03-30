@@ -17,7 +17,7 @@ constexpr bool starts_with(const char* name, const char (&ns)[N]) noexcept {
     return true;
 }
 
-//[type_index_constexpr14_example
+//[type_index_constexpr14_namespace_example
 /*`
     The following example shows that `boost::typeindex::ctti_type_index` is usable at compile time on
     a C++14 compatible compilers.
@@ -82,7 +82,7 @@ int main() {
     // short sh = 0;
     // s.serialize(sh); // Fails the static_assert!
 }
-//] [/type_index_constexpr14_example]
+//] [/type_index_constexpr14_namespace_example]
 
 #else // #if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR)
 
