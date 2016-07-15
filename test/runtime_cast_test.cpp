@@ -59,13 +59,30 @@ struct multiple_virtual_derived : baseV1, baseV2 {
     IMPLEMENT_CLASS(multiple_virtual_derived)
 };
 
+struct unrelated {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI
+};
+
+struct unrelated_with_base : base {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+};
+
+struct unrelatedV1 : virtual base {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+};
+
 void no_base()
 {
     using namespace boost::typeindex;
     base b;
-    base* b2 = runtime_cast<base>(&b);
+    base* b2 = runtime_pointer_cast<base>(&b);
     BOOST_TEST_NE(b2, (base*)nullptr);
     BOOST_TEST_EQ(b2->name, "base");
+
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&b), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<single_derived>(&b), (single_derived*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelatedV1>(&b), (unrelatedV1*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(&b), (unrelated_with_base*)nullptr);
 }
 
 void single_base()
@@ -73,9 +90,13 @@ void single_base()
     using namespace boost::typeindex;
     single_derived d;
     base* b = &d;
-    single_derived* d2 = runtime_cast<single_derived>(b);
+    single_derived* d2 = runtime_pointer_cast<single_derived>(b);
     BOOST_TEST_NE(d2, (single_derived*)nullptr);
     BOOST_TEST_EQ(d2->name, "single_derived");
+
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)nullptr);
 }
 
 void multiple_base()
@@ -83,13 +104,17 @@ void multiple_base()
     using namespace boost::typeindex;
     multiple_derived d;
     base1* b1 = &d;
-    multiple_derived* d2 = runtime_cast<multiple_derived>(b1);
+    multiple_derived* d2 = runtime_pointer_cast<multiple_derived>(b1);
     BOOST_TEST_NE(d2, (multiple_derived*)nullptr);
     BOOST_TEST_EQ(d2->name, "multiple_derived");
 
-    base2* b2 = runtime_cast<base2>(b1);
+    base2* b2 = runtime_pointer_cast<base2>(b1);
     BOOST_TEST_NE(b2, (base2*)nullptr);
     BOOST_TEST_EQ(b2->name, "base2");
+
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b1), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b1), (unrelated_with_base*)nullptr);
 }
 
 void virtual_base()
@@ -97,9 +122,9 @@ void virtual_base()
     using namespace boost::typeindex;
     multiple_virtual_derived d;
     base* b = &d;
-    multiple_virtual_derived* d2 = runtime_cast<multiple_virtual_derived>(b);
-    baseV1* bv1 = runtime_cast<baseV1>(b);
-    baseV2* bv2 = runtime_cast<baseV2>(b);
+    multiple_virtual_derived* d2 = runtime_pointer_cast<multiple_virtual_derived>(b);
+    baseV1* bv1 = runtime_pointer_cast<baseV1>(b);
+    baseV2* bv2 = runtime_pointer_cast<baseV2>(b);
 
     BOOST_TEST_NE(d2, (multiple_virtual_derived*)nullptr);
     BOOST_TEST_EQ(d2->name, "multiple_virtual_derived");
@@ -109,13 +134,77 @@ void virtual_base()
 
     BOOST_TEST_NE(bv2, (baseV2*)nullptr);
     BOOST_TEST_EQ(bv2->name, "baseV2");
+
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)nullptr);
+}
+
+void pointer_interface()
+{
+    using namespace boost::typeindex;
+    single_derived d;
+    base* b = &d;
+    single_derived* d2 = runtime_cast<single_derived*>(b);
+    BOOST_TEST_NE(d2, (single_derived*)nullptr);
+    BOOST_TEST_EQ(d2->name, "single_derived");
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+}
+
+void reference_interface()
+{
+    using namespace boost::typeindex;
+    single_derived d;
+    base& b = d;
+    single_derived& d2 = runtime_cast<single_derived&>(b);     
+    BOOST_TEST_EQ(d2.name, "single_derived");   
+
+    try {
+        unrelated& u = runtime_cast<unrelated&>(b);
+        (void)u;
+        BOOST_TEST(!"should throw bad_cast");
+    }
+    catch(...) {
+    }
+}
+
+void const_pointer_interface()
+{
+    using namespace boost::typeindex;
+    const single_derived d;
+    base const* b = &d;
+    single_derived const* d2 = runtime_cast<single_derived const*>(b);
+    BOOST_TEST_NE(d2, (single_derived*)nullptr);
+    BOOST_TEST_EQ(d2->name, "single_derived");
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+}
+
+void const_reference_interface()
+{
+    using namespace boost::typeindex;
+    const single_derived d;
+    base const& b = d;
+    single_derived const& d2 = runtime_cast<single_derived const&>(b);     
+    BOOST_TEST_EQ(d2.name, "single_derived");   
+
+    try {
+        unrelated const& u = runtime_cast<unrelated const&>(b);
+        (void)u;
+        BOOST_TEST(!"should throw bad_cast");
+    }
+    catch(...) {
+    }
 }
 
 int main() {
     no_base();
     single_derived();
-	multiple_base();
-	virtual_base();
+    multiple_base();
+    virtual_base();
+    pointer_interface();
+    reference_interface();
+    const_pointer_interface();
+    const_reference_interface();
     return boost::report_errors();
 }
 
