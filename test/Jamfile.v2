@@ -40,6 +40,7 @@ exe testing_crossmodule_anonymous_no_rtti : testing_crossmodule_anonymous.cpp te
 test-suite type_index
   : 
     [ run type_index_test.cpp ]
+    [ run runtime_cast_test.cpp ]
     [ run type_index_constexpr_test.cpp ]
     [ run type_index_test.cpp : : : <rtti>off $(norttidefines) : type_index_test_no_rtti ]
     [ run ctti_print_name.cpp : : : <test-info>always_show_run_output ]
