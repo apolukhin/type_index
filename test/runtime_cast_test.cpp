@@ -114,6 +114,8 @@ void virtual_base()
 int main() {
     no_base();
     single_derived();
+	multiple_base();
+	virtual_base();
     return boost::report_errors();
 }
 

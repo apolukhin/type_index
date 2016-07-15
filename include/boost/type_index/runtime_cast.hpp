@@ -27,64 +27,52 @@ namespace boost { namespace typeindex {
 
 namespace detail {
 
-template<class Desired, class... BaseList>
+template<class Current, class... BaseList>
 struct find_type;
 
-template<class Desired>
-struct find_type<Desired> {
-	void* operator()(Desired* p, type_index const& idx) const BOOST_NOEXCEPT {
-		if(idx == boost::typeindex::type_id<Desired>())        
-			return p;                                               
+template<class Current>
+struct find_type<Current> {
+	template<typename T>
+	void* operator()(T* p, type_index const& idx) const BOOST_NOEXCEPT {
+		if(idx == boost::typeindex::type_id<Current>())        
+			return nullptr;                                               
 		return nullptr;													
 	}
 };
 
-template<class Desired, class... BaseList>
+template<class Current, class... BaseList>
 struct find_type {
 	template<class T>
-	Desired* check_results(T* t) const BOOST_NOEXCEPT {
-		if(t)
-			return static_cast<Desired*>(t);
-		return nullptr;
+	Current* check_current(T* p, type_index const& idx) const BOOST_NOEXCEPT{
+		if(idx == boost::typeindex::type_id<Current>())        
+			return nullptr;                                               
+		return nullptr;	
 	}
 
-	template<class T, class... Rest>
-	Desired* check_results(T* t, Rest... rest) const BOOST_NOEXCEPT	{
-		if(t)
-			return static_cast<Desired*>(t);
-		return check_results(rest...);
+	template<class T, class FirstBase, class... Rest>
+	void* check_bases(T* p, type_index const& idx) const BOOST_NOEXCEPT {
+		if(void* result = p->FirstBase::boost_type_index_find_instance_(idx))
+			return result;                                      
+		return check_bases<T, Rest...>(p, idx);	
 	}
 
 	template<class T>
 	void* operator()(T* p, type_index const& idx) const BOOST_NOEXCEPT {
-		if(auto result = check_results(p->BaseList::boost_type_index_find_instance_(idx)...)) {
-			return result;
-		}
-		else {
-			return find_type<BaseList...>()(p, idx);
-		}
+		if(Current* current = check_current(p, idx))        
+			return p;                                               
+		return check_bases<T, BaseList...>(p, idx);
 	}
 };
 
 template<typename T, typename U>
-T* runtime_cast_impl(U* u, std::true_type) {
-	return u;
-} 
-
-template<typename T, typename U>
-T const* runtime_cast_impl(U const* u, std::true_type) {
-	return u;
-}
-
-template<typename T, typename U>
-T* runtime_cast_impl(U* u, std::false_type) {
+T* runtime_cast_impl(U* u) {
 	return static_cast<T*>(
 		u->boost_type_index_find_instance_(boost::typeindex::type_id<T>())
 	);
 } 
 
 template<typename T, typename U>
-T const* runtime_cast_impl(U const* u, std::false_type) {
+T const* runtime_cast_impl(U const* u) {
 	return static_cast<T const*>(
 		const_cast<U*>(u)->boost_type_index_find_instance_(boost::typeindex::type_id<T>())
 	);
@@ -106,12 +94,12 @@ T const* runtime_cast_impl(U const* u, std::false_type) {
 
 	template<typename T, typename U>
 	T* runtime_cast(U* u) {
-		return detail::runtime_cast_impl<T>(u, std::is_same<T, U>());
+		return detail::runtime_cast_impl<T>(u);
 	} 
 
 	template<typename T, typename U>
 	T const* runtime_cast(U const* u) {
-		return detail::runtime_cast_impl<T>(u, std::is_same<T, U>());
+		return detail::runtime_cast_impl<T>(u);
 	}
 
 }} // namespace boost::typeindex
