@@ -18,7 +18,10 @@
 
 #include <boost/type_index.hpp>
 #include <boost/throw_exception.hpp>
-#include <type_traits>
+#include <boost/type_traits/is_base_and_derived.hpp>
+#include <boost/type_traits/decay.hpp>
+#include <boost/type_traits/remove_pointer.hpp>
+#include <boost/preprocessor/seq/for_each.hpp>
 #include <typeinfo>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
@@ -29,89 +32,72 @@ namespace boost { namespace typeindex {
 
 namespace detail {
 
-template<class Current, class... BaseList>
-struct find_type {
-    template<class T>
-    Current* check_current(T* p, type_index const& idx) const BOOST_NOEXCEPT {
-        if(idx == boost::typeindex::type_id<Current>())        
-            return p;                                               
-        return nullptr; 
-    }
-
-    template<class T>
-    void* check_bases(T* p, type_index const& idx) const BOOST_NOEXCEPT {
-        return nullptr;
-    }
-
-    template<class T, class FirstBase, class... Rest>
-    void* check_bases(T* p, type_index const& idx) const BOOST_NOEXCEPT {
-        if(void* result = p->FirstBase::boost_type_index_find_instance_(idx))
-            return result;                                      
-        return check_bases<T, Rest...>(p, idx); 
-    }
-
-    template<class T>
-    void* operator()(T* p, type_index const& idx) const BOOST_NOEXCEPT {
-        if(Current* current = check_current(p, idx))        
-            return p;                                               
-        return check_bases<T, BaseList...>(p, idx);
-    }
-};
-
 template<typename T, typename U>
-T* runtime_cast_impl(U* u, std::true_type) {
+T* runtime_cast_impl(U* u, boost::true_type) {
     return u;
 } 
 
 template<typename T, typename U>
-T const* runtime_cast_impl(U const* u, std::true_type) {
+T const* runtime_cast_impl(U const* u, boost::true_type) {
     return u;
 }
 
 template<typename T, typename U>
-T* runtime_cast_impl(U* u, std::false_type) {
-    return static_cast<T*>(
+T* runtime_cast_impl(U* u, boost::false_type) {
+    return const_cast<T*>(static_cast<T const*>(
         u->boost_type_index_find_instance_(boost::typeindex::type_id<T>())
-    );
+    ));
 } 
 
 template<typename T, typename U>
-T const* runtime_cast_impl(U const* u, std::false_type) {
-    return static_cast<T const*>(
-        const_cast<U*>(u)->boost_type_index_find_instance_(boost::typeindex::type_id<T>())
-    );
+T const* runtime_cast_impl(U const* u, boost::false_type) {
+    return static_cast<T const*>(u->boost_type_index_find_instance_(boost::typeindex::type_id<T>()));
+}
+
+template<typename T>
+type_index get_type_for_value(T const&) {
+    return type_id<typename boost::decay<T>::type>();
 }
 
 } // namespace detail
 
-#define BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI                                                                \
-    virtual void* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) BOOST_NOEXCEPT { \
-        if(idx == boost::typeindex::type_id<std::decay<decltype(*this)>::type>())                           \
-            return this;                                                                                    \
-        return nullptr;                                                                                     \
+#define BOOST_TYPE_INDEX_CHECK_BASE_(r, data, Base) \
+    if(void const* ret_val = this->Base::boost_type_index_find_instance_(idx)) return ret_val;
+
+#define BOOST_TYPE_INDEX_CHECK_BASES(base_list) \
+    BOOST_PP_SEQ_FOR_EACH(BOOST_TYPE_INDEX_CHECK_BASE_, _, base_list)
+
+#define BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI                                                                              \
+    virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {   \
+        if(idx == boost::typeindex::detail::get_type_for_value(*this))                                                    \
+            return this;                                                                                                  \
+        return NULL;                                                                                                      \
     }                                                                   
 
-#define BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(...)                                                         \
-    virtual void* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) BOOST_NOEXCEPT {     \
-        return boost::typeindex::detail::find_type<std::decay<decltype(*this)>::type, __VA_ARGS__>()(this, idx);\
+#define BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base_list)                                                             \
+    virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {   \
+        if(idx == boost::typeindex::detail::get_type_for_value(*this))                                                    \
+            return this;                                                                                                  \
+         BOOST_TYPE_INDEX_CHECK_BASES(base_list)                                                                          \
+         return NULL;                                                                                                     \
     }  
 
     template<typename T, typename U>
     T runtime_cast(U* u) BOOST_NOEXCEPT {
-        typedef typename std::remove_pointer<T>::type impl_type;
-        return detail::runtime_cast_impl<impl_type>(u, std::is_same<T, U>());
+        typedef typename boost::remove_pointer<T>::type impl_type;
+        return detail::runtime_cast_impl<impl_type>(u, boost::is_base_and_derived<T, U>());
     } 
 
     template<typename T, typename U>
     T runtime_cast(U const* u) BOOST_NOEXCEPT {
-        typedef typename std::remove_pointer<T>::type impl_type;
-        return detail::runtime_cast_impl<impl_type>(u, std::is_same<T, U>());
+        typedef typename boost::remove_pointer<T>::type impl_type;
+        return detail::runtime_cast_impl<impl_type>(u, boost::is_base_and_derived<T, U>());
     }
 
     template<typename T, typename U>
     T runtime_cast(U& u) {
-        typedef typename std::remove_reference<T>::type impl_type;
-        impl_type* value = detail::runtime_cast_impl<impl_type>(&u, std::is_same<T, U>());
+        typedef typename boost::remove_reference<T>::type impl_type;
+        impl_type* value = detail::runtime_cast_impl<impl_type>(&u, boost::is_base_and_derived<T, U>());
         if(!value)
             boost::throw_exception(std::bad_cast());
         return *value;
@@ -119,8 +105,8 @@ T const* runtime_cast_impl(U const* u, std::false_type) {
 
     template<typename T, typename U>
     T runtime_cast(U const& u) {
-        typedef typename std::remove_reference<T>::type impl_type;
-        impl_type* value = detail::runtime_cast_impl<impl_type>(&u, std::is_same<T, U>());
+        typedef typename boost::remove_reference<T>::type impl_type;
+        impl_type* value = detail::runtime_cast_impl<impl_type>(&u, boost::is_base_and_derived<T, U>());
         if(!value)
             boost::throw_exception(std::bad_cast());
         return *value;
@@ -128,12 +114,12 @@ T const* runtime_cast_impl(U const* u, std::false_type) {
 
     template<typename T, typename U>
     T* runtime_pointer_cast(U* u) BOOST_NOEXCEPT {
-        return detail::runtime_cast_impl<T>(u, std::is_same<T, U>());
+        return detail::runtime_cast_impl<T>(u, boost::is_base_and_derived<T, U>());
     } 
 
     template<typename T, typename U>
     T const* runtime_pointer_cast(U const* u) BOOST_NOEXCEPT {
-        return detail::runtime_cast_impl<T>(u, std::is_same<T, U>());
+        return detail::runtime_cast_impl<T>(u, boost::is_base_and_derived<T, U>());
     }
 
 }} // namespace boost::typeindex

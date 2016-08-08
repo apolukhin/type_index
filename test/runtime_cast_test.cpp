@@ -25,7 +25,7 @@ struct base {
 };
 
 struct single_derived : base {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
     IMPLEMENT_CLASS(single_derived)
 };
 
@@ -40,35 +40,53 @@ struct base2 {
 };
 
 struct multiple_derived : base1, base2 {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base1, base2)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base1)(base2))
     IMPLEMENT_CLASS(multiple_derived)
 };
 
 struct baseV1 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
     IMPLEMENT_CLASS(baseV1)
 };
 
 struct baseV2 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
     IMPLEMENT_CLASS(baseV2)
 };
 
 struct multiple_virtual_derived : baseV1, baseV2 {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(baseV1, baseV2)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((baseV1)(baseV2))
     IMPLEMENT_CLASS(multiple_virtual_derived)
 };
 
 struct unrelated {
     BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI
+    IMPLEMENT_CLASS(unrelated)
 };
 
 struct unrelated_with_base : base {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
+    IMPLEMENT_CLASS(unrelated_with_base)
 };
 
 struct unrelatedV1 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES(base)
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
+    IMPLEMENT_CLASS(unrelatedV1)
+};
+
+struct level1_a : base {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
+    IMPLEMENT_CLASS(level1_a)
+};
+
+struct level1_b : base {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((base))
+    IMPLEMENT_CLASS(level1_b)
+};
+
+struct level2 : level1_a, level1_b {
+    BOOST_TYPE_INDEX_REGISTER_CLASS_RTTI_BASES((level1_a)(level1_b))
+    IMPLEMENT_CLASS(level2)
 };
 
 void no_base()
@@ -196,6 +214,16 @@ void const_reference_interface()
     }
 }
 
+void diamond_non_virtual()
+{
+    using namespace boost::typeindex;
+    level2 inst;
+    level1_a* l1a = &inst;
+    base* b1 = l1a;
+    level1_b* l1_b = runtime_cast<level1_b*>(b1);
+    BOOST_TEST_NE(l1_b, (level1_b*)nullptr);
+}
+
 int main() {
     no_base();
     single_derived();
@@ -205,6 +233,7 @@ int main() {
     reference_interface();
     const_pointer_interface();
     const_reference_interface();
+    diamond_non_virtual();
     return boost::report_errors();
 }
 
