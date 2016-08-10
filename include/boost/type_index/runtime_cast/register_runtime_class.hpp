@@ -37,22 +37,12 @@ inline type_index runtime_class_construct_type_id(T const*) {
 #define BOOST_TYPE_INDEX_CHECK_BASE_(r, data, Base) \
     if(void const* ret_val = this->Base::boost_type_index_find_instance_(idx)) return ret_val;
 
-#define BOOST_TYPE_INDEX_CHECK_BASES(base_list) \
-    BOOST_PP_SEQ_FOR_EACH(BOOST_TYPE_INDEX_CHECK_BASE_, _, base_list)
-
-#define BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS                                                                           \
-    virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {   \
-        if(idx == boost::typeindex::detail::runtime_class_construct_type_id(this))                                        \
-            return this;                                                                                                  \
-        return NULL;                                                                                                      \
-    }                                                                   
-
-#define BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS_BASES(base_list)                                                          \
-    virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {   \
-        if(idx == boost::typeindex::detail::runtime_class_construct_type_id(this))                                        \
-            return this;                                                                                                  \
-         BOOST_TYPE_INDEX_CHECK_BASES(base_list)                                                                          \
-         return NULL;                                                                                                     \
+#define BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(base_list)                                                               \
+    virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {  \
+        if(idx == boost::typeindex::detail::runtime_class_construct_type_id(this))                                       \
+            return this;                                                                                                 \
+         BOOST_PP_SEQ_FOR_EACH(BOOST_TYPE_INDEX_CHECK_BASE_, _, base_list)                                               \
+         return NULL;                                                                                                    \
     }  
 }} // namespace boost::typeindex
 
