@@ -261,6 +261,8 @@ int main() {
     const_pointer_interface();
     const_reference_interface();
     diamond_non_virtual();
+    boost_shared_ptr();
+    std_shared_ptr();
     return boost::report_errors();
 }
 
