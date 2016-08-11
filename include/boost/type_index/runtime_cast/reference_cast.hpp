@@ -6,8 +6,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef BOOST_TYPE_INDEX_RUNTIME_REFERENCE_CAST_HPP
-#define BOOST_TYPE_INDEX_RUNTIME_REFERENCE_CAST_HPP
+#ifndef BOOST_TYPE_INDEX_RUNTIME_CAST_REFERENCE_CAST_HPP
+#define BOOST_TYPE_INDEX_RUNTIME_CAST_REFERENCE_CAST_HPP
 
 /// \file reference_cast.hpp
 /// \brief Contains the overload of boost::typeindex::runtime_cast for
@@ -25,6 +25,11 @@
 
 namespace boost { namespace typeindex {
 
+/// \brief Safely converts references to classes up, down, and sideways along the inheritance hierarchy.
+/// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
+/// \tparam U A complete class type of the source instance, u.
+/// \return If there exists a valid conversion from U& to T, returns a T that references an address 
+/// suitably offset from u. If no such conversion exists, throws std::bad_cast()
 template<typename T, typename U>
 T& runtime_cast(U& u) {
     typedef typename boost::remove_reference<T>::type impl_type;
@@ -34,6 +39,11 @@ T& runtime_cast(U& u) {
     return *value;
 } 
 
+/// \brief Safely converts references to classes up, down, and sideways along the inheritance hierarchy.
+/// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
+/// \tparam U A complete class type of the source instance, u.
+/// \return If there exists a valid conversion from U const& to T const, returns a T const that references an address 
+/// suitably offset from u. If no such conversion exists, throws std::bad_cast()
 template<typename T, typename U>
 T const& runtime_cast(U const& u) {
     typedef typename boost::remove_reference<T>::type impl_type;
@@ -45,4 +55,4 @@ T const& runtime_cast(U const& u) {
 
 }} // namespace boost::typeindex
 
-#endif // BOOST_TYPE_INDEX_RUNTIME_REFERENCE_CAST_HPP
+#endif // BOOST_TYPE_INDEX_RUNTIME_CAST_REFERENCE_CAST_HPP

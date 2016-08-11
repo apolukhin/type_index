@@ -12,6 +12,10 @@
 /// \file runtime_cast.hpp
 /// \brief Contains the basic utilities necessary to fully emulate
 /// dynamic_cast for language level constructs (raw pointers and references).
+///
+/// boost::typeindex::runtime_cast is a drop in replacement for dynamic_cast
+/// that can be used in situations where traditional rtti is either unavailable
+/// or undesirable.
 
 #include <boost/type_index/runtime_cast/register_runtime_class.hpp>
 #include <boost/type_index/runtime_cast/pointer_cast.hpp>

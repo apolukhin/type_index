@@ -246,6 +246,10 @@ Depending on the `typeid()` availability TypeIndex library will choose an optima
 [macroref BOOST_TYPE_INDEX_REGISTER_CLASS] macro is a helper macro that places some virtual helper functions or
 expands to nothing.
 
+[macroref BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS] macro is a helper macro that places the same 
+helpers as BOOST_TYPE_INDEX_REGISTER_CLASS plus some additional helpers for boost::typeindex::runtime_cast
+to function.
+
 Issues with cross module type comparison on a bugged compilers are bypassed by directly comparing strings with type 
 (latest versions of those compilers resolved that issue using exactly the same approach).
 
@@ -261,6 +265,9 @@ Issues with cross module type comparison on a bugged compilers are bypassed by d
 
 [import ../examples/inheritance.cpp]
 [section Getting through the inheritance to receive a real type name ] [type_index_derived_example] [endsect]
+
+[import ../examples/runtime_cast.cpp]
+[section Using runtime_cast where RTTI is unavailable or undesirable ] [type_index_runtime_cast_example] [endsect]
 
 [import ../examples/exact_types_match.cpp]
 [section Exact type matching: storing type with const, volatile and reference qualifiers] [type_index_exact_type_match_example] [endsect]
