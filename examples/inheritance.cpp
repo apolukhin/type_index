@@ -13,6 +13,7 @@
 */
 
 #include <boost/type_index.hpp>
+#include <boost/type_index/runtime_cast/register_runtime_class.hpp>
 #include <iostream>
 
 struct A {
@@ -37,9 +38,9 @@ int main() {
     It's also possible to use type_id_runtime with the BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS, which adds additional
     information for runtime_cast to work.
 */
-    D c;
+    D d;
     const A& d_as_a = d;
-    print_real_type(dc_as_a);    // Outputs `struct D`
+    print_real_type(d_as_a);    // Outputs `struct D`
 
 }
 
