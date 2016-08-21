@@ -45,32 +45,44 @@ int main() {
     C c;
     A* a = &c;
 
-    if(C* cp = boost::typeindex::runtime_cast<C*>(a))
-        std::cout << "Yes, a points to a C." << '\n';
-    else
+    if(C* cp = boost::typeindex::runtime_cast<C*>(a)) {
+        std::cout << "Yes, a points to a C: " 
+                  << a << "->" << cp << '\n';
+    }
+    else {
         std::cout << "Error: Expected a to point to a C" << '\n';
+    }
 
-    if(E* ce = boost::typeindex::runtime_cast<E*>(a))
-        std::cout << "Error: Expected a to not points to an E." << '\n';
-    else
+    if(E* ce = boost::typeindex::runtime_cast<E*>(a)) {
+        std::cout << "Error: Expected a to not points to an E: " 
+                  << a << "->" << ce << '\n';
+    }
+    else {
         std::cout << "But, a does not point to an E" << '\n';
+    }
 
     E e;
-    C* cp = &e;
-    if(D* dp = boost::typeindex::runtime_cast<D*>(cp))
-        std::cout << "Yes, we can cross-cast from a C* to a D* when we actually have an E." << '\n';
-    else
+    C* cp2 = &e;
+    if(D* dp = boost::typeindex::runtime_cast<D*>(cp2)) {
+        std::cout << "Yes, we can cross-cast from a C* to a D* when we actually have an E: " 
+                  << cp2 << "->" << dp << '\n';
+    }
+    else {
         std::cout << "Error: Expected cp to point to a D" << '\n';
+    }
 
 /*`
     Alternatively, we can use runtime_pointer_cast so we don't need to specity the target as a pointer.
     This works for smart_ptr types too.
 */
     A* ap = &e;
-    if(B* bp = boost::typeindex::runtime_pointer_cast<B>(ap))
-        std::cout << "Yes, we can cross-cast and up-cast at the same time." << '\n';
-    else
+    if(B* bp = boost::typeindex::runtime_pointer_cast<B>(ap)) {
+        std::cout << "Yes, we can cross-cast and up-cast at the same time."
+                  << ap << "->" << bp << '\n';
+    }
+    else {
         std::cout << "Error: Expected ap to point to a B" << '\n';
+    }
 
     return 0;
 }

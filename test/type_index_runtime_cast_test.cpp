@@ -100,13 +100,13 @@ void no_base()
     using namespace boost::typeindex;
     base b;
     base* b2 = runtime_pointer_cast<base>(&b);
-    BOOST_TEST_NE(b2, (base*)nullptr);
+    BOOST_TEST_NE(b2, (base*)NULL);
     BOOST_TEST_EQ(b2->name, "base");
 
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&b), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<single_derived>(&b), (single_derived*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelatedV1>(&b), (unrelatedV1*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(&b), (unrelated_with_base*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&b), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<single_derived>(&b), (single_derived*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelatedV1>(&b), (unrelatedV1*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(&b), (unrelated_with_base*)NULL);
 }
 
 void single_base()
@@ -115,12 +115,12 @@ void single_base()
     single_derived d;
     base* b = &d;
     single_derived* d2 = runtime_pointer_cast<single_derived>(b);
-    BOOST_TEST_NE(d2, (single_derived*)nullptr);
+    BOOST_TEST_NE(d2, (single_derived*)NULL);
     BOOST_TEST_EQ(d2->name, "single_derived");
 
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)NULL);
 }
 
 void multiple_base()
@@ -129,16 +129,16 @@ void multiple_base()
     multiple_derived d;
     base1* b1 = &d;
     multiple_derived* d2 = runtime_pointer_cast<multiple_derived>(b1);
-    BOOST_TEST_NE(d2, (multiple_derived*)nullptr);
+    BOOST_TEST_NE(d2, (multiple_derived*)NULL);
     BOOST_TEST_EQ(d2->name, "multiple_derived");
 
     base2* b2 = runtime_pointer_cast<base2>(b1);
-    BOOST_TEST_NE(b2, (base2*)nullptr);
+    BOOST_TEST_NE(b2, (base2*)NULL);
     BOOST_TEST_EQ(b2->name, "base2");
 
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b1), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b1), (unrelated_with_base*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b1), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b1), (unrelated_with_base*)NULL);
 }
 
 void virtual_base()
@@ -150,18 +150,18 @@ void virtual_base()
     baseV1* bv1 = runtime_pointer_cast<baseV1>(b);
     baseV2* bv2 = runtime_pointer_cast<baseV2>(b);
 
-    BOOST_TEST_NE(d2, (multiple_virtual_derived*)nullptr);
+    BOOST_TEST_NE(d2, (multiple_virtual_derived*)NULL);
     BOOST_TEST_EQ(d2->name, "multiple_virtual_derived");
 
-    BOOST_TEST_NE(bv1, (baseV1*)nullptr);
+    BOOST_TEST_NE(bv1, (baseV1*)NULL);
     BOOST_TEST_EQ(bv1->name, "baseV1");
 
-    BOOST_TEST_NE(bv2, (baseV2*)nullptr);
+    BOOST_TEST_NE(bv2, (baseV2*)NULL);
     BOOST_TEST_EQ(bv2->name, "baseV2");
 
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)nullptr);
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(&d), (unrelated*)NULL);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated_with_base>(b), (unrelated_with_base*)NULL);
 }
 
 void pointer_interface()
@@ -170,9 +170,9 @@ void pointer_interface()
     single_derived d;
     base* b = &d;
     single_derived* d2 = runtime_cast<single_derived*>(b);
-    BOOST_TEST_NE(d2, (single_derived*)nullptr);
+    BOOST_TEST_NE(d2, (single_derived*)NULL);
     BOOST_TEST_EQ(d2->name, "single_derived");
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)NULL);
 }
 
 void reference_interface()
@@ -186,9 +186,12 @@ void reference_interface()
     try {
         unrelated& u = runtime_cast<unrelated&>(b);
         (void)u;
-        BOOST_TEST(!"should throw bad_cast");
+        BOOST_TEST(!"should throw bad_runtime_cast");
+    }
+    catch(boost::typeindex::bad_runtime_cast&) {
     }
     catch(...) {
+        BOOST_TEST(!"should throw bad_runtime_cast");
     }
 }
 
@@ -198,9 +201,9 @@ void const_pointer_interface()
     const single_derived d;
     base const* b = &d;
     single_derived const* d2 = runtime_cast<single_derived const*>(b);
-    BOOST_TEST_NE(d2, (single_derived*)nullptr);
+    BOOST_TEST_NE(d2, (single_derived*)NULL);
     BOOST_TEST_EQ(d2->name, "single_derived");
-    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)nullptr);
+    BOOST_TEST_EQ(runtime_pointer_cast<unrelated>(b), (unrelated*)NULL);
 }
 
 void const_reference_interface()
@@ -214,9 +217,12 @@ void const_reference_interface()
     try {
         unrelated const& u = runtime_cast<unrelated const&>(b);
         (void)u;
-        BOOST_TEST(!"should throw bad_cast");
+        BOOST_TEST(!"should throw bad_runtime_cast");
+    }
+    catch(boost::typeindex::bad_runtime_cast&) {
     }
     catch(...) {
+        BOOST_TEST(!"should throw bad_runtime_cast");
     }
 }
 
@@ -228,7 +234,7 @@ void diamond_non_virtual()
     base* b1 = l1a;
     level1_b* l1_b = runtime_cast<level1_b*>(b1);
     BOOST_TEST_EQ(l1_b->name, "level1_b");   
-    BOOST_TEST_NE(l1_b, (level1_b*)nullptr);
+    BOOST_TEST_NE(l1_b, (level1_b*)NULL);
 }
 
 void boost_shared_ptr()
