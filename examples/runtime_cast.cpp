@@ -29,11 +29,11 @@ struct B {
     {}
 };
 
-struct C : A { 
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((A)) 
+struct C : A {
+    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((A))
 };
 
-struct D : B { 
+struct D : B {
     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((B))
 };
 
@@ -46,7 +46,7 @@ int main() {
     A* a = &c;
 
     if(C* cp = boost::typeindex::runtime_cast<C*>(a)) {
-        std::cout << "Yes, a points to a C: " 
+        std::cout << "Yes, a points to a C: "
                   << a << "->" << cp << '\n';
     }
     else {
@@ -54,7 +54,7 @@ int main() {
     }
 
     if(E* ce = boost::typeindex::runtime_cast<E*>(a)) {
-        std::cout << "Error: Expected a to not points to an E: " 
+        std::cout << "Error: Expected a to not points to an E: "
                   << a << "->" << ce << '\n';
     }
     else {
@@ -64,7 +64,7 @@ int main() {
     E e;
     C* cp2 = &e;
     if(D* dp = boost::typeindex::runtime_cast<D*>(cp2)) {
-        std::cout << "Yes, we can cross-cast from a C* to a D* when we actually have an E: " 
+        std::cout << "Yes, we can cross-cast from a C* to a D* when we actually have an E: "
                   << cp2 << "->" << dp << '\n';
     }
     else {

@@ -180,8 +180,8 @@ void reference_interface()
     using namespace boost::typeindex;
     single_derived d;
     base& b = d;
-    single_derived& d2 = runtime_cast<single_derived&>(b);     
-    BOOST_TEST_EQ(d2.name, "single_derived");   
+    single_derived& d2 = runtime_cast<single_derived&>(b);
+    BOOST_TEST_EQ(d2.name, "single_derived");
 
     try {
         unrelated& u = runtime_cast<unrelated&>(b);
@@ -211,8 +211,8 @@ void const_reference_interface()
     using namespace boost::typeindex;
     const single_derived d;
     base const& b = d;
-    single_derived const& d2 = runtime_cast<single_derived const&>(b);     
-    BOOST_TEST_EQ(d2.name, "single_derived");   
+    single_derived const& d2 = runtime_cast<single_derived const&>(b);
+    BOOST_TEST_EQ(d2.name, "single_derived");
 
     try {
         unrelated const& u = runtime_cast<unrelated const&>(b);
@@ -233,7 +233,7 @@ void diamond_non_virtual()
     level1_a* l1a = &inst;
     base* b1 = l1a;
     level1_b* l1_b = runtime_cast<level1_b*>(b1);
-    BOOST_TEST_EQ(l1_b->name, "level1_b");   
+    BOOST_TEST_EQ(l1_b->name, "level1_b");
     BOOST_TEST_NE(l1_b, (level1_b*)NULL);
 }
 
@@ -271,4 +271,3 @@ int main() {
     std_shared_ptr();
     return boost::report_errors();
 }
-

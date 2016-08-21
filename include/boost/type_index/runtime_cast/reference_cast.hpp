@@ -33,7 +33,7 @@ struct bad_runtime_cast : std::exception
 /// \brief Safely converts references to classes up, down, and sideways along the inheritance hierarchy.
 /// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
 /// \tparam U A complete class type of the source instance, u.
-/// \return If there exists a valid conversion from U& to T, returns a T that references an address 
+/// \return If there exists a valid conversion from U& to T, returns a T that references an address
 /// suitably offset from u. If no such conversion exists, throws boost::typeindex::bad_runtime_cast.
 template<typename T, typename U>
 T& runtime_cast(U& u) {
@@ -43,12 +43,12 @@ T& runtime_cast(U& u) {
     if(!value)
         BOOST_THROW_EXCEPTION(bad_runtime_cast());
     return *value;
-} 
+}
 
 /// \brief Safely converts references to classes up, down, and sideways along the inheritance hierarchy.
 /// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
 /// \tparam U A complete class type of the source instance, u.
-/// \return If there exists a valid conversion from U const& to T const, returns a T const that references an address 
+/// \return If there exists a valid conversion from U const& to T const, returns a T const that references an address
 /// suitably offset from u. If no such conversion exists, throws boost::typeindex::bad_runtime_cast.
 template<typename T, typename U>
 T const& runtime_cast(U const& u) {

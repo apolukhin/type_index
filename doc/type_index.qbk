@@ -246,7 +246,7 @@ Depending on the `typeid()` availability TypeIndex library will choose an optima
 [macroref BOOST_TYPE_INDEX_REGISTER_CLASS] macro is a helper macro that places some virtual helper functions or
 expands to nothing.
 
-[macroref BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS] macro is a helper macro that places the same 
+[macroref BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS] macro is a helper macro that places the same
 helpers as BOOST_TYPE_INDEX_REGISTER_CLASS plus some additional helpers for boost::typeindex::runtime_cast
 to function.
 
