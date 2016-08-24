@@ -285,6 +285,27 @@ struct ctti {
 #endif
 };
 
+#if !defined(BOOST_NO_CXX14_CONSTEXPR)
+template<typename T, typename U>
+constexpr bool operator==(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) == 0;}
+
+template<typename T, typename U>
+constexpr bool operator!=(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) != 0;}
+
+template<typename T, typename U>
+constexpr bool operator> (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) < 0;}
+
+template<typename T, typename U>
+constexpr bool operator< (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) > 0;}
+
+template<typename T, typename U>
+constexpr bool operator>=(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) >= 0;}
+
+template<typename T, typename U>
+constexpr bool operator<=(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) <= 0;}
+
+#endif
+
 }} // namespace boost::detail
 
 #endif // BOOST_TYPE_INDEX_DETAIL_COMPILE_TIME_TYPE_INFO_HPP
