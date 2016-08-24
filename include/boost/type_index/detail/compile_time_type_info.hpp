@@ -293,10 +293,10 @@ template<typename T, typename U>
 constexpr bool operator!=(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) != 0;}
 
 template<typename T, typename U>
-constexpr bool operator> (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) < 0;}
+constexpr bool operator> (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) > 0;}
 
 template<typename T, typename U>
-constexpr bool operator< (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) > 0;}
+constexpr bool operator< (ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) < 0;}
 
 template<typename T, typename U>
 constexpr bool operator>=(ctti<T>, ctti<U>) {return ::boost::typeindex::detail::constexpr_strcmp(ctti<T>::n(), ctti<U>::n()) >= 0;}
