@@ -55,7 +55,7 @@
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof(">::n()") - 1
     // note: checked on 3.0
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 6, false, "")
-#elif defined(__clang__) && __clang_major__ == 3 && __clang_minor__ > 0
+#elif defined(__clang__) && (__clang_major__ >= 4 || (__clang_major__ == 3 && __clang_minor__ > 0))
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "int>::n() [T = int"
     // note: checked on 3.1, 3.4
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
