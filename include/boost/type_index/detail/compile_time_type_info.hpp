@@ -63,7 +63,7 @@
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(87, 1, false, "")
 #elif defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR) && (__GNUC__ >= 6)
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
-    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(81, 1, false, "]")
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(93, 1, false, "]")
 #elif defined(__GNUC__) && defined(BOOST_NO_CXX14_CONSTEXPR) && (__GNUC__ < 6)
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "")
