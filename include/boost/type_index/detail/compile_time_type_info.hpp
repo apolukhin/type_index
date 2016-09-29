@@ -32,7 +32,6 @@
     /**/
 /// @endcond
 
-
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
     /* Nothing to document. All the macro docs are moved to <boost/type_index.hpp> */
 #elif defined(BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING)
@@ -59,10 +58,13 @@
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "int>::n() [T = int"
     // note: checked on 3.1, 3.4
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
-#elif defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
+#elif defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR) && (__GNUC__ < 6)
     // sizeof("static contexpr char boost::detail::ctti<T>::s() [with long unsigned int I = 0ul; T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(87, 1, false, "")
-#elif defined(__GNUC__) && defined(BOOST_NO_CXX14_CONSTEXPR)
+#elif defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR) && (__GNUC__ >= 6)
+    // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(93, 1, false, "]")
+#elif defined(__GNUC__) && defined(BOOST_NO_CXX14_CONSTEXPR) && (__GNUC__ < 6)
     // sizeof("static const char* boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "")
 #else
