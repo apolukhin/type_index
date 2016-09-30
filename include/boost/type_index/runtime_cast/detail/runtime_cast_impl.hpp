@@ -9,7 +9,7 @@
 #ifndef BOOST_TYPE_INDEX_RUNTIME_CAST_DETAIL_RUNTIME_CAST_IMPL_HPP
 #define BOOST_TYPE_INDEX_RUNTIME_CAST_DETAIL_RUNTIME_CAST_IMPL_HPP
 
-/// \file pointer_class.hpp
+/// \file runtime_cast_impl.hpp
 /// \brief Contains the overload of boost::typeindex::runtime_cast for
 /// pointer types.
 ///
