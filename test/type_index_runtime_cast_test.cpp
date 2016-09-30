@@ -233,8 +233,8 @@ void diamond_non_virtual()
     level1_a* l1a = &inst;
     base* b1 = l1a;
     level1_b* l1_b = runtime_cast<level1_b*>(b1);
-    BOOST_TEST_EQ(l1_b->name, "level1_b");
     BOOST_TEST_NE(l1_b, (level1_b*)NULL);
+    BOOST_TEST_EQ(l1_b->name, "level1_b");
 }
 
 void boost_shared_ptr()
