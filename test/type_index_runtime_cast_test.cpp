@@ -233,8 +233,8 @@ void diamond_non_virtual()
     level1_a* l1a = &inst;
     base* b1 = l1a;
     level1_b* l1_b = runtime_cast<level1_b*>(b1);
-    BOOST_TEST_EQ(l1_b->name, "level1_b");
     BOOST_TEST_NE(l1_b, (level1_b*)NULL);
+    BOOST_TEST_EQ(l1_b->name, "level1_b");
 }
 
 void boost_shared_ptr()
@@ -249,12 +249,14 @@ void boost_shared_ptr()
 
 void std_shared_ptr()
 {
+#if defined(__cplusplus) && (__cplusplus >= 201103L)
     using namespace boost::typeindex;
     std::shared_ptr<single_derived> d = std::make_shared<single_derived>();
     std::shared_ptr<base> b = d;
     std::shared_ptr<single_derived> d2 = runtime_pointer_cast<single_derived>(b);
     BOOST_TEST_NE(d2, std::shared_ptr<single_derived>());
     BOOST_TEST_EQ(d2->name, "single_derived");
+#endif
 }
 
 int main() {
