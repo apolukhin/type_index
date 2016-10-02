@@ -9,12 +9,14 @@
 // #include <boost/type_index/runtime_reference_cast.hpp>
 
 #include <boost/type_index/runtime_cast.hpp>
-#include <boost/type_index/runtime_cast/std_shared_ptr_cast.hpp>
 #include <boost/type_index/runtime_cast/boost_shared_ptr_cast.hpp>
 #include <boost/smart_ptr/make_shared.hpp>
 
 #include <boost/core/lightweight_test.hpp>
 
+#if !defined(BOOST_NO_CXX11_SMART_PTR)
+#  include <boost/type_index/runtime_cast/std_shared_ptr_cast.hpp>
+#endif
 
 // Classes include a member variable "name" with the
 // name of the class hard coded so we can be sure that
@@ -249,7 +251,7 @@ void boost_shared_ptr()
 
 void std_shared_ptr()
 {
-#if defined(__cplusplus) && (__cplusplus >= 201103L)
+#if !defined(BOOST_NO_CXX11_SMART_PTR)
     using namespace boost::typeindex;
     std::shared_ptr<single_derived> d = std::make_shared<single_derived>();
     std::shared_ptr<base> b = d;
