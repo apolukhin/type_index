@@ -7,7 +7,6 @@
 
 #include <boost/type_index.hpp>
 
-#include <boost/functional/hash.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <boost/core/lightweight_test.hpp>

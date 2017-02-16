@@ -41,7 +41,7 @@
 #include <boost/mpl/or.hpp>
 
 #if !((defined(_MSC_VER) && _MSC_VER > 1600) || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__)))
-#   include <boost/functional/hash/hash.hpp>
+#   include <boost/functional/hash.hpp>
 #endif
 
 #if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
