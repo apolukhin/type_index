@@ -28,73 +28,81 @@
         std::string name;
 
 struct base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
     IMPLEMENT_CLASS(base)
 };
 
 struct single_derived : base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(single_derived)
 };
 
 struct base1 {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
     IMPLEMENT_CLASS(base1)
 };
 
 struct base2 {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
     IMPLEMENT_CLASS(base2)
 };
 
 struct multiple_derived : base1, base2 {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base1)(base2))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base1)(base2))
     IMPLEMENT_CLASS(multiple_derived)
 };
 
 struct baseV1 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(baseV1)
 };
 
 struct baseV2 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(baseV2)
 };
 
 struct multiple_virtual_derived : baseV1, baseV2 {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((baseV1)(baseV2))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((baseV1)(baseV2))
     IMPLEMENT_CLASS(multiple_virtual_derived)
 };
 
 struct unrelated {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
     IMPLEMENT_CLASS(unrelated)
 };
 
 struct unrelated_with_base : base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(unrelated_with_base)
 };
 
 struct unrelatedV1 : virtual base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(unrelatedV1)
 };
 
 struct level1_a : base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(level1_a)
 };
 
 struct level1_b : base {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((base))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((base))
     IMPLEMENT_CLASS(level1_b)
 };
 
 struct level2 : level1_a, level1_b {
-    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((level1_a)(level1_b))
+    BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST((level1_a)(level1_b))
     IMPLEMENT_CLASS(level2)
+};
+
+struct reg_base {
+    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+};
+
+struct reg_derived : reg_base {
+    BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS((reg_base))
 };
 
 void no_base()
@@ -261,6 +269,16 @@ void std_shared_ptr()
 #endif
 }
 
+void register_runtime_class()
+{
+    using namespace boost::typeindex;
+    reg_derived rd;
+    reg_base* rb = &rd;
+    reg_derived* prd = runtime_pointer_cast<reg_derived>(rb);
+    BOOST_TEST_NE(prd, (reg_derived*)NULL);
+    BOOST_TEST_EQ(type_id_runtime(*prd), type_id<reg_derived>());
+}
+
 int main() {
     no_base();
     single_derived();
@@ -273,5 +291,6 @@ int main() {
     diamond_non_virtual();
     boost_shared_ptr();
     std_shared_ptr();
+    register_runtime_class();
     return boost::report_errors();
 }
