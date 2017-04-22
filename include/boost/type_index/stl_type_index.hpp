@@ -40,6 +40,10 @@
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/or.hpp>
 
+#if !(_MSC_VER > 1600 || (__GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__)))
+#   include <boost/functional/hash/hash.hpp>
+#endif
+
 #if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
 #   include <boost/type_traits/is_signed.hpp>
