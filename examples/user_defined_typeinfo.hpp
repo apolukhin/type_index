@@ -70,7 +70,15 @@ namespace my_namespace { namespace detail {
     `my_type_index` is a user created type_index class. If in doubt during this phase, you can always
     take a look at the `<boost/type_index/ctti_type_index.hpp>` or `<boost/type_index/stl_type_index.hpp>`
     files. Documentation for `type_index_facade` could be also useful.
+*/
 
+/*`
+    Since we are not going to override `type_index_facade::hash_code()` we must additionally include
+    `<boost/functional/hash.hpp>`.
+*/
+#include <boost/functional/hash.hpp>
+
+/*`
     See implementation of `my_type_index`:
 */
 namespace my_namespace {
