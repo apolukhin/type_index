@@ -1,4 +1,4 @@
-#[Boost.TypeIndex](http://boost.org/libs/type_index)
+# [Boost.TypeIndex](http://boost.org/libs/type_index)
 Boost.TypeIndex is a part of the [Boost C++ Libraries](http://github.com/boostorg). It is a runtime/compile time copyable type info.
 
 ### Test results
