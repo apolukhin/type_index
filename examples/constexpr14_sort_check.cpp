@@ -55,7 +55,7 @@ constexpr bool is_asc_sorted(types<Lhs, Rhs, TN...>) noexcept {
 
 // Using the newly created `is_asc_sorted` trait:
 template <class... T>
-void do_something(const types<T...>& t) noexcept {
+void do_something(const types<T...>& /*value*/) noexcept {
     static_assert(
         is_asc_sorted( types<T...>() ),
         "T... for do_something(const types<T...>& t) must be sorted ascending"
