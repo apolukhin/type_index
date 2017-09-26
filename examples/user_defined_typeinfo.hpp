@@ -47,10 +47,19 @@ namespace my_namespace { namespace detail {
     template <> struct typenum<my_classes>{ enum {value = 3}; };
     template <> struct typenum<my_string>{  enum {value = 4}; };
 
+#ifdef BOOST_MSVC
+#pragma warning(push)
+#pragma warning(disable: 4510 4512 4610) // non-copyable non-constructable type
+#endif
+
     // my_typeinfo structure is used to save type number
     struct my_typeinfo {
         const char* const type_;
     };
+
+#ifdef BOOST_MSVC
+#pragma warning(pop)
+#endif
 
     const my_typeinfo infos[5] = {
         {"void"}, {"my_class"}, {"my_struct"}, {"my_classes"}, {"my_string"}
