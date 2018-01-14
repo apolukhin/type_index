@@ -46,7 +46,7 @@ test-suite type_index
     [ run ctti_print_name.cpp : : : <test-info>always_show_run_output ]
     [ run testing_crossmodule.cpp test_lib_rtti ]
     [ run testing_crossmodule.cpp test_lib_nortti : : : <rtti>off $(norttidefines) : testing_crossmodule_no_rtti ]
-    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti ]
+    [ run testing_crossmodule_anonymous.cpp test_lib_anonymous_rtti : : : <test-info>always_show_run_output ]
     [ run compare_ctti_stl.cpp ]
 
     [ compile-fail type_index_test_ctti_copy_fail.cpp ]
