@@ -1,4 +1,4 @@
-// Copyright 2013-2014 Antony Polukhin
+// Copyright 2013-2018 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -83,9 +83,9 @@ namespace my_namespace { namespace detail {
 
 /*`
     Since we are not going to override `type_index_facade::hash_code()` we must additionally include
-    `<boost/functional/hash.hpp>`.
+    `<boost/container_hash/hash.hpp>`.
 */
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 
 /*`
     See implementation of `my_type_index`:
