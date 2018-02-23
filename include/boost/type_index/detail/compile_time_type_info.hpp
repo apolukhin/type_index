@@ -59,6 +59,14 @@
     // sizeof("static const char *boost::detail::ctti<") - 1, sizeof("]") - 1, true, "int>::n() [T = int"
     // note: checked on 3.1, 3.4
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(39, 1, true, "T = ")
+#elif defined(__EDG__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
+    // sizeof("static cha boost::detail::ctti<T>::s() [with I = 40U, T = ") - 1, sizeof("]") - 1
+    // note: checked on 4.14
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(58, 1, false, "")
+#elif defined(__EDG__) && defined(BOOST_NO_CXX14_CONSTEXPR)
+    // sizeof("static const char *boost::detail::ctti<T>::n() [with T = ") - 1, sizeof("]") - 1
+    // note: checked on 4.14
+    BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(57, 1, false, "")
 #elif defined(__GNUC__) && (__GNUC__ < 7) && !defined(BOOST_NO_CXX14_CONSTEXPR)
     // sizeof("static constexpr char boost::detail::ctti<T>::s() [with unsigned int I = 0u; T = ") - 1, sizeof("]") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(81, 1, false, "")
