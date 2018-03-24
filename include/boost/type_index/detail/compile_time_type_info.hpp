@@ -1,5 +1,5 @@
 //
-// Copyright (c) Antony Polukhin, 2012-2016.
+// Copyright (c) Antony Polukhin, 2012-2018.
 //
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -15,7 +15,7 @@
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/mpl/bool.hpp>
+#include <boost/type_traits/integral_constant.hpp>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
@@ -98,7 +98,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::mpl::false_) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::false_type) BOOST_NOEXCEPT {
         return begin;
     }
 
@@ -140,7 +140,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::mpl::true_) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::true_type) BOOST_NOEXCEPT {
         const char* const it = constexpr_search(
             begin, begin + ArrayLength,
             ctti_skip_until_runtime, ctti_skip_until_runtime + sizeof(ctti_skip_until_runtime) - 1
@@ -153,7 +153,7 @@ namespace boost { namespace typeindex { namespace detail {
         assert_compile_time_legths<(ArrayLength > ctti_skip_size_at_begin + ctti_skip_size_at_end)>();
         return skip_begining_runtime<ArrayLength - ctti_skip_size_at_begin>(
             begin + ctti_skip_size_at_begin,
-            boost::mpl::bool_<ctti_skip_more_at_runtime>()
+            boost::integral_constant<bool, ctti_skip_more_at_runtime>()
         );
     }
 
