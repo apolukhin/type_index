@@ -45,6 +45,9 @@ int main() {
     
     // We have erased the `float` type, only `int` remains
     assert(*types.begin() == boost::typeindex::type_id<int>());
+//<-
+    return boost::report_errors();
+//->
 }
 
 //] [/type_index_registry_example]
