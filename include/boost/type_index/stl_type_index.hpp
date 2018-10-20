@@ -198,13 +198,13 @@ inline std::size_t stl_type_index::hash_code() const BOOST_NOEXCEPT {
     || (defined(__sgi) && defined(__host_mips)) \
     || (defined(__hpux) && defined(__HP_aCC)) \
     || (defined(linux) && defined(__INTEL_COMPILER) && defined(__ICC))
-#  define BOOST_CLASSINFO_COMPARE_BY_NAMES
+#  define BOOST_TYPE_INDEX_CLASSINFO_COMPARE_BY_NAMES
 # endif
 
 /// @endcond
 
 inline bool stl_type_index::equal(const stl_type_index& rhs) const BOOST_NOEXCEPT {
-#ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
+#ifdef BOOST_TYPE_INDEX_CLASSINFO_COMPARE_BY_NAMES
     return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
 #else
     return !!(*data_ == *rhs.data_);
@@ -212,17 +212,14 @@ inline bool stl_type_index::equal(const stl_type_index& rhs) const BOOST_NOEXCEP
 }
 
 inline bool stl_type_index::before(const stl_type_index& rhs) const BOOST_NOEXCEPT {
-#ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
+#ifdef BOOST_TYPE_INDEX_CLASSINFO_COMPARE_BY_NAMES
     return raw_name() != rhs.raw_name() && std::strcmp(raw_name(), rhs.raw_name()) < 0;
 #else
     return !!data_->before(*rhs.data_);
 #endif
 }
 
-#ifdef BOOST_CLASSINFO_COMPARE_BY_NAMES
-#undef BOOST_CLASSINFO_COMPARE_BY_NAMES
-#endif
-
+#undef BOOST_TYPE_INDEX_CLASSINFO_COMPARE_BY_NAMES
 
 
 template <class T>
