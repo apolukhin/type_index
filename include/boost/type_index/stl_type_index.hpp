@@ -39,7 +39,13 @@
 #include <boost/type_traits/remove_cv.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 
-#include <boost/container_hash/hash.hpp>
+#if (defined(_MSC_VER) && _MSC_VER > 1600) \
+    || (defined(__GNUC__) && __GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__)) \
+    || (defined(__GNUC__) && __GNUC__ > 4 && __cplusplus >= 201103)
+#   define BOOST_TYPE_INDEX_STD_TYPE_INDEX_HAS_HASH_CODE
+#else
+#   include <boost/container_hash/hash.hpp>
+#endif
 
 #if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
         || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
@@ -175,9 +181,7 @@ inline std::string stl_type_index::pretty_name() const {
 
 
 inline std::size_t stl_type_index::hash_code() const BOOST_NOEXCEPT {
-#if (defined(_MSC_VER) && _MSC_VER > 1600) \
-    || (defined(__GNUC__) && __GNUC__ == 4 && __GNUC_MINOR__ > 5 && defined(__GXX_EXPERIMENTAL_CXX0X__)) \
-    || (defined(__GNUC__) && __GNUC__ > 4 && __cplusplus >= 201103)
+#ifdef BOOST_TYPE_INDEX_STD_TYPE_INDEX_HAS_HASH_CODE
     return data_->hash_code();
 #else
     return boost::hash_range(raw_name(), raw_name() + std::strlen(raw_name()));
@@ -271,5 +275,7 @@ inline stl_type_index stl_type_index::type_id_runtime(const T& value) BOOST_NOEX
 }
 
 }} // namespace boost::typeindex
+
+#undef BOOST_TYPE_INDEX_STD_TYPE_INDEX_HAS_HASH_CODE
 
 #endif // BOOST_TYPE_INDEX_STL_TYPE_INDEX_HPP
