@@ -13,6 +13,7 @@
 /// \brief Contains helper macros and implementation details of boost::typeindex::ctti_type_index.
 /// Not intended for inclusion from user's code.
 
+#include <cstring>
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/integral_constant.hpp>
@@ -22,6 +23,18 @@
 #endif
 
 /// @cond
+#if defined(__has_builtin)
+#if __has_builtin(__builtin_constant_p)
+#define BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT(x) __builtin_constant_p(x)
+#endif
+#if __has_builtin(__builtin_strcmp)
+#define BOOST_TYPE_INDEX_DETAIL_BUILTIN_STRCMP(str1, str2) __builtin_strcmp(str1, str2)
+#endif
+#elif defined(__GNUC__)
+#define BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT(x) __builtin_constant_p(x)
+#define BOOST_TYPE_INDEX_DETAIL_BUILTIN_STRCMP(str1, str2) __builtin_strcmp(str1, str2)
+#endif
+
 #define BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until)   \
     namespace boost { namespace typeindex { namespace detail {                                                  \
         BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_begin  = begin_skip;                               \
@@ -105,6 +118,17 @@ namespace boost { namespace typeindex { namespace detail {
         );
     }
 
+#if defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT)
+    BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE bool is_constant_string(const char* str) BOOST_NOEXCEPT {
+        while (BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT(*str)) {
+            if (*str == '\0')
+                return true;
+            ++str;
+        }
+        return false;
+    }
+#endif // defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT)
+
     template <unsigned int ArrayLength>
     BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::false_type) BOOST_NOEXCEPT {
         return begin;
@@ -138,13 +162,25 @@ namespace boost { namespace typeindex { namespace detail {
         return last1;
     }
 
-    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp(const char *v1, const char *v2) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp_loop(const char *v1, const char *v2) BOOST_NOEXCEPT {
         while (*v1 != '\0' && *v1 == *v2) {
             ++v1;
             ++v2;
-        };
+        }
 
         return static_cast<int>(*v1) - *v2;
+    }
+
+    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp(const char *v1, const char *v2) BOOST_NOEXCEPT {
+#if !defined(BOOST_NO_CXX14_CONSTEXPR) && defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT) && defined(BOOST_TYPE_INDEX_DETAIL_BUILTIN_STRCMP)
+        if (boost::typeindex::detail::is_constant_string(v1) && boost::typeindex::detail::is_constant_string(v2))
+            return boost::typeindex::detail::constexpr_strcmp_loop(v1, v2);
+        return BOOST_TYPE_INDEX_DETAIL_BUILTIN_STRCMP(v1, v2);
+#elif !defined(BOOST_NO_CXX14_CONSTEXPR)
+        return boost::typeindex::detail::constexpr_strcmp_loop(v1, v2);
+#else
+        return std::strcmp(v1, v2);
+#endif
     }
 
     template <unsigned int ArrayLength>
