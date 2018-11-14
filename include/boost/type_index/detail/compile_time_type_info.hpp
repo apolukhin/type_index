@@ -257,7 +257,7 @@ struct ctti {
                     || defined(__DMC__)
         constexpr unsigned int size = sizeof(__PRETTY_FUNCTION__);
     #else
-        boost::typeindex::detail::failed_to_get_function_name();
+        boost::typeindex::detail::failed_to_get_function_name<T>();
     #endif
 
         boost::typeindex::detail::assert_compile_time_legths<
@@ -287,7 +287,7 @@ struct ctti {
                 || defined(__DMC__)
         return boost::typeindex::detail::skip_begining< sizeof(__PRETTY_FUNCTION__) >(__PRETTY_FUNCTION__);
     #else
-        boost::typeindex::detail::failed_to_get_function_name();
+        boost::typeindex::detail::failed_to_get_function_name<T>();
         return "";
     #endif
     }
