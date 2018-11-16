@@ -38,10 +38,10 @@
 #elif defined(BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING)
 #   include <boost/preprocessor/facilities/expand.hpp>
     BOOST_PP_EXPAND( BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING )
-#elif defined(_MSC_VER) && defined (BOOST_NO_CXX11_NOEXCEPT)
+#elif defined(_MSC_VER) && !defined(__clang__) && defined (BOOST_NO_CXX11_NOEXCEPT)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void)") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 10, false, "")
-#elif defined(_MSC_VER) && !defined (BOOST_NO_CXX11_NOEXCEPT)
+#elif defined(_MSC_VER) && !defined(__clang__) && !defined (BOOST_NO_CXX11_NOEXCEPT)
     // sizeof("const char *__cdecl boost::detail::ctti<") - 1, sizeof(">::n(void) noexcept") - 1
     BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(40, 19, false, "")
 #elif defined(__clang__) && defined(__APPLE__)
@@ -284,7 +284,8 @@ struct ctti {
                 || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) \
                 || (defined(__ICC) && (__ICC >= 600)) \
                 || defined(__ghs__) \
-                || defined(__DMC__)
+                || defined(__DMC__) \
+                || defined(__clang__)
         return boost::typeindex::detail::skip_begining< sizeof(__PRETTY_FUNCTION__) >(__PRETTY_FUNCTION__);
     #else
         boost::typeindex::detail::failed_to_get_function_name<T>();
