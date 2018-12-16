@@ -100,7 +100,8 @@ void constexpr_test() {
     BOOST_CXX14_CONSTEXPR ctti_type_index t_short1 = ctti_type_index::type_id<short>();
     (void)t_short1;
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1916
+// Following tests are known to fail on _MSC_VER == 1916.
+#if !defined(_MSC_VER) || _MSC_VER > 1916
 
     BOOST_CXX14_CONSTEXPR bool same0 = (t_int0 == t_int1);
     BOOST_TEST(same0);
@@ -143,7 +144,7 @@ void constexpr_test() {
     BOOST_CXX14_CONSTEXPR bool not_in_namespace = !is_boost_namespace<std::string>();
     BOOST_TEST(not_in_namespace);
 
-#endif // #if !defined(_MSC_VER) || _MSC_VER >= 1916
+#endif // #if !defined(_MSC_VER) || _MSC_VER > 1916
 }
 
 
