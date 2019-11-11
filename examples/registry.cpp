@@ -11,7 +11,7 @@
 */
 
 #include <boost/type_index.hpp>
-#include <boost/unordered_set.hpp>
+#include <boost/unordered/unordered_set.hpp>
 //<-
 // Making `#include <cassert>` visible in docs, while actually using `BOOST_TEST`
 // instead of `assert`. This is required to verify correct behavior even if NDEBUG
