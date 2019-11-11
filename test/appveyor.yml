@@ -32,25 +32,25 @@ skip_tags: true
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       TOOLSET: msvc-9.0,msvc-10.0,msvc-11.0,msvc-12.0
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       TOOLSET: msvc-14.1,clang-win
       CXXSTD: 14,17
       ADDRMD: 32,64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ADDPATH: C:\cygwin\bin;
       TOOLSET: gcc
       CXXSTD: 03,11,14,1z
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ADDPATH: C:\cygwin64\bin;
       TOOLSET: gcc
       CXXSTD: 03,11,14,1z
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ADDPATH: C:\mingw\bin;
       TOOLSET: gcc
       CXXSTD: 03,11,14,1z
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ADDPATH: C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;
       TOOLSET: gcc
       CXXSTD: 03,11,14,1z
@@ -61,13 +61,13 @@ before_build:
     - echo "Testing %APPVEYOR_PROJECT_NAME%"
     # Cloning Boost libraries (fast nondeep cloning)
     - set BOOST=C:/boost-local
-    - git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git %BOOST%
+    - git clone -b %BOOST_BRANCH% --depth 10 https://github.com/boostorg/boost.git %BOOST%
     - cd %BOOST%
-    - git submodule update --init --depth 1 tools/build tools/boostdep
+    - git submodule update --init --depth 10 tools/build tools/boostdep
 
     - rm -rf %BOOST%/libs/%BOOST_LIBS_FOLDER%
     - mv -f %APPVEYOR_BUILD_FOLDER% %BOOST%/libs/%BOOST_LIBS_FOLDER%
-    - python tools/boostdep/depinst/depinst.py --git_args "--depth 1 --jobs 2" %BOOST_LIBS_FOLDER%
+    - python tools/boostdep/depinst/depinst.py --git_args "--depth 10 --jobs 2" %BOOST_LIBS_FOLDER%
 
 build_script:
     - cmd /c bootstrap
