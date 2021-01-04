@@ -39,7 +39,7 @@ matrix:
           sources: llvm-toolchain-trusty-8
           packages:
             - clang-8
-            - libstdc++-8-dev
+            - libstdc++-6-dev
 
     # Sanitizers disabled for this toolset as they started causing link troubles: 
     # hidden symbol `_ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE11__recommendEm' isn't defined
