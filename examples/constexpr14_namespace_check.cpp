@@ -6,6 +6,8 @@
 
 #include <boost/config.hpp>
 
+#include <cstddef>
+
 template <class T>
 void do_something(const T&) {}
 
