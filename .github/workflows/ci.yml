@@ -30,14 +30,14 @@ jobs:
           - toolset: gcc-10
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
-            cxxflags: "cxxflags=--coverage"
-            linkflags: "linkflags=--coverage"
-            #launcher: "testing.launcher=LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasan.so.5"
+            cxxflags: "cxxflags=--coverage -fsanitize=address,leak,undefined -fno-sanitize-recover=undefined"
+            linkflags: "linkflags=--coverage -lasan -lubsan"
+            launcher: "testing.launcher=LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libasan.so.6"
             gcov_tool: "gcov-10"
           - toolset: clang
             compiler: clang++-7
-            cxxstd: "03,11,14,1z"
-            os: ubuntu-16.04
+            cxxstd: "03,11,14,17"
+            os: ubuntu-18.04
             install: clang-7
           - toolset: clang
             compiler: clang++-9
