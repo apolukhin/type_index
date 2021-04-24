@@ -16,6 +16,8 @@
 // Making `#include <cassert>` visible in docs, while actually using `BOOST_TEST`
 // instead of `assert`. This is required to verify correct behavior even if NDEBUG
 // is defined and to avoid `unused local variable` warnings with defined NDEBUG.
+//
+// boost-no-inspect
 #include <boost/core/lightweight_test.hpp>
 #ifdef assert
 #   undef assert

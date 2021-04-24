@@ -23,6 +23,8 @@
 // Making `#include <cassert>` visible in docs, while actually using hand-made check
 // instead of `assert`. This is required to verify correct behavior even if NDEBUG
 // is defined and to avoid `unused local variable` warnings with defined NDEBUG.
+//
+// boost-no-inspect
 #ifdef assert
 #   undef assert
 #endif

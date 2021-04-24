@@ -18,6 +18,7 @@
 #include <boost/type_index.hpp>
 //] [/type_index_my_type_index_worldwide_macro]
 
+// boost-no-inspect
 #include <boost/core/lightweight_test.hpp>
 #ifdef assert
 #   undef assert
