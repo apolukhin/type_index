@@ -14,8 +14,7 @@
 /// pointer types.
 #include <boost/type_index.hpp>
 #include <boost/type_index/runtime_cast/detail/runtime_cast_impl.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
-#include <boost/type_traits/remove_pointer.hpp>
+
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
@@ -29,9 +28,9 @@ namespace boost { namespace typeindex {
 /// \return If there exists a valid conversion from U* to T, returns a T that points to
 /// an address suitably offset from u. If no such conversion exists, returns NULL.
 template<typename T, typename U>
-T runtime_cast(U* u) BOOST_NOEXCEPT {
-    typedef typename boost::remove_pointer<T>::type impl_type;
-    return detail::runtime_cast_impl<impl_type>(u, boost::is_base_and_derived<T, U>());
+T runtime_cast(U* u) noexcept {
+    typedef typename std::remove_pointer<T>::type impl_type;
+    return detail::runtime_cast_impl<impl_type>(u, std::is_base_of<T, U>());
 }
 
 /// \brief Safely converts pointers to classes up, down, and sideways along the inheritance hierarchy.
@@ -40,9 +39,9 @@ T runtime_cast(U* u) BOOST_NOEXCEPT {
 /// \return If there exists a valid conversion from U* to T, returns a T that points to
 /// an address suitably offset from u. If no such conversion exists, returns NULL.
 template<typename T, typename U>
-T runtime_cast(U const* u) BOOST_NOEXCEPT {
-    typedef typename boost::remove_pointer<T>::type impl_type;
-    return detail::runtime_cast_impl<impl_type>(u, boost::is_base_and_derived<T, U>());
+T runtime_cast(U const* u) noexcept {
+    typedef typename std::remove_pointer<T>::type impl_type;
+    return detail::runtime_cast_impl<impl_type>(u, std::is_base_of<T, U>());
 }
 
 /// \brief Safely converts pointers to classes up, down, and sideways along the inheritance
@@ -53,8 +52,8 @@ T runtime_cast(U const* u) BOOST_NOEXCEPT {
 /// that points to an address suitably offset from u.
 /// If no such conversion exists, returns NULL.
 template<typename T, typename U>
-T* runtime_pointer_cast(U* u) BOOST_NOEXCEPT {
-    return detail::runtime_cast_impl<T>(u, boost::is_base_and_derived<T, U>());
+T* runtime_pointer_cast(U* u) noexcept {
+    return detail::runtime_cast_impl<T>(u, std::is_base_of<T, U>());
 }
 
 /// \brief Safely converts pointers to classes up, down, and sideways along the inheritance
@@ -65,8 +64,8 @@ T* runtime_pointer_cast(U* u) BOOST_NOEXCEPT {
 /// that points to an address suitably offset from u.
 /// If no such conversion exists, returns NULL.
 template<typename T, typename U>
-T const* runtime_pointer_cast(U const* u) BOOST_NOEXCEPT {
-    return detail::runtime_cast_impl<T>(u, boost::is_base_and_derived<T, U>());
+T const* runtime_pointer_cast(U const* u) noexcept {
+    return detail::runtime_cast_impl<T>(u, std::is_base_of<T, U>());
 }
 
 }} // namespace boost::typeindex

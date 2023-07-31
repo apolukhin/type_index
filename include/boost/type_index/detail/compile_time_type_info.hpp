@@ -13,10 +13,10 @@
 /// \brief Contains helper macros and implementation details of boost::typeindex::ctti_type_index.
 /// Not intended for inclusion from user's code.
 
-#include <cstring>
 #include <boost/config.hpp>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/integral_constant.hpp>
+
+#include <cstring>
+#include <type_traits>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
@@ -37,10 +37,10 @@
 
 #define BOOST_TYPE_INDEX_REGISTER_CTTI_PARSING_PARAMS(begin_skip, end_skip, runtime_skip, runtime_skip_until)   \
     namespace boost { namespace typeindex { namespace detail {                                                  \
-        BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_begin  = begin_skip;                               \
-        BOOST_STATIC_CONSTEXPR std::size_t ctti_skip_size_at_end    = end_skip;                                 \
-        BOOST_STATIC_CONSTEXPR bool ctti_skip_more_at_runtime       = runtime_skip;                             \
-        BOOST_STATIC_CONSTEXPR char ctti_skip_until_runtime[]       = runtime_skip_until;                       \
+        static constexpr std::size_t ctti_skip_size_at_begin  = begin_skip;                                     \
+        static constexpr std::size_t ctti_skip_size_at_end    = end_skip;                                       \
+        static constexpr bool ctti_skip_more_at_runtime       = runtime_skip;                                   \
+        static constexpr char ctti_skip_until_runtime[]       = runtime_skip_until;                             \
     }}} /* namespace boost::typeindex::detail */                                                                \
     /**/
 /// @endcond
@@ -101,8 +101,8 @@
 
 namespace boost { namespace typeindex { namespace detail {
     template <bool Condition>
-    BOOST_CXX14_CONSTEXPR inline void assert_compile_time_legths() BOOST_NOEXCEPT {
-        BOOST_STATIC_ASSERT_MSG(
+    BOOST_CXX14_CONSTEXPR inline void assert_compile_time_legths() noexcept {
+        static_assert(
             Condition,
             "TypeIndex library is misconfigured for your compiler. "
             "Please define BOOST_TYPE_INDEX_CTTI_USER_DEFINED_PARSING to correct values. See section "
@@ -111,8 +111,8 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <class T>
-    BOOST_CXX14_CONSTEXPR inline void failed_to_get_function_name() BOOST_NOEXCEPT {
-        BOOST_STATIC_ASSERT_MSG(
+    BOOST_CXX14_CONSTEXPR inline void failed_to_get_function_name() noexcept {
+        static_assert(
             sizeof(T) && false,
             "TypeIndex library could not detect your compiler. "
             "Please make the BOOST_TYPE_INDEX_FUNCTION_SIGNATURE macro use "
@@ -122,7 +122,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
 #if defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT)
-    BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE bool is_constant_string(const char* str) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE bool is_constant_string(const char* str) noexcept {
         while (BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT(*str)) {
             if (*str == '\0')
                 return true;
@@ -133,7 +133,7 @@ namespace boost { namespace typeindex { namespace detail {
 #endif // defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT)
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::false_type) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, std::integral_constant<bool, false>) noexcept {
         return begin;
     }
 
@@ -142,7 +142,7 @@ namespace boost { namespace typeindex { namespace detail {
         ForwardIterator1 first1,
         ForwardIterator1 last1,
         ForwardIterator2 first2,
-        ForwardIterator2 last2) BOOST_NOEXCEPT
+        ForwardIterator2 last2) noexcept
     {
         if (first2 == last2) {
             return first1;  // specified in C++11
@@ -165,7 +165,7 @@ namespace boost { namespace typeindex { namespace detail {
         return last1;
     }
 
-    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp_loop(const char *v1, const char *v2) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp_loop(const char *v1, const char *v2) noexcept {
         while (*v1 != '\0' && *v1 == *v2) {
             ++v1;
             ++v2;
@@ -174,7 +174,7 @@ namespace boost { namespace typeindex { namespace detail {
         return static_cast<int>(*v1) - *v2;
     }
 
-    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp(const char *v1, const char *v2) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline int constexpr_strcmp(const char *v1, const char *v2) noexcept {
 #if !defined(BOOST_NO_CXX14_CONSTEXPR) && defined(BOOST_TYPE_INDEX_DETAIL_IS_CONSTANT) && defined(BOOST_TYPE_INDEX_DETAIL_BUILTIN_STRCMP)
         if (boost::typeindex::detail::is_constant_string(v1) && boost::typeindex::detail::is_constant_string(v2))
             return boost::typeindex::detail::constexpr_strcmp_loop(v1, v2);
@@ -187,7 +187,7 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, boost::true_type) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin, std::integral_constant<bool, true>) noexcept {
         const char* const it = constexpr_search(
             begin, begin + ArrayLength,
             ctti_skip_until_runtime, ctti_skip_until_runtime + sizeof(ctti_skip_until_runtime) - 1
@@ -196,11 +196,11 @@ namespace boost { namespace typeindex { namespace detail {
     }
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining(const char* begin) BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR inline const char* skip_begining(const char* begin) noexcept {
         assert_compile_time_legths<(ArrayLength > ctti_skip_size_at_begin + ctti_skip_size_at_end)>();
         return skip_begining_runtime<ArrayLength - ctti_skip_size_at_begin>(
             begin + ctti_skip_size_at_begin,
-            boost::integral_constant<bool, ctti_skip_more_at_runtime>()
+            std::integral_constant<bool, ctti_skip_more_at_runtime>()
         );
     }
 
@@ -257,7 +257,7 @@ struct ctti {
 #if !defined(__clang__) && defined(__GNUC__) && !defined(BOOST_NO_CXX14_CONSTEXPR)
     //helper functions
     template <unsigned int I>
-    constexpr static char s() BOOST_NOEXCEPT { // step
+    constexpr static char s() noexcept { // step
         constexpr unsigned int offset =
                   (I >= 10u      ? 1u : 0u)
                 + (I >= 100u     ? 1u : 0u)
@@ -277,12 +277,12 @@ struct ctti {
     }
 
     template <unsigned int ...Indexes>
-    constexpr static const char* impl(::boost::typeindex::detail::index_seq<Indexes...> ) BOOST_NOEXCEPT {
+    constexpr static const char* impl(::boost::typeindex::detail::index_seq<Indexes...> ) noexcept {
         return ::boost::typeindex::detail::cstring<s<Indexes>()...>::data_;
     }
 
     template <unsigned int D = 0> // `D` means `Dummy`
-    constexpr static const char* n() BOOST_NOEXCEPT {
+    constexpr static const char* n() noexcept {
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         constexpr unsigned int size = sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
     #elif defined(__FUNCSIG__)
@@ -312,7 +312,7 @@ struct ctti {
     }
 #else
     /// Returns raw name. Must be as short, as possible, to avoid code bloat
-    BOOST_CXX14_CONSTEXPR static const char* n() BOOST_NOEXCEPT {
+    BOOST_CXX14_CONSTEXPR static const char* n() noexcept {
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         return boost::typeindex::detail::skip_begining< sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE) >(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
     #elif defined(__FUNCSIG__)
