@@ -25,25 +25,18 @@ inline type_index runtime_class_construct_type_id(T const*) {
     return boost::typeindex::type_id<T>();
 }
 
-constexpr const void* first_nonnull_ptr() noexcept {
+template <class Self>
+constexpr const void* find_instance(boost::typeindex::type_index const&, const Self*) noexcept {
     return nullptr;
 }
 
-template <class... Ptrs>
-constexpr const void* first_nonnull_ptr(const void* first, Ptrs... ptrs) noexcept {
-    return first ? first : boost::typeindex::detail::first_nonnull_ptr(ptrs...);
-}
-
-template <class Base, class Self>
-const void* find_instance_impl_1(boost::typeindex::type_index const& idx, const Self* self) noexcept {
-    return self->Base::boost_type_index_find_instance_(idx);
-}
-
-template <class... Bases, class Self>
+template <class Base, class... OtherBases, class Self>
 const void* find_instance(boost::typeindex::type_index const& idx, const Self* self) noexcept {
-    return boost::typeindex::detail::first_nonnull_ptr(
-        boost::typeindex::detail::find_instance_impl_1<Bases>(idx, self)...
-    );
+    if (const void* ptr = self->Base::boost_type_index_find_instance_(idx)) {
+        return ptr;
+    }
+
+    return boost::typeindex::detail::find_instance<OtherBases...>(idx, self);
 }
 
 }}} // namespace boost::typeindex::detail
