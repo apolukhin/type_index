@@ -200,24 +200,7 @@ inline bool stl_type_index::before(const stl_type_index& rhs) const noexcept {
 template <class T>
 inline stl_type_index stl_type_index::type_id() noexcept {
     typedef typename std::remove_reference<T>::type no_ref_t;
-    typedef typename std::remove_cv<no_ref_t>::type no_cvr_prefinal_t;
-
-    #  if (defined(__EDG_VERSION__) && __EDG_VERSION__ < 245) \
-        || (defined(__sgi) && defined(_COMPILER_VERSION) && _COMPILER_VERSION <= 744)
-
-        // Old EDG-based compilers seem to mistakenly distinguish 'integral' from 'signed integral'
-        // in typeid() expressions. Full template specialization for 'integral' fixes that issue:
-        typedef typename std::conditional<
-            std::is_signed<no_cvr_prefinal_t>::value,
-            typename std::make_signed<no_cvr_prefinal_t>::type,
-            no_cvr_prefinal_t
-        >::type no_cvr_prefinal_lazy_t;
-
-        typedef typename no_cvr_prefinal_t::type no_cvr_t;
-    #else
-        typedef no_cvr_prefinal_t no_cvr_t;
-    #endif
-
+    typedef typename std::remove_cv<no_ref_t>::type no_cvr_t;
     return typeid(no_cvr_t);
 }
 
