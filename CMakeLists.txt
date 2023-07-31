@@ -17,7 +17,6 @@ target_link_libraries(boost_type_index
     Boost::config
     Boost::container_hash
     Boost::core
-    Boost::preprocessor
     Boost::throw_exception
 )
 

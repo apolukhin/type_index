@@ -182,7 +182,7 @@ BOOST_CXX14_CONSTEXPR inline const char* ctti_type_index::name() const noexcept 
 }
 
 inline std::size_t ctti_type_index::get_raw_name_length() const noexcept {
-    return std::strlen(raw_name() + detail::ctti_skip_size_at_end);
+    return std::strlen(raw_name() + detail::skip().size_at_end);
 }
 
 
