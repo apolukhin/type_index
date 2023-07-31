@@ -26,7 +26,7 @@ namespace boost { namespace typeindex {
 /// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
 /// \tparam U A complete class type of the source instance, u.
 /// \return If there exists a valid conversion from U* to T, returns a T that points to
-/// an address suitably offset from u. If no such conversion exists, returns NULL.
+/// an address suitably offset from u. If no such conversion exists, returns nullptr.
 template<typename T, typename U>
 T runtime_cast(U* u) noexcept {
     typedef typename std::remove_pointer<T>::type impl_type;
@@ -37,7 +37,7 @@ T runtime_cast(U* u) noexcept {
 /// \tparam T The desired target type. Like dynamic_cast, must be a pointer to complete class type.
 /// \tparam U A complete class type of the source instance, u.
 /// \return If there exists a valid conversion from U* to T, returns a T that points to
-/// an address suitably offset from u. If no such conversion exists, returns NULL.
+/// an address suitably offset from u. If no such conversion exists, returns nullptr.
 template<typename T, typename U>
 T runtime_cast(U const* u) noexcept {
     typedef typename std::remove_pointer<T>::type impl_type;
@@ -50,7 +50,7 @@ T runtime_cast(U const* u) noexcept {
 /// \tparam U A complete class type of the source instance, u.
 /// \return If there exists a valid conversion from U const* to T*, returns a T*
 /// that points to an address suitably offset from u.
-/// If no such conversion exists, returns NULL.
+/// If no such conversion exists, returns nullptr.
 template<typename T, typename U>
 T* runtime_pointer_cast(U* u) noexcept {
     return detail::runtime_cast_impl<T>(u, std::is_base_of<T, U>());
@@ -62,7 +62,7 @@ T* runtime_pointer_cast(U* u) noexcept {
 /// \tparam U A complete class type of the source instance, u.
 /// \return If there exists a valid conversion from U const* to T const*, returns a T const*
 /// that points to an address suitably offset from u.
-/// If no such conversion exists, returns NULL.
+/// If no such conversion exists, returns nullptr.
 template<typename T, typename U>
 T const* runtime_pointer_cast(U const* u) noexcept {
     return detail::runtime_cast_impl<T>(u, std::is_base_of<T, U>());

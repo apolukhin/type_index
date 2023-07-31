@@ -123,7 +123,7 @@ inline type_index runtime_class_construct_type_id(T const*) {
         if(idx == boost::typeindex::detail::runtime_class_construct_type_id(this))                                \
             return this;                                                                                          \
          BOOST_PP_SEQ_FOR_EACH(BOOST_TYPE_INDEX_CHECK_BASE_, _, base_class_seq)                                   \
-         return NULL;                                                                                             \
+         return nullptr;                                                                                          \
     }
 
 /// \def BOOST_TYPE_INDEX_NO_BASE_CLASS
