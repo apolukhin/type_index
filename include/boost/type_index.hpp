@@ -14,28 +14,12 @@
 /// By inclusion of this file most optimal type index classes will be included and used 
 /// as a boost::typeindex::type_index and boost::typeindex::type_info.
 
-#include <boost/config.hpp>
+#include <boost/config/assert_cxx11.hpp>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once
 #endif
 
-#if defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || \
-    defined(BOOST_NO_CXX11_AUTO_DECLARATIONS) || \
-    defined(BOOST_NO_CXX11_CONSTEXPR) || \
-    defined(BOOST_NO_CXX11_NULLPTR) || \
-    defined(BOOST_NO_CXX11_NOEXCEPT) || \
-    defined(BOOST_NO_CXX11_DEFAULTED_FUNCTIONS) || \
-    defined(BOOST_NO_CXX11_FINAL) || \
-    defined(BOOST_NO_CXX11_ALIGNOF) || \
-    defined(BOOST_NO_CXX11_STATIC_ASSERT) || \
-    defined(BOOST_NO_CXX11_SMART_PTR) || \
-    defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST) || \
-    defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-
-#error "C++03 support is dropped in Boost.TypeIndex 1.84"
-
-#endif
 
 #if defined(BOOST_TYPE_INDEX_USER_TYPEINDEX)
 #   include BOOST_TYPE_INDEX_USER_TYPEINDEX
