@@ -20,9 +20,6 @@
 # pragma once
 #endif
 
-
-
-#include <boost/config/pragma_message.hpp>
 #if defined(BOOST_NO_CXX11_RVALUE_REFERENCES) || \
     defined(BOOST_NO_CXX11_AUTO_DECLARATIONS) || \
     defined(BOOST_NO_CXX11_CONSTEXPR) || \
@@ -36,7 +33,7 @@
     defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST) || \
     defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
 
-BOOST_PRAGMA_MESSAGE("C++03 support is deprecated in Boost.TypeIndex 1.82 and will be removed in Boost.TypeIndex 1.84.")
+#error C++03 support is dropped in Boost.TypeIndex 1.84
 
 #endif
 
@@ -228,7 +225,7 @@ typedef type_index::type_info_t type_info;
 /// \throw Nothing.
 /// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
-inline type_index type_id() BOOST_NOEXCEPT {
+inline type_index type_id() noexcept {
     return type_index::type_id<T>();
 }
 
@@ -248,7 +245,7 @@ inline type_index type_id() BOOST_NOEXCEPT {
 /// \throw Nothing.
 /// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
-inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
+inline type_index type_id_with_cvr() noexcept {
     return type_index::type_id_with_cvr<T>();
 }
 
@@ -273,7 +270,7 @@ inline type_index type_id_with_cvr() BOOST_NOEXCEPT {
 /// \throw Nothing.
 /// \return boost::typeindex::type_index with information about the specified variable.
 template <class T>
-inline type_index type_id_runtime(const T& runtime_val) BOOST_NOEXCEPT {
+inline type_index type_id_runtime(const T& runtime_val) noexcept {
     return type_index::type_id_runtime(runtime_val);
 }
 

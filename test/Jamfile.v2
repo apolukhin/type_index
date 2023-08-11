@@ -8,6 +8,14 @@ import testing ;
 import feature ;
 import os ;
 
+import ../../config/checks/config : requires ;
+
+project
+    : source-location .
+    : requirements
+        [ requires cxx11 ]
+    ;
+
 # Variable that contains all the stuff required for linking together <rtti>on and <rtti>off
 compat = <define>BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY ;
 
