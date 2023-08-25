@@ -13,7 +13,7 @@ import ../../config/checks/config : requires ;
 project
     : source-location .
     : requirements
-        [ requires cxx11 ]
+        [ requires cxx11_rvalue_references ]
     ;
 
 # Variable that contains all the stuff required for linking together <rtti>on and <rtti>off
