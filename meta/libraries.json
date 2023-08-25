@@ -11,5 +11,5 @@
   "category": [
     "Emulation"
   ],
-  "cxxstd": "03"
+  "cxxstd": "11"
 }
