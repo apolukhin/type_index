@@ -206,6 +206,7 @@ void type_id_storing_modifiers_vs_nonstoring()
     boost::typeindex::type_index t1 = boost::typeindex::type_id_with_cvr<const int>();
     boost::typeindex::type_index t2 = boost::typeindex::type_id<int>();
     BOOST_TEST_NE(t2, t1);
+    std::cerr << t1.pretty_name();
     BOOST_TEST(t1.pretty_name() == "const int" || t1.pretty_name() == "int const");
 }
 

@@ -14,6 +14,8 @@
 /// By inclusion of this file most optimal type index classes will be included and used 
 /// as a boost::typeindex::type_index and boost::typeindex::type_info.
 
+#include <boost/type_index/detail/config.hpp>
+
 #include <boost/config.hpp>
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
@@ -49,7 +51,11 @@
 #define BOOST_TYPE_INDEX_REGISTER_CLASS
 #endif
 
+#if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
+
 namespace boost { namespace typeindex {
+
+BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
 
@@ -257,9 +263,11 @@ inline type_index type_id_runtime(const T& runtime_val) noexcept {
     return type_index::type_id_runtime(runtime_val);
 }
 
+BOOST_TYPE_INDEX_END_MODULE_EXPORT
+
 }} // namespace boost::typeindex
 
-
+#endif  // #if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 
 #endif // BOOST_TYPE_INDEX_HPP
 

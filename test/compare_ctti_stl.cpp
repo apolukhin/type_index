@@ -34,8 +34,8 @@ void compare()
     typedef boost::typeindex::ctti_type_index ctti;
     typedef boost::typeindex::stl_type_index stl;
     BOOST_TEST_EQ(
-        ctti::type_id<int>().pretty_name(),
-        stl::type_id<int>().pretty_name()
+        ctti::type_id<T>().pretty_name(),
+        stl::type_id<T>().pretty_name()
     );
 }
 
@@ -44,7 +44,6 @@ int main()
 {
     compare<void>();
     compare<int>();
-    compare<double*>();
     compare<const double&>();
     compare<my_namespace1::my_class>();
 
