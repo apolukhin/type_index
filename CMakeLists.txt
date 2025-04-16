@@ -22,37 +22,25 @@ if (BOOST_USE_MODULES)
     else()
         message(STATUS "`import std;` is not awailable")
     endif()
-    target_include_directories(boost_type_index PUBLIC include)
+    set(__scope PUBLIC)
 else()
     add_library(boost_type_index INTERFACE)
-    target_include_directories(boost_type_index INTERFACE include)
+    set(__scope INTERFACE)
 endif()
 
+target_include_directories(boost_type_index ${__scope} include)
 add_library(Boost::type_index ALIAS boost_type_index)
 
-
 target_link_libraries(boost_type_index
-  INTERFACE
+  ${__scope}
     Boost::config
     Boost::container_hash
     Boost::core
     Boost::throw_exception
 )
 
-enable_testing()
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
   add_subdirectory(test)
 
-endif()
-
-if (BOOST_USE_MODULES AND BUILD_TESTING)
-    add_executable(boost_type_index_module_usage modules/usage_sample.cpp)
-    target_link_libraries(boost_type_index_module_usage PRIVATE Boost::type_index)
-    add_test(NAME boost_type_index_module_usage COMMAND boost_type_index_module_usage)
-
-    # Make sure that mixing includes and imports is fine for different TU
-    add_executable(boost_type_index_module_usage_mu modules/usage_test_mu1.cpp modules/usage_test_mu2.cpp)
-    target_link_libraries(boost_type_index_module_usage_mu PRIVATE Boost::type_index)
-    add_test(NAME boost_type_index_module_usage_mu COMMAND boost_type_index_module_usage_mu)
 endif()
