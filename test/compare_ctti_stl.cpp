@@ -45,12 +45,14 @@ int main()
     compare<void>();
     compare<int>();
     compare<const double&>();
+
+#ifndef _MSC_VER  // may add `class` to the type name
     compare<my_namespace1::my_class>();
 
     compare<my_namespace3::my_template<
             my_namespace1::my_class,
             my_namespace2::my_class> >();
-
+#endif
 
     return boost::report_errors();
 }
