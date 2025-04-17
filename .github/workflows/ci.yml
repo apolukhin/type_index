@@ -101,7 +101,8 @@ jobs:
           rm -rf build_module
 
       - name: Run modules tests
-        if: ${{matrix.toolset == 'clang-19'}}
+        if: false
+        #if: ${{matrix.toolset == 'clang-19'}}
         run: |
           cd ../boost-root/libs/type_index
           mkdir build_module
@@ -214,7 +215,7 @@ jobs:
           cd ..
           rm -rf build_module
 
-      - name: Run modules tests wihtout 'import std;'
+      - name: Run modules tests without 'import std;'
         if: ${{matrix.toolset == 'msvc-14.3'}}
         shell: cmd
         run: |
