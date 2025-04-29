@@ -18,11 +18,12 @@
 #if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 
 #include <boost/type_index/runtime_cast/detail/runtime_cast_impl.hpp>
-#include <boost/throw_exception.hpp>
 
 #if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 #include <memory>
 #include <type_traits>
+
+#include <boost/throw_exception.hpp>
 #endif
 
 #ifdef BOOST_HAS_PRAGMA_ONCE

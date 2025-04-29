@@ -35,10 +35,10 @@
 #include <cstring>                                  // std::strcmp, std::strlen, std::strstr
 #include <stdexcept>
 #include <type_traits>
-#endif
 
 #include <boost/throw_exception.hpp>
 #include <boost/core/demangle.hpp>
+#endif
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once

@@ -331,19 +331,19 @@ benifits of modules without changing the existing code.
 [note For better compile times make sure that `import std;` is available when building the `boost.type_index` module (in CMake logs there should be
       a 'Using `import std;`' message). ]
 
-If not using CMake, then the module could be build manually from the `modules/type_index.cppm` file.
+If not using CMake, then the module could be build manually from the `modules/boost_type_index.cppm` file.
 
-For manual module build the following commands could be used for clang compiler:
+For manual module build the following commands can be used for clang compiler:
 
 ```
 cd type_index/modules
-clang++ -I ../include -std=c++20 --precompile -x c++-module type_index.cppm
+clang++ -I ../include -std=c++20 --precompile -x c++-module boost_type_index.cppm
 ```
 
 After that, the module could be used in the following way:
 
 ```
-clang++ -std=c++20 -fmodule-file=type_index.pcm type_index.pcm usage_sample.cpp
+clang++ -std=c++20 -fmodule-file=boost_type_index.pcm boost_type_index.pcm usage_sample.cpp
 ```
 
 [endsect]

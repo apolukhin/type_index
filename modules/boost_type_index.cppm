@@ -18,9 +18,7 @@ module;
 #include <boost/core/demangle.hpp>
 #include <boost/throw_exception.hpp>
 
-#ifdef BOOST_TYPE_INDEX_USE_STD_MODULE
-import std;
-#else
+#ifndef BOOST_TYPE_INDEX_USE_STD_MODULE
 #include <cstring>
 #include <iosfwd>
 #include <memory>
@@ -33,6 +31,12 @@ import std;
 #define BOOST_TYPE_INDEX_INTERFACE_UNIT
 
 export module boost.type_index;
+
+#ifdef BOOST_TYPE_INDEX_USE_STD_MODULE
+// Should not be in the global module fragment
+// https://eel.is/c++draft/module#global.frag-1
+import std;
+#endif
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"

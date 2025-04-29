@@ -10,8 +10,7 @@ project(boost_type_index VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 if (BOOST_USE_MODULES)
     add_library(boost_type_index)
     target_sources(boost_type_index PUBLIC
-        FILE_SET modules_public TYPE CXX_MODULES FILES
-            ${CMAKE_CURRENT_LIST_DIR}/modules/type_index.cppm
+        FILE_SET modules_public TYPE CXX_MODULES FILES modules/boost_type_index.cppm
     )
 
     target_compile_features(boost_type_index PUBLIC cxx_std_20)

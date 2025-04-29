@@ -28,9 +28,9 @@
 #if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 #include <cstring>
 #include <type_traits>
-#endif
 
 #include <boost/container_hash/hash.hpp>
+#endif
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
 # pragma once

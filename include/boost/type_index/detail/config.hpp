@@ -9,6 +9,13 @@
 #ifndef BOOST_TYPE_INDEX_DETAIL_CONFIG_HPP
 #define BOOST_TYPE_INDEX_DETAIL_CONFIG_HPP
 
+#if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
+#include <boost/config.hpp>
+#ifdef BOOST_HAS_PRAGMA_ONCE
+# pragma once
+#endif
+#endif
+
 #ifdef BOOST_TYPE_INDEX_INTERFACE_UNIT
 #   define BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT export {
 #   define BOOST_TYPE_INDEX_END_MODULE_EXPORT }

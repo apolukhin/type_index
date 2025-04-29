@@ -13,14 +13,14 @@
 
 #if !defined(BOOST_USE_MODULES) || defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 
-#include <boost/config.hpp>
-#include <boost/container_hash/hash_fwd.hpp>
-
 #if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
 #include <string>
 #include <cstring>
 #include <type_traits>
 #include <iosfwd>               // for std::basic_ostream
+
+#include <boost/config.hpp>
+#include <boost/container_hash/hash_fwd.hpp>
 #endif
 
 #ifdef BOOST_HAS_PRAGMA_ONCE
