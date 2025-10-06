@@ -12,10 +12,8 @@ module;
 #include <cstddef>
 #include <cstdint>
 
-#if defined(__has_include)
-#  if __has_include(<cxxabi.h>)
-#    include <cxxabi.h>
-#  endif
+#if __has_include(<cxxabi.h>)
+#  include <cxxabi.h>
 #endif
 
 #include <boost/config.hpp>

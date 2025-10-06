@@ -74,7 +74,7 @@ namespace impl {
 
 #ifdef BOOST_TYPE_INDEX_IMPL_HAS_CXXABI
 
-inline const char * demangle_alloc(const char* name) noexcept {
+inline const char* demangle_alloc(const char* name) noexcept {
     int status = 0;
     std::size_t size = 0;
     return abi::__cxa_demangle(name, NULL, &size, &status);
@@ -86,7 +86,7 @@ inline void demangle_free(const void* name) noexcept {
 
 #else
 
-inline const char * demangle_alloc(const char* name) noexcept {
+inline const char* demangle_alloc(const char* name) noexcept {
     return name;
 }
 
@@ -96,9 +96,7 @@ inline void demangle_free(const void* ) noexcept {}
 
 #undef BOOST_TYPE_INDEX_IMPL_HAS_CXXABI
 
-using scoped_demangled_name = std::unique_ptr<const char, void(*)(const void*)>;
-
-}
+}  // namespace impl
 
 BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
 
@@ -181,9 +179,8 @@ inline std::string stl_type_index::pretty_name() const {
 
     // In case of MSVC demangle() is a no-op, and name() already returns demangled name.
     // In case of GCC and Clang (on non-Windows systems) name() returns mangled name and demangle() undecorates it.
-    const impl::scoped_demangled_name demangled_name(
-            impl::demangle_alloc(data_->name()),
-            &impl::demangle_free
+    const std::unique_ptr<const char, void(*)(const void*)> demangled_name(
+        impl::demangle_alloc(data_->name()), &impl::demangle_free
     );
 
     const char* begin = demangled_name.get();
@@ -199,7 +196,7 @@ inline std::string stl_type_index::pretty_name() const {
         if (b) {
             b += cvr_saver_name_len;
 
-            // Trim everuthing till '<'. In modules the name could be boost::typeindex::detail::cvr_saver@boost.type_index<
+            // Trim everything till '<'. In modules the name could be boost::typeindex::detail::cvr_saver@boost.type_index<
             while (*b != '<') {         // the string is zero terminated, we won't exceed the buffer size
                 ++ b;
             }
