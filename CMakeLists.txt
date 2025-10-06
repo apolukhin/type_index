@@ -34,7 +34,6 @@ target_link_libraries(boost_type_index
   ${__scope}
     Boost::config
     Boost::container_hash
-    Boost::core
     Boost::throw_exception
 )
 
