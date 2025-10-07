@@ -19,24 +19,30 @@ endif()
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
 add_library(boost_type_index_test_lib_nortti SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_nortti PRIVATE ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+target_link_libraries(boost_type_index_test_lib_nortti PRIVATE Boost::type_index)
 
 add_library(boost_type_index_test_lib_anonymous_nortti SHARED test_lib_anonymous.cpp)
 target_compile_options(boost_type_index_test_lib_anonymous_nortti PRIVATE ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+target_link_libraries(boost_type_index_test_lib_anonymous_nortti PRIVATE Boost::type_index)
 
 add_library(boost_type_index_test_lib_rtti SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_rtti PRIVATE ${BOOST_TYPEINDEX_DETAIL_RTTI})
+target_link_libraries(boost_type_index_test_lib_rtti PRIVATE Boost::type_index)
 
 add_library(boost_type_index_test_lib_anonymous_rtti SHARED test_lib_anonymous.cpp)
 target_compile_options(boost_type_index_test_lib_anonymous_rtti PRIVATE ${BOOST_TYPEINDEX_DETAIL_RTTI})
+target_link_libraries(boost_type_index_test_lib_anonymous_rtti PRIVATE Boost::type_index)
 
 # Making libraries that can work between rtti-on/rtti-off modules
 add_library(boost_type_index_test_lib_nortti_compat SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_nortti_compat PRIVATE ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
 target_compile_definitions(boost_type_index_test_lib_nortti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
+target_link_libraries(boost_type_index_test_lib_nortti_compat PRIVATE Boost::type_index)
 
 add_library(boost_type_index_test_lib_rtti_compat SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_rtti_compat PRIVATE ${BOOST_TYPEINDEX_DETAIL_RTTI})
 target_compile_definitions(boost_type_index_test_lib_rtti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
+target_link_libraries(boost_type_index_test_lib_rtti_compat PRIVATE Boost::type_index)
 
 set(BOOST_TEST_LINK_LIBRARIES Boost::type_index Boost::core)
 
