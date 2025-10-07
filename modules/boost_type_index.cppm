@@ -19,7 +19,6 @@ module;
 #include <boost/config.hpp>
 #include <boost/container_hash/hash_fwd.hpp>
 #include <boost/container_hash/hash.hpp>
-#include <boost/core/demangle.hpp>
 #include <boost/throw_exception.hpp>
 
 #ifndef BOOST_TYPE_INDEX_USE_STD_MODULE
