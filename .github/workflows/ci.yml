@@ -218,7 +218,7 @@ jobs:
           mkdir __build_cmake
           cd __build_cmake
           cmake -DBUILD_TESTING=1 -DBOOST_INCLUDE_LIBRARIES=type_index -G Ninja ..
-          cmake --build . --target tests --config Debug
+          VERBOSE=1 cmake --build . --target tests --config Debug
           ctest --output-on-failure --no-tests=error -C Debug
 
       - name: Run modules tests
