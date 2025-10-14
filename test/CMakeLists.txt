@@ -36,12 +36,12 @@ target_link_libraries(boost_type_index_test_lib_anonymous_rtti PRIVATE Boost::ty
 # Making libraries that can work between rtti-on/rtti-off modules
 add_library(boost_type_index_test_lib_nortti_compat SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_nortti_compat PRIVATE ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
-target_compile_definitions(boost_type_index_test_lib_nortti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
+target_compile_definitions(boost_type_index_test_lib_nortti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
 target_link_libraries(boost_type_index_test_lib_nortti_compat PRIVATE Boost::type_index)
 
 add_library(boost_type_index_test_lib_rtti_compat SHARED test_lib.cpp)
 target_compile_options(boost_type_index_test_lib_rtti_compat PRIVATE ${BOOST_TYPEINDEX_DETAIL_RTTI})
-target_compile_definitions(boost_type_index_test_lib_rtti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY)
+target_compile_definitions(boost_type_index_test_lib_rtti_compat PUBLIC BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
 target_link_libraries(boost_type_index_test_lib_rtti_compat PRIVATE Boost::type_index)
 
 set(BOOST_TEST_LINK_LIBRARIES Boost::type_index Boost::core)
@@ -85,12 +85,12 @@ endif()
 boost_test(TYPE run SOURCES testing_crossmodule.cpp
     LINK_LIBRARIES boost_type_index_test_lib_rtti_compat
     COMPILE_OPTIONS ${BOOST_TYPEINDEX_DETAIL_NO_RTTI}
-    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
+    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
     NAME testing_crossmodule_nortti_rtti_compat
 )
 boost_test(TYPE run SOURCES testing_crossmodule.cpp
     LINK_LIBRARIES boost_type_index_test_lib_nortti_compat
-    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY
+    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
     NAME testing_crossmodule_rtti_nortti_compat
 )
 
