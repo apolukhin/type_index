@@ -57,7 +57,7 @@ boost_test(TYPE run SOURCES testing_crossmodule.cpp
 )
 boost_test(TYPE run SOURCES testing_crossmodule.cpp
     LINK_LIBRARIES boost_type_index_test_lib_nortti
-    COMPILE_OPTIONS  ${BOOST_TYPEINDEX_DETAIL_NO_RTTI}
+    COMPILE_OPTIONS ${BOOST_TYPEINDEX_DETAIL_NO_RTTI}
     NAME testing_crossmodule_no_rtti
 )
 boost_test(TYPE run SOURCES testing_crossmodule_anonymous.cpp
@@ -80,19 +80,19 @@ if(NOT MSVC)  # MSVC sometimes overrides the /GR- and the tests link
     boost_test(TYPE link-fail SOURCES testing_crossmodule.cpp
             LINK_LIBRARIES boost_type_index_test_lib_nortti
             NAME link_fail_rtti_nortti)
-endif()
 
-boost_test(TYPE run SOURCES testing_crossmodule.cpp
-    LINK_LIBRARIES boost_type_index_test_lib_rtti_compat
-    COMPILE_OPTIONS ${BOOST_TYPEINDEX_DETAIL_NO_RTTI}
-    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
-    NAME testing_crossmodule_nortti_rtti_compat
-)
-boost_test(TYPE run SOURCES testing_crossmodule.cpp
-    LINK_LIBRARIES boost_type_index_test_lib_nortti_compat
-    COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
-    NAME testing_crossmodule_rtti_nortti_compat
-)
+    boost_test(TYPE run SOURCES testing_crossmodule.cpp
+        LINK_LIBRARIES boost_type_index_test_lib_rtti_compat
+        COMPILE_OPTIONS ${BOOST_TYPEINDEX_DETAIL_NO_RTTI}
+        COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
+        NAME testing_crossmodule_nortti_rtti_compat
+    )
+    boost_test(TYPE run SOURCES testing_crossmodule.cpp
+        LINK_LIBRARIES boost_type_index_test_lib_nortti_compat
+        COMPILE_DEFINITIONS BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1
+        NAME testing_crossmodule_rtti_nortti_compat
+    )
+endif()
 
 file(GLOB EXAMPLE_FILES "../examples/*.cpp")
 foreach (testsourcefile ${EXAMPLE_FILES})
