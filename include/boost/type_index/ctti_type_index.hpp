@@ -86,7 +86,7 @@ inline const detail::ctti_data& ctti_construct() noexcept {
     // value.
     //
     // Alignments are checked in `type_index_test_ctti_alignment.cpp` test.
-    return *reinterpret_cast<const detail::ctti_data*>(boost::detail::ctti<T>::n());
+    return *reinterpret_cast<const detail::ctti_data*>(boost::typeindex::detail::postprocessed_name<T>());
 }
 
 /// \class ctti_type_index
@@ -115,7 +115,7 @@ public:
     using type_info_t = detail::ctti_data;
 
     BOOST_CXX14_CONSTEXPR inline ctti_type_index() noexcept
-        : data_(boost::detail::ctti<void>::n())
+        : data_(boost::typeindex::detail::postprocessed_name<void>())
     {}
 
     inline ctti_type_index(const type_info_t& data) noexcept
@@ -166,14 +166,14 @@ template <class T>
 BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id() noexcept {
     using no_ref_t = typename std::remove_reference<T>::type;
     using no_cvr_t = typename std::remove_cv<no_ref_t>::type;
-    return ctti_type_index(boost::detail::ctti<no_cvr_t>::n());
+    return ctti_type_index(boost::typeindex::detail::postprocessed_name<no_cvr_t>());
 }
 
 
 
 template <class T>
 BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id_with_cvr() noexcept {
-    return ctti_type_index(boost::detail::ctti<T>::n());
+    return ctti_type_index(boost::typeindex::detail::postprocessed_name<T>());
 }
 
 
@@ -193,13 +193,16 @@ BOOST_CXX14_CONSTEXPR inline const char* ctti_type_index::name() const noexcept 
 }
 
 inline std::size_t ctti_type_index::get_raw_name_length() const noexcept {
-    return std::strlen(raw_name() + detail::skip().size_at_end);
+#if defined(BOOST_NO_CXX14_CONSTEXPR)
+    return detail::constexpr_significant_part_length(raw_name() + detail::skip().size_at_end);
+#else
+    return std::strlen(raw_name());
+#endif
 }
 
 
 inline std::string ctti_type_index::pretty_name() const {
     std::size_t len = get_raw_name_length();
-    while (raw_name()[len - 1] == ' ') --len; // MSVC sometimes adds whitespaces
     return std::string(raw_name(), len);
 }
 
