@@ -149,7 +149,7 @@ constexpr ctti_skip skip() noexcept { return detail::make_ctti_skip(0, 0, ""); }
 
     BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE std::size_t constexpr_significant_part_length(const char* str) noexcept {
         std::size_t length = 0;
-        while (str[length]) {
+        while (str[length + detail::skip().size_at_end]) {
             ++length;
         }
 
@@ -376,7 +376,7 @@ namespace boost { namespace typeindex { namespace detail {
     template <class T>
     constexpr const char* postprocessed_name() noexcept {
         constexpr const char* name = boost::detail::ctti<T>::n();
-        constexpr auto length = detail::constexpr_significant_part_length(name + detail::skip().size_at_end);
+        constexpr auto length = detail::constexpr_significant_part_length(name);
         using idx_seq = typename boost::typeindex::detail::make_index_seq_impl<0, length>::type;
         return boost::typeindex::detail::make_pretty_name<T>(idx_seq());
     }
