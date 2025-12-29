@@ -157,8 +157,8 @@ void constexpr_known_names_test() {
 void not_constexpr_known_names_test() {
     using boost::typeindex::ctti_type_index;
 
-    BOOST_TEST_EQ(std::string(ctti_type_index::type_id<int>().pretty_name()), "int");
-    BOOST_TEST_EQ(std::string(ctti_type_index::type_id<void>().pretty_name()), "void");
+    BOOST_TEST_EQ(ctti_type_index::type_id<int>().pretty_name(), "int");
+    BOOST_TEST_EQ(ctti_type_index::type_id<void>().pretty_name(), "void");
 }
 
 int main() {

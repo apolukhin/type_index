@@ -328,7 +328,7 @@ struct ctti {
         boost::typeindex::detail::assert_compile_time_legths<
             (size > boost::typeindex::detail::skip().size_at_begin + boost::typeindex::detail::skip().size_at_end + sizeof("const *") - 1)
         >();
-        static_assert(!boost::typeindex::detail::skip().until_runtime_length, "Skipping by pettern in C++14 mode is unsupported");
+        static_assert(!boost::typeindex::detail::skip().until_runtime_length, "Skipping by pattern in C++14 mode is unsupported");
 
         using idx_seq = typename boost::typeindex::detail::make_index_seq_impl<
             boost::typeindex::detail::skip().size_at_begin,

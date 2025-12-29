@@ -10,10 +10,11 @@
 #define BOOST_TYPE_INDEX_CTTI_TYPE_INDEX_HPP
 
 /// \file ctti_type_index.hpp
-/// \brief Contains boost::typeindex::ctti_type_index class that is constexpr if C++14 constexpr is supported by compiler.
+/// \brief Contains boost::typeindex::ctti_type_index class that is constexpr if C++14
+/// constexpr is supported by compiler.
 ///
 /// boost::typeindex::ctti_type_index class can be used as a drop-in replacement
-/// for std::type_index.
+/// for std::type_index or as type index that can output type names at compile time.
 ///
 /// It is used in situations when typeid() method is not available or 
 /// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined.
@@ -100,8 +101,8 @@ inline const detail::ctti_data& ctti_construct() noexcept {
 ///     * static methods type_id<T>(), type_id_with_cvr<T>()
 ///     * comparison operators
 ///
-/// This class produces slightly longer type names, so consider using stl_type_index
-/// in situations when typeid() is working.
+/// This class produces slightly longer type names in C++11 than stl_type_index, see
+/// "Code Bloat" fore more info.
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
     const char* data_;
 
