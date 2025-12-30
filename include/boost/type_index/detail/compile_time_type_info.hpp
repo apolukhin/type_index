@@ -44,25 +44,25 @@ namespace boost { namespace typeindex { namespace detail {
     struct ctti_skip {
         std::size_t size_at_begin;
         std::size_t size_at_end;
-        const char* until_runtime;
-        std::size_t until_runtime_length;
+        const char* substrig;
+        std::size_t substrig_length;
     };
 
     template <std::size_t N>
     constexpr ctti_skip make_ctti_skip(std::size_t size_at_begin,
                                        std::size_t size_at_end,
-                                       bool more_at_runtime,
-                                       const char (&until_runtime)[N])
+                                       bool is_skip_by_substring,
+                                       const char (&substrig)[N])
     {
-        return ctti_skip{size_at_begin, size_at_end, until_runtime, more_at_runtime ? N - 1 : 0};
+        return ctti_skip{size_at_begin, size_at_end, substrig, is_skip_by_substring ? N - 1 : 0};
     }
 
     template <std::size_t N>
     constexpr ctti_skip make_ctti_skip(std::size_t size_at_begin,
                                        std::size_t size_at_end,
-                                       const char (&until_runtime)[N])
+                                       const char (&substrig)[N])
     {
-        return ctti_skip{size_at_begin, size_at_end, until_runtime, N - 1};
+        return ctti_skip{size_at_begin, size_at_end, substrig, N - 1};
     }
 
 #if defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
@@ -211,20 +211,20 @@ constexpr ctti_skip skip() noexcept { return detail::make_ctti_skip(0, 0, ""); }
     }
 
     template <unsigned int ArrayLength>
-    BOOST_CXX14_CONSTEXPR inline const char* skip_begining_runtime(const char* begin) noexcept {
-        constexpr auto skip_value = detail::skip();  // to have the same `.until_runtime` value in code below
+    BOOST_CXX14_CONSTEXPR inline const char* after_substrig(const char* begin) noexcept {
+        constexpr auto skip_value = detail::skip();  // to have the same `.substrig` value in code below
         const char* const it = detail::constexpr_search(
             begin, begin + ArrayLength,
-            skip_value.until_runtime, skip_value.until_runtime + skip_value.until_runtime_length
+            skip_value.substrig, skip_value.substrig + skip_value.substrig_length
         );
-        return (it == begin + ArrayLength ? begin : it + skip_value.until_runtime_length);
+        return (it == begin + ArrayLength ? begin : it + skip_value.substrig_length);
     }
 
     template <unsigned int ArrayLength>
     BOOST_CXX14_CONSTEXPR inline const char* skip_begining(const char* begin) noexcept {
         detail::assert_compile_time_legths<(ArrayLength > detail::skip().size_at_begin + detail::skip().size_at_end)>();
-        return detail::skip().until_runtime_length
-            ? detail::skip_begining_runtime<ArrayLength - detail::skip().size_at_begin>(begin + detail::skip().size_at_begin)
+        return detail::skip().substrig_length
+            ? detail::after_substrig<ArrayLength - detail::skip().size_at_begin>(begin + detail::skip().size_at_begin)
             : begin + detail::skip().size_at_begin
         ;
     }
@@ -309,6 +309,7 @@ struct ctti {
 
     template <unsigned int D = 0> // `D` means `Dummy`
     constexpr static const char* n() noexcept {
+        namespace tid = boost::typeindex::detail;
     #if defined(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE)
         constexpr unsigned int size = sizeof(BOOST_TYPE_INDEX_FUNCTION_SIGNATURE);
     #elif defined(__FUNCSIG__)
@@ -322,18 +323,21 @@ struct ctti {
                     || defined(__DMC__)
         constexpr unsigned int size = sizeof(__PRETTY_FUNCTION__);
     #else
-        boost::typeindex::detail::failed_to_get_function_name<T>();
+        tid::failed_to_get_function_name<T>();
     #endif
 
-        boost::typeindex::detail::assert_compile_time_legths<
-            (size > boost::typeindex::detail::skip().size_at_begin + boost::typeindex::detail::skip().size_at_end + sizeof("const *") - 1)
+        tid::assert_compile_time_legths<
+            (size > tid::skip().size_at_begin + tid::skip().size_at_end + sizeof("const *") - 1)
         >();
-        static_assert(!boost::typeindex::detail::skip().until_runtime_length, "Skipping by pattern in C++14 mode is unsupported");
+        static_assert(
+            !tid::skip().substrig_length,
+            "Skipping by substring for GCC in C++14 mode is unsupported"
+        );
 
-        using idx_seq = typename boost::typeindex::detail::make_index_seq_impl<
-            boost::typeindex::detail::skip().size_at_begin,
-            size - sizeof("const *") + 1 - boost::typeindex::detail::skip().size_at_begin
-            - 1
+        using idx_seq = typename tid::make_index_seq_impl<
+            tid::skip().size_at_begin,
+            size - (sizeof("const *") - 1) - tid::skip().size_at_begin
+            - 1 /* detail::cstring adds a terminating '\0' */
         >::type;
         return impl(idx_seq());
     }

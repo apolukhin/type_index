@@ -14,10 +14,11 @@
 /// constexpr is supported by compiler.
 ///
 /// boost::typeindex::ctti_type_index class can be used as a drop-in replacement
-/// for std::type_index or as type index that can output type names at compile time.
+/// for std::type_index or as a type index that works at compile time, can provide a
+/// type name at compile time.
 ///
-/// It is used in situations when typeid() method is not available or 
-/// BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined.
+/// It is used as the boost::typeindex::type_index when `typeid()` is not 
+/// available or BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY macro is defined.
 
 #include <boost/type_index/detail/config.hpp>
 
@@ -94,12 +95,22 @@ inline const detail::ctti_data& ctti_construct() noexcept {
 /// This class is a wrapper that pretends to work exactly like stl_type_index, but does
 /// not require RTTI support. \b For \b description \b of \b functions \b see type_index_facade.
 ///
-/// This class on C++14 compatible compilers has following functions marked as constexpr:
+/// This class on C++14 compatible compilers can be used at compile time and has the following
+/// functions marked as constexpr:
 ///     * default constructor
-///     * copy constructors and assignemnt operations
+///     * copy constructors and assignment operations
 ///     * class methods: name(), before(const ctti_type_index& rhs), equal(const ctti_type_index& rhs)
 ///     * static methods type_id<T>(), type_id_with_cvr<T>()
 ///     * comparison operators
+///
+/// Moreover, starting from C++14 the name() function always outputs the pretty_name() of a
+/// type. For example the following static assert holds:
+/// \code
+/// static_assert(
+///     boost::typeindex::ctti_type_index:::type_id<int>().name()
+///     == std::string_view{"int"}
+/// );
+/// \endcode
 ///
 /// This class produces slightly longer type names in C++11 than stl_type_index, see
 /// "Code Bloat" fore more info.

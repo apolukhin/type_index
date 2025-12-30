@@ -287,7 +287,9 @@ Issues with cross module type comparison on a bugged compilers are bypassed by d
 
 [section Making a custom type_index]
 
-Sometimes there may be a need to create your own type info system. This may be useful if you wish to store some more info about types (PODness, size of a type, pointers to common functions...) or if you have an idea of a more compact types representations.
+Sometimes there may be a need to create your own type info system. This may be useful if you wish to store some
+more info about types (trivial copiability, size of a type, pointers to common functions...) or if you have an
+idea of a more compact types representations.
 
 [import ../examples/user_defined_typeinfo.hpp]
 [import ../examples/user_defined_typeinfo.cpp]
@@ -324,9 +326,10 @@ make the `Boost::type_index` CMake target provide it. After that an explicit usa
 [import ../modules/usage_sample.cpp]
 [type_index_module_example]
 
-The `Boost::type_index` CMake target gives an ability to mix includes and imports of the library in different translation units. Moreover,
-if `BOOST_USE_MODULES` macro is defined then all the `boost/type_index/...` includes implicilty do `import boost.type_index;` to give all the
-benifits of modules without changing the existing code.
+The `Boost::type_index` CMake target gives an ability to mix includes and imports of the library in different
+translation units. Moreover, if `BOOST_USE_MODULES` macro is defined then all the `boost/type_index/...`
+includes implicitly do `import boost.type_index;` to give all the benefits of modules without changing the
+existing code.
 
 [note For better compile times make sure that `import std;` is available when building the `boost.type_index` module (in CMake logs there should be
       a 'Using `import std;`' message). ]
@@ -351,12 +354,14 @@ clang++ -std=c++20 -fmodule-file=boost_type_index.pcm boost_type_index.pcm usage
 
 [section Space and Performance]
 
-* `ctti_type_index` uses macro for getting full text representation of function name which could lead to code bloat,
-so prefer using `stl_type_index` type when possible.
+* `ctti_type_index` uses macro for getting full text representation of function name which could lead to code bloat
+  in C++11, so prefer using `stl_type_index` type when possible.
 * All the type_index classes hold a single pointer and are fast to copy.
-* Calls to `const char* raw_name()` do not require dynamic memory allocation and usually just return a pointer to an array of chars in a read-only section of the binary image.
+* Calls to `const char* raw_name()` do not require dynamic memory allocation and usually just return a pointer
+  to an array of chars in a read-only section of the binary image.
 * Comparison operators are optimized as much as possible and execute a single `std::strcmp` in worst case.
-* Calls to `std::string pretty_name()` usually require dynamic memory allocation and some computations, so they are not recommended for usage in performance critical sections.
+* Calls to `std::string pretty_name()` usually require dynamic memory allocation and some computations,
+  so they are not recommended for usage in performance critical sections.
 
 [endsect]
 
