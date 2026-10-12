@@ -156,7 +156,7 @@ class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_da
 #ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     const char* data_;
 
-    BOOST_CXX14_CONSTEXPR ctti_type_index(const char* data) noexcept
+    BOOST_CXX14_CONSTEXPR explicit ctti_type_index(const char* data) noexcept
         : data_(data)
     {}
 #else
