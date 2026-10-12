@@ -399,10 +399,27 @@ int main() {
     comparators_type_id_vs_type_info();
 #endif
 
-#if defined(__cpp_lib_constexpr_typeinfo) && __cpp_lib_constexpr_typeinfo >= 202105L
+#if !defined(BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST)
     static_assert(boost::typeindex::type_id<int>() == boost::typeindex::type_id<int>());
+    static_assert(boost::typeindex::type_id<int>() != boost::typeindex::type_id<short>());
     static_assert(boost::typeindex::type_id<int>() == boost::typeindex::type_id<const int>());
+
+    static_assert(boost::typeindex::type_id_with_cvr<int>() == boost::typeindex::type_id_with_cvr<int>());
+    static_assert(boost::typeindex::type_id_with_cvr<int>() != boost::typeindex::type_id_with_cvr<short>());
+    static_assert(boost::typeindex::type_id_with_cvr<int>() != boost::typeindex::type_id_with_cvr<const int>());
+
     static_assert(boost::typeindex::type_id<int>() != boost::typeindex::type_id_with_cvr<const int>());
+    static_assert(boost::typeindex::type_id_with_cvr<const int>() != boost::typeindex::type_id<int>());
+
+    static_assert(boost::typeindex::type_id<int>() == boost::typeindex::type_id<int>().type_info());
+    static_assert(boost::typeindex::type_id<int>().type_info() == boost::typeindex::type_id<int>());
+    static_assert(boost::typeindex::type_id_with_cvr<int>() == boost::typeindex::type_id_with_cvr<int>().type_info());
+    static_assert(boost::typeindex::type_id_with_cvr<int>().type_info() == boost::typeindex::type_id_with_cvr<int>());
+
+    static_assert(boost::typeindex::type_id<short>() != boost::typeindex::type_id<int>().type_info());
+    static_assert(boost::typeindex::type_id<short>().type_info() != boost::typeindex::type_id<int>());
+    static_assert(boost::typeindex::type_id_with_cvr<short>() != boost::typeindex::type_id_with_cvr<int>().type_info());
+    static_assert(boost::typeindex::type_id_with_cvr<short>().type_info() != boost::typeindex::type_id_with_cvr<int>());
 #endif
 
     return boost::report_errors();

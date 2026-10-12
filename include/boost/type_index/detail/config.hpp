@@ -15,10 +15,14 @@
 #  endif
 #endif
 
-#if defined(__cpp_lib_constexpr_typeinfo) && __cpp_lib_constexpr_typeinfo >= 202105L
-#define BOOST_TYPEINDEX_IMPL_CONSTEXPR constexpr
+#if __cplusplus < 202302L || __cpp_constexpr < 202211L || __cpp_lib_constexpr_typeinfo < 202105L
+#define BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
+#endif
+
+#if defined(BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST) && !defined(BOOST_TYPE_INDEX_DOXYGEN_INVOKED)
+#define BOOST_TYPE_INDEX_IMPL_TYPE_INFO_CONSTEXPR inline
 #else
-#define BOOST_TYPEINDEX_IMPL_CONSTEXPR inline
+#define BOOST_TYPE_INDEX_IMPL_TYPE_INFO_CONSTEXPR constexpr
 #endif
 
 #if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
