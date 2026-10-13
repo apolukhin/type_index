@@ -44,6 +44,8 @@ namespace boost { namespace typeindex {
 
 namespace detail {
 
+BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
+
 // That's the most trickiest part of the TypeIndex library:
 //      1) we do not want to give user ability to manually construct and compare `struct-that-represents-type`
 //      2) we need to distinguish between `struct-that-represents-type` and `const char*`
@@ -66,19 +68,41 @@ namespace detail {
 /// type_index ti = type_index(foo());
 /// std::cout << ti.pretty_name();
 /// \endcode
-BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
 class ctti_data {
 public:
     ctti_data() = delete;
     ctti_data(const ctti_data&) = delete;
     ctti_data& operator=(const ctti_data&) = delete;
+
+    /// \cond
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
+    inline const char* internal_name() const noexcept {
+        return reinterpret_cast<const char*>(this);
+    }
+#else
+    constexpr const char* internal_name() const noexcept {
+        return data_;
+    }
+
+    static constexpr ctti_data internal_make(const char* data) noexcept {
+        return ctti_data(data);
+    }
+
+private:
+    constexpr ctti_data(const char* data) noexcept : data_(data) {}
+
+    const char* const data_;
+#endif
+    /// \endcond
 };
+
 BOOST_TYPE_INDEX_END_MODULE_EXPORT
 
 } // namespace detail
 
 BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
 
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
 /// Helper method for getting detail::ctti_data of a template parameter T.
 template <class T>
 inline const detail::ctti_data& ctti_construct() noexcept {
@@ -94,6 +118,16 @@ inline const detail::ctti_data& ctti_construct() noexcept {
     // Alignments are checked in `type_index_test_ctti_alignment.cpp` test.
     return *reinterpret_cast<const detail::ctti_data*>(boost::typeindex::detail::postprocessed_name<T>());
 }
+#else
+/// Helper method for getting detail::ctti_data of a template parameter T.
+template <class T>
+constexpr const detail::ctti_data& ctti_construct() noexcept {
+    static constexpr detail::ctti_data tag = detail::ctti_data::internal_make(
+        boost::typeindex::detail::postprocessed_name<T>()
+    );
+    return tag;
+}
+#endif
 
 /// \class ctti_type_index
 /// This class is a wrapper that pretends to work exactly like stl_type_index, but does
@@ -119,26 +153,39 @@ inline const detail::ctti_data& ctti_construct() noexcept {
 /// This class produces slightly longer type names in C++11 than stl_type_index, see
 /// "Code Bloat" fore more info.
 class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_data> {
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     const char* data_;
 
-    inline std::size_t get_raw_name_length() const noexcept;
-
-    BOOST_CXX14_CONSTEXPR inline explicit ctti_type_index(const char* data) noexcept
+    BOOST_CXX14_CONSTEXPR explicit ctti_type_index(const char* data) noexcept
         : data_(data)
     {}
+#else
+    const detail::ctti_data* data_;
+#endif
+
+    inline std::size_t get_raw_name_length() const noexcept;
 
 public:
     using type_info_t = detail::ctti_data;
 
     BOOST_CXX14_CONSTEXPR inline ctti_type_index() noexcept
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
         : data_(boost::typeindex::detail::postprocessed_name<void>())
+#else
+        : data_(&boost::typeindex::ctti_construct<void>())
+#endif
     {}
 
-    inline ctti_type_index(const type_info_t& data) noexcept
-        : data_(reinterpret_cast<const char*>(&data))
+    BOOST_TYPE_INDEX_IMPL_TYPE_INFO_CONSTEXPR ctti_type_index(const type_info_t& data) noexcept
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
+        : data_(data.internal_name())
+#else
+        : data_(&data)
+#endif
     {}
 
-    inline const type_info_t& type_info() const noexcept;
+    BOOST_TYPE_INDEX_IMPL_TYPE_INFO_CONSTEXPR const type_info_t& type_info() const noexcept;
+
     BOOST_CXX14_CONSTEXPR inline const char* raw_name() const noexcept;
     BOOST_CXX14_CONSTEXPR inline const char* name() const noexcept;
     inline std::string  pretty_name() const;
@@ -159,9 +206,12 @@ public:
 
 BOOST_TYPE_INDEX_END_MODULE_EXPORT
 
-
-inline const ctti_type_index::type_info_t& ctti_type_index::type_info() const noexcept {
+BOOST_TYPE_INDEX_IMPL_TYPE_INFO_CONSTEXPR const ctti_type_index::type_info_t& ctti_type_index::type_info() const noexcept {
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     return *reinterpret_cast<const detail::ctti_data*>(data_);
+#else
+    return *data_;
+#endif
 }
 
 
@@ -196,14 +246,23 @@ template <class T>
 BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id() noexcept {
     using no_ref_t = typename std::remove_reference<T>::type;
     using no_cvr_t = typename std::remove_cv<no_ref_t>::type;
+
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     return ctti_type_index(boost::typeindex::detail::postprocessed_name<no_cvr_t>());
+#else
+    return ctti_type_index(boost::typeindex::ctti_construct<no_cvr_t>());
+#endif
 }
 
 
 
 template <class T>
 BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id_with_cvr() noexcept {
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     return ctti_type_index(boost::typeindex::detail::postprocessed_name<T>());
+#else
+    return ctti_type_index(boost::typeindex::ctti_construct<T>());
+#endif
 }
 
 
@@ -214,12 +273,20 @@ inline ctti_type_index ctti_type_index::type_id_runtime(const T& variable) noexc
 
 
 BOOST_CXX14_CONSTEXPR inline const char* ctti_type_index::raw_name() const noexcept {
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     return data_;
+#else
+    return data_->internal_name();
+#endif
 }
 
 
 BOOST_CXX14_CONSTEXPR inline const char* ctti_type_index::name() const noexcept {
+#ifdef BOOST_TYPE_INDEX_IMPL_CTTI_DATA_VIA_CAST
     return data_;
+#else
+    return data_->internal_name();
+#endif
 }
 
 inline std::size_t ctti_type_index::get_raw_name_length() const noexcept {
